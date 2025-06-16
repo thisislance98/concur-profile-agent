@@ -1,0 +1,1360 @@
+6/10/25, 9:13 PM
+
+Joule Development Guide
+Generated on: 2025-06-10 21:13:22 GMT+0000
+Joule | Internal
+Confidential
+Original content: https://help.sap.com/docs/JOULE/4b327297dce247fcb88a5f5bfeea97a1?locale=enUS&state=DRAFT&version=INTERNAL
+
+Warning
+This document has been generated from SAP Help Portal and is an incomplete version of the official SAP product documentation.
+The information included in custom documentation may not reflect the arrangement of topics in SAP Help Portal, and may be
+missing important aspects and/or correlations to other topics. For this reason, it is not for production use.
+For more information, please visit https://help.sap.com/docs/disclaimer.
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+1
+
+6/10/25, 9:13 PM
+
+Test the Capability
+Once the assistant is deployed in your tenant, you can use the test command to validate the assistant replies during a
+conversation flow.
+
+Setup
+The test content relies on the cucumber test framework. Similar to unit tests that validate source code, the test content should be
+located directly inside the capability folder.
+
+ Sample Code
+└── myCapability
+├── dataset
+├── dialog
+├── tests
+│
+└── features
+│
+├── featureOne.feature
+│
+├── featureTwo.feature
+│
+└── subfolder
+│
+└── featureThree.feature
+└── capability.sapdas.yaml
+
+Test content is developed using the Gherkin syntax. We recommend installing the Cucumber (Gherkin) Full Support extension that
+provides syntax validation and auto complete support to develop your test files.
+The following command creates the needed VScode configuration to enable the Gherkin validation and snippets:
+
+joule test --init
+
+Authentication
+By default, the test command uses the login user or the joule test command (using joule login).
+If the user is not logged in or if the user is meant to be used in a pipeline, the joule test will use the environment variables by
+either looking for the .env file where the command is executed or just rely on the already present environment variables.
+In case you want to use the environment variables without logging out, you can run the test using the --use-env option.
+
+ Sample Code
+.env content
+JOULE_API_URL=
+JOULE_USERNAME=
+JOULE_PASSWORD=
+JOULE_AUTH_URL=
+JOULE_CLIENT_ID=
+JOULE_CLIENT_SECRET=
+JOULE_DEFAULT_IDP=<false|true, default false>
+
+Muenchhausen support
+The Joule test command supports Muenchhausen configuration. The following is a sample .env content:
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+2
+
+6/10/25, 9:13 PM
+
+ Sample Code
+JOULE_API_URL=
+JOULE_USERNAME=
+JOULE_PASSWORD=
+JOULE_AUTH_URL=
+JOULE_CLIENT_ID=
+JOULE_CLIENT_SECRET=
+JOULE_DEFAULT_IDP=<false|true, default false>
+# add muenchhausen JSON string
+JOULE_MUENCHHAUSEN= <json_string>
+
+In this case the JOULE_MUENCHHAUSEN is a stringified version of a JSON object with the following structure:
+
+ Sample Code
+{
+"url": "<muenchhausenUrl>",
+"users": [
+{
+"alias": "",
+"username": "",
+"samlAttributes": {
+"user_uuid": [""],
+"first_name": [""],
+"last_name": [""],
+"mail": [""]
+}
+}
+]
+}
+
+User Profiles Support
+The <JOULE_PROFILES> environment variable is expected to contain a stringified JSON object with the users field containing an
+array of user profiles. This variable is utilized when invoking the test command with the --use-env parameter. By setting this
+variable, you can test the content on behalf of any user specified within the provided profiles. The user is referenced by the alias
+field within the passed object.
+
+ Note
+The <JOULE_PROFILES> variable cannot be used simultaneously with <JOULE_MUENCHHAUSEN>.
+
+ Sample Code
+oAuth environment
+
+JOULE_API_URL=
+JOULE_USERNAME=
+JOULE_PASSWORD=
+JOULE_AUTH_URL=
+JOULE_CLIENT_ID=
+JOULE_CLIENT_SECRET=
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+3
+
+6/10/25, 9:13 PM
+
+JOULE_DEFAULT_IDP=<false|true, default false>
+JOULE_PROFILES=<json_string>
+
+Here is an example of the <JOULE_PROFILES> JSON structure:
+
+ Sample Code
+{
+"users":[
+{
+"alias":"<user alias which can be used in Cucumber tests>",
+"username":"<username>",
+"password":"<password>",
+"defaultidp":<false|true>
+},
+{
+"alias":"<user alias which can be used in Cucumber tests>",
+"username":"<username>",
+"password":"<password>",
+"defaultidp":<false|true>
+}
+]
+}
+
+1. Update the environment config (.env) by adding a <JOULE_PROFILES>. The following example has two user profiles (userone and user-two):
+
+ Sample Code
+...
+JOULE_PROFILES='{"users":[{"alias":"user-one","username":"username1","password":"password1"
+...
+
+2. Use the profiles to login.
+
+ Sample Code
+# Login as "user-one"
+Given I am user "user-one"
+And I log in
+Then login is successful
+# Login as "user-two"
+Given I am user "user-two"
+And I log in
+Then login is successful
+
+3. Run the test command.
+
+joule test <capability_name> --use-env
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+4
+
+6/10/25, 9:13 PM
+
+Writing Tests
+You can create files in the tests/features folder with the extension .feature. Each file has one feature and multiple scenarios.
+
+Sample Tests
+Test Scenario
+
+To Test
+
+The user logs in to Joule
+
+The assistant replies with one message
+
+Starts a new conversation (isolation)
+
+The first message has type text
+
+Says "Who made you"
+
+The message contains the sentence "I was brought to you
+by SAP"
+
+Using Background (Before each)
+By using the background key word, you can instruct Cucumber to run the content before each scenario.
+In this case the user logs in and creates a new conversation before each scenario.
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+5
+
+6/10/25, 9:13 PM
+
+Step Definitions
+The table below contains the full list of available Cucumber step definitions for Digital Assistant testing.
+Step Difinition
+
+CLI Version (applicable from)
+
+Description
+
+When I say “message”
+
+1.3.0
+
+Sends a text message to the digital
+assistant and processes the response.
+
+When I solve disambiguation with option
+
+1.3.0
+
+“option”
+When I submit data: “JSON data”
+
+Resolves a disambiguation in the response
+using a specified string.
+
+1.3.0
+
+Submits data to the adaptive cards and
+processes the response.
+
+Then response has 1 message
+
+1.3.0
+
+Verifies that the response contains only one
+message.
+
+Then response has number messages
+
+1.3.0
+
+Verifies that the response contains the
+specified number of messages.
+
+Then message type at index number is
+
+1.3.0
+
+“type”
+Then message content at index number is
+
+Verifies the type of a message at a specific
+index in the response.
+
+1.3.0
+
+one of: data table
+
+Verifies that the content of a message at a
+specific index in the response matches one
+of the provided possibilities from specific
+Gherkin data table.
+
+Then message at index number has button
+
+1.3.0
+
+at index number with properties: data table
+
+Verifies that a button at a specific index
+within a message at a specific index in the
+response has the expected properties from
+specific Gherkin data table.
+
+Then message content at index number
+
+1.3.0
+
+contains “sub-message”
+
+Verifies that the content of a message at a
+specific index in the response contains a
+specified substring.
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+6
+
+6/10/25, 9:13 PM
+
+Step Difinition
+
+CLI Version (applicable from)
+
+Description
+
+Then message content title at index
+
+1.3.0
+
+Verifies that the title of the content in a
+
+number contains “sub-message”
+
+message at a specific index in the response
+contains a specified substring.
+
+Then message content subtitle at index
+
+1.3.0
+
+number contains “sub-message”
+
+Verifies that the subtitle of the content in a
+message at a specific index in the response
+contains a specified substring.
+
+Then response has disambiguation
+
+1.3.0
+
+Verifies that the response contains at least
+one disambiguation message.
+
+Then response has no disambiguation
+
+1.3.0
+
+Verifies that the response does not contain
+any disambiguation messages.
+
+Then “ordinal” message has type “type”
+
+1.3.0
+
+Verifies that a message at a specific ordinal
+position (e.g. 1st, 2nd...) in the response has
+the expected type.
+
+Then “ordinal” message contains: “JSON
+
+1.3.0
+
+Verifies that a message at a specific ordinal
+
+data”Then “ordinal” message contains:
+
+position (e.g. 1st, 2nd...) in the response
+
+“JSON data”
+
+contains the expected key-value pairs.
+
+Then “ordinal” message content equals
+
+1.3.0
+
+“message”
+
+Verifies that the content of a message at a
+specific ordinal position (e.g. 1st, 2nd...) in
+the response equals the expected string.
+
+Then “ordinal” message content contains
+
+1.3.0
+
+“sub-message”
+
+Verifies that the content of a message at a
+specific ordinal position (e.g. 1st, 2nd...) in
+the response contains the expected
+substring.
+
+Then numberth message has content
+
+1.3.0
+
+“message”
+
+Verifies that the content of a message at a
+specific index in the response matches the
+expected string.
+
+Then response has disambiguation with
+
+1.3.0
+
+option “option”
+
+Verifies that the response contains a
+disambiguation option matching the
+specified string.
+
+Then messages with jsonPath “path” has
+
+1.4.0
+
+length number
+
+Verifies that the number of elements
+matching a specified JSONPath in the
+response messages equals the expected
+length.
+
+Then messages with jsonPath “path” is not
+
+1.4.0
+
+empty
+
+Verifies that the response messages
+contain at least one element matching a
+specified JSONPath.
+
+Then messages with jsonPath “path” is
+
+1.4.0
+
+empty
+
+Verifies that the response messages do not
+contain any elements matching a specified
+JSONPath.
+
+Then messages with jsonPath verify: data
+
+1.4.0
+
+table
+
+Verifies that specific JSONPath queries
+applied to the response messages return
+the expected number of elements. Based
+on specific Gherkin data table (2 columns:
+JSONPath and number)
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+7
+
+6/10/25, 9:13 PM
+
+Step Difinition
+
+CLI Version (applicable from)
+
+Description
+
+Then set variable “variable” with the
+
+1.5.7
+
+Sets a variable in the workspace with the
+
+response content
+Then set variable “variable” with the first
+
+full content of the response messages.
+1.5.7
+
+element returned by jsonPath “path”
+
+Sets a variable in the workspace with the
+first element retrieved from the response
+messages using the specified JSONPath
+query.
+
+Then set variable “variable” with array
+
+1.5.7
+
+returned by jsonPath “path”
+
+Sets a variable in the workspace with an
+array of all elements retrieved from the
+response messages using the specified
+JSONPath query.
+
+Given I am user username
+
+1.3.0
+
+Defines current user based on env file.
+
+Given I log in
+
+1.3.0
+
+Logs current user in the workspace.
+
+Given I start a new conversation
+
+1.3.0
+
+Starts a new conversation with the digital
+assistant.
+
+Given I test dialog node with title title
+
+1.3.0
+
+Adds the title of a dialog node as a
+disambiguation option in the workspace for
+testing purposes.
+
+Given the application context: JSON data
+
+1.4.0
+
+Sets up the application context for the
+digital assistant.
+
+Given the client information: JSON data
+
+1.5.0
+
+Sets up the client information for the digital
+assistant.
+
+Given the client language is language
+
+1.5.4
+
+Sets the client language for the digital
+assistant.
+
+Then login is successful
+
+1.3.0
+
+Verifies that current user is logged in.
+
+Then response relates to topic
+
+1.5.3
+
+Verifies that the response from an LLMbased capability is relevant to a specific
+topic.
+
+Then response does not relate to topic
+
+1.5.3
+
+Verifies that the response from an LLMbased capability isn’t relevant to a specific
+topic.
+
+Testing your Assistant
+Once your assistant is deployed, you can execute the scenarios by running the following command from the capability root:
+
+joule test my_assistant
+The test execution results are displayed in the console.
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+8
+
+6/10/25, 9:13 PM
+
+Test Options
+
+ Sample Code
+joule test -h
+SAP Digital Assistant command line tool, sapdas version 1.3.0.
+Usage: joule test [options] [digital assistant name]
+Test your feature files
+Arguments:
+digital assistant name
+
+The name of the assistant
+
+Options:
+--init
+-f, --format <format>
+-t, --tags <tags>
+-h, --help
+
+Init tests setup
+Formatter
+Tag expression
+Display help for command
+
+To see all the available commands please log in.
+
+CLI Test Command Guidance
+1. Negative Tests
+CLI test command is not intended for negative testing (like testing for failures). Instead, it focuses on validating
+positive conversational workflows. If specific negative behaviors are expected, they should be described as positive
+tests.
+2. Testing Dynamic GenAI Responses
+GenAI messages are dynamic and can change from time to time even if it keeps the same meaning, and cannot be
+compared by strong string comparisons. In this case, you should use specially implemented GenAI step definitions,
+see Testing LLM based responses with GenAI which makes comparisons based on the description of the expected
+content behavior.
+3. Handling Timeouts and Performance
+The test command includes options like, timeout to manage scenarios where tests might run longer than expected.
+By default, the timeout is 10,000 milliseconds (10 seconds). You can override this by passing --timeout (for
+example, --timeout 50000 for 50 seconds). However, you can use this option only as a workaround. You should first
+try to optimize capabilities. This is crucial for ensuring that the digital assistant does not appear stuck to end users
+due to long reset durations or excessive API calls.
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+9
+
+6/10/25, 9:13 PM
+
+4. Retry Mechanism
+If tests work in development but fail in the pipeline, you can use a retry option like workaround, but this indicates
+that you need to make your scenario descriptions more explicit and try to avoid overlapping on features or user
+utterance meaning, which can potentially cause random failures.
+5. Optimization of Initialization Hooks
+Reducing the duration of initialization hooks can improve test execution speed and user experience.
+6. Modularization of Test Files
+Splitting large test files into smaller, more specialized ones can make it easier to run dedicated scenarios and
+manage test cases effectively.
+The maximum features per capability is 50
+The maximum size per feature is 20KB
+
+Using Tags
+Gherkin syntax allows you to use tags on features and scenarios. Using the -t option, you can run specific scenarios that are
+tagged.
+
+joule test my_assistant -t @feeling
+In the following example only the scenarios with tag @feeling will be executed.
+
+ Note
+Tags on feature are transferred to the Scenario. For more information, see the Cucumber documentation
+
+.
+
+Using Formatters
+Using the -f option, you can generate either a JUnit or an HTML report with the following pattern (junit|html)
+
+<path_to_junit_or_html>.
+joule test my_assistant -f "junit:junit/junit.xml"
+
+Example
+ Sample Code
+Feature: Smalltalk capability
+Feature Description
+Background:
+Given I log in
+And I start a new conversation
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+10
+
+6/10/25, 9:13 PM
+
+Scenario: Ask creator
+When I say "Who made you"
+Then response has 1 message
+And first message has type text
+And first message content contains "I was brought to you by SAP"
+Scenario: Ask feeling 2
+When I say "How are you doing"
+# here you can use one of to test message content against 3 possibilities
+Then message content at index 0 is one of:
+| Pretty well I must say! | I am good thanks. | I am alright. Thank you for asking.
+# Use Examples to run same scenario with two sets of sentence, count and result
+Scenario: data driven
+When I say "<sentence>"
+Then response has <count> messages
+And message content at index <index> contains "<result>"
+Examples:
+| sentence
+
+| count | index | result
+
+| Who made you?
+
+| 1
+
+| 0
+
+| I was brought to you by SAP
+
+| What is the time in Walldorf ? | 2
+
+| 0
+
+| The current time in Europe/Berlin
+
+Scenario: compliment
+When I say "best friend ever"
+Then first message has type text
+And message content at index 0 is one of:
+| Thanks, I am just doing my job. |
+| Thank you!
+
+|
+
+# scenario can be complex with intermediate checks
+Scenario: Get time
+When I say "What is the time in Walldorf ?"
+Then response has 2 messages
+And first message has type text
+And message content at index 0 contains "The current time in Europe/Berlin is"
+When I say "What is the time ?"
+Then response has 1 message
+And first message has type text
+And message content at index 0 contains "For which timezone would you like to see the ti
+When I say "San Francisco"
+Then response has 2 messages
+And first message has type text
+And message content at index 0 contains "The current time in America/Los_Angeles is"
+# Scenario is executed once but checks in one instruction to test three properties of first
+Scenario: get news
+When I say "Any headlines?"
+Then message at index 0 has button at index 0 with properties:
+| type
+
+| web_url
+
+|
+
+| title | SAP news
+
+|
+
+| value | https://news.sap.com/ |
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+11
+
+6/10/25, 9:13 PM
+
+Submit Data with a Payload
+You can send customized data in Joule cucumber tests to validate response for actions like Action.Submit buttons on adaptive
+cards.
+
+ Sample Code
+Scenario: submit data
+When I say "adaptive integration card"
+And I submit data:
+"""
+{
+"SimpleVal": "MoName",
+"EmailVal": "xxxx@sap.com",
+"DateVal": "2024-01-09",
+"Checked": "true"
+}
+"""
+Then response has 2 messages
+And message type at index 0 is ui5integrationCard
+And message type at index 1 is quickReplies
+
+Validate Complex Response Content
+You can access parts of the response using JSONPath expression and then validate the result against predefined content. This is to
+ensure that the response returned by Joule is exactly what was intended from the conversational workflow.
+
+ Tip
+You can validate JSONPath expressions using the JSONPath Online Evaluator
+
+.
+
+ Sample Code
+When last response payload is like:
+{
+"type": "list",
+"content": {
+"buttons": [
+{
+"type": "web_url",
+"title": "Open in App",
+"value": "https://www.sap.com/joule"
+}
+],
+"elements": [
+{
+"subtitle": "Supplier: Inlandslieferant DE 1 (10300001)",
+"description": "Net Value: 896.00 EUR",
+"sections": [
+{
+"attributes": [
+{
+"label": "Company Code",
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+12
+
+6/10/25, 9:13 PM
+
+"type": "text",
+"value": "Company Code 1010 (1010)"
+},
+{
+"label": "Order Status",
+"type": "text",
+"value": "Sent (04)"
+},
+{
+"label": "PO Date",
+"type": "text",
+"value": "2023-08-21"
+}
+],
+"title": "Details"
+}
+]
+}
+],
+"title": "Purchase Order 4500000908"
+},
+"markdown": false,
+"delay": 0
+}
+
+You can use JSONPath expressions to check the length.
+
+ Sample Code
+When I say "Show me purchase orders with status sent"
+# user asked for status sent so there should not be items with label Order Status and value diff
+Then messages with jsonPath '$..elements[*].sections[*].attributes[?(@.label == "Order Status &&
+# there must be at least one element with status Sent (04)
+And messages with jsonPath '$..elements[*].sections[*].attributes[?(@.value == "Sent (04)")]' is
+# No elements has an attribute with value "Hi"
+And messages with jsonPath '$..elements[*].sections[*].attributes[?(@.value == "Hi")]' is empty
+
+It can be simplified depending on the complexity of the response.
+
+ Sample Code
+When I say "Show me purchase orders with status sent"
+Then messages with jsonPath '$..attributes[?(@.value == "Sent (04)")]' has length 1
+
+Additionally, it is possible to check multiple queries using data driven approach.
+
+ Sample Code
+When I say "Show me purchase orders with status sent"
+Then messages with jsonPath verify:
+| $..attributes[?(@.label == "PO Date")]
+
+| 1 | # one element has property "label" with
+
+| $..attributes[?(/Sent/.test(@.value))]
+
+| 1 | # Returns objects with attribute "value"
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+13
+
+6/10/25, 9:13 PM
+
+| $..[?(/error/i.test(@.value))]
+
+| 0 | # no object with error (case insensitive
+
+| $..[?(/Sent/.test(@.value))]
+
+| 1 | # Some object with property "value" matc
+
+| $..[?(@.label)]
+
+| 3 | # three records found with a property la
+
+RegEx matching operator =~
+The current JSONPath, utilizing JavaScript packages such as jsonpath, does not support =~ operator. The operator commonly
+associated with regex matching, allows pattern-based searching within JSON structures. As a result, alternative methods must be
+employed to achieve similar functionality within JSONPath queries.
+1. Starts with () function:
+This JavaScript function checks whether a string starts with a specified substring.
+Example Usage: $..attributes[?(@.label.startsWith("Company"))]
+2. Ends with () function:
+This function checks whether a string ends with a specified substring.
+Example Usage: $..attributes[?(@.label.endsWith("Date"))]
+3. Includes () function:
+This function checks whether a string contains a specific substring.
+Example Usage: $..attributes[?(@.label.includes("Order"))]
+4. Regular expressions with test () function:
+JavaScript's regular expression capabilities are employed to perform complex pattern matching.
+Example Usage: $..attributes[?(/^Company/.test(@.label))]
+5. Match () function:
+The match () function in JavaScript is used to extract substrings based on a regular expression pattern.
+Example Usage: $..attributes[?(@.label.match(/^Company/))]
+
+Validate Cross Navigation
+If Joule platform detects IBN target definitions for navigation actions, they are resolved using Navigation service calls based on the
+client type (mobile or web) used by the user for triggering the request to Joule. You can test the navigation resolution part of the
+response using JSONPath to ensure the URLs returned are correct for a given client type. Resolve targets are available in the
+
+resolution node under navigation_target.
+
+ Tip
+You can use TestingCapabilitiesUsingClientInformation to validate navigation targets for a given client type.
+
+ Note
+The resolution targets would be generally different for mobile client and web client based on how the CDM content is defined.
+For user requests initiated from mobile, navigation service calls are executed to fetch targets for mobile device type, while for
+user requests initiated from web, targets are fetched for device type desktop. As a result depending on whether you have a
+native app navigation for your targets, the resolved targets for mobile can contain urls for native app install and native app deep
+links. See Client Information for data client information sent by clients.
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+14
+
+6/10/25, 9:13 PM
+
+You can validate JSONPath expressions using the JSONPath Online Evaluator
+
+.
+
+When such a request is sent:
+
+ Sample Code
+Scenario: Test navigation for web client
+Given the client information:
+{
+"client_type": "webclient",
+"device_type": "desktop",
+"platform": "browser"
+}
+When I say "Show me navigation buttons with url"
+
+Then a response similar to that one depending on the objects that you used referencing Cross Navigation Links:
+
+ Sample Code
+Response
+{
+"attachment": {
+"content": {
+"buttons": [
+{
+"type": "navigation",
+"title": "Sales Order (IBN + Fallback URL)",
+"navigation_target": {
+"ibnTarget": {
+"semanticObject": "SalesOrder",
+"action": "displayFactSheet"
+},
+"ibnParams": {
+"SalesOrder": "1"
+},
+"resolution": {
+"targets": [
+{
+"url": "https://mytenant.hana.ondemand.com",
+"launchType": "standalone"
+},
+{
+"url": "https://some.other.url",
+"launchType": "central"
+}
+],
+"errors": []
+}
+}
+},
+{
+"type": "navigation",
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+15
+
+6/10/25, 9:13 PM
+
+"title": "Sales Order (IBN + No Fallback URL)",
+"navigation_target": {
+"ibnTarget": {
+"semanticObject": "SalesOrder",
+"action": "displayFactSheet"
+},
+"ibnParams": {
+"SalesOrder": "1"
+},
+"resolution": {
+"targets": [],
+"errors": [{
+"code": "1",
+"correlationId": "1",
+"message": "Inboud not found"
+}]
+}
+}
+},
+]
+}
+}
+}
+
+You can use JSONPath expressions to check the length in all next steps until it is equal to$.attachment.content.
+
+ Sample Code
+When I say "Show me navigation buttons with url"
+# ibnTarget is mandatory field
+Then messages with jsonPath '$..buttons[*].navigation_target.ibnTarget' is not empty
+# ibnTarget is provided and check we got resolution node
+And messages with jsonPath '$..buttons[*].navigation_target.resolution' is not empty
+# errors returned by Client Connector
+And messages with jsonPath '$..buttons[*].navigation_target.resolution.errors[0]' is not empty
+# errors code "1"
+And messages with jsonPath '$..buttons[*].navigation_target.resolution.errors[?(@.code == "1")]'
+# targets returned by Client Connector
+And messages with jsonPath '$..buttons[*].navigation_target.resolution.targets[0]' is not empty
+# targets with laucnhType "standalone"
+And messages with jsonPath '$..buttons[*].navigation_target.resolution.targets[?(@.launchType ==
+
+For mobile client, following is the information:
+
+ Sample Code
+{
+"client_type": "mobile",
+"device_type": "phone",
+"platform": "ios|android"
+}
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+16
+
+6/10/25, 9:13 PM
+
+Testing Capabilities Using Application Contexts
+If some application context variables are used in a Dialog Function, these variables in client information can be set using a Given
+
+the application context step definition in the test. The given application context is sent automatically to Joule as part of
+the response.
+
+ Sample Code
+title: Say Hello
+type: node
+condition: "#app_context"
+response:
+messages:
+- type: text
+content: "I have the following context for <? $transient.app_context.app_title ?>:"
+- type: text
+content: "<? $transient.app_context['com.s4.sales.joule'] ?>"
+finally:
+behavior: wait
+
+Here is a Cucumber Scenario of providing a client information:
+
+ Sample Code
+Scenario: Ask for the context
+Given the application context:
+"""
+{
+"app_title": "Test application context",
+"com.s4.sales.joule": "sales context"
+}
+"""
+When I say "show sales context"
+Then response has 2 messages
+And first message content contains "Test application context"
+And second message content contains "sales context"
+
+Testing Capabilities Using Client Information
+If application Client Information variables are used in a Dialog Function, such variables in client information can be set with a
+
+Given the client information step definition in the test. The given client information will be sent automatically to Joule
+as part of the utterance.
+For example,
+
+ Sample Code
+title: Say Hello
+type: node
+condition: "#client_info"
+response:
+messages:
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+17
+
+6/10/25, 9:13 PM
+
+- type: text
+content: "I have the following timezone: <? $transient.client.timezone ?>"
+finally:
+behavior: wait
+
+Here is a Cucumber Scenario of providing a client information:
+
+ Sample Code
+Scenario: Ask for the client information
+Given the client information:
+"""
+{
+"locale": "en-US",
+"timezone": "Europe/Paris"
+}
+"""
+When I say "client info"
+Then response has 1 messages
+And first message content contains "Europe/Paris"
+
+Testing capabilities in different languages
+Prerequisite
+To use this step definition, it is necessary to have a set up internationalization process. More information about Internalization
+setup and process can be found here.
+Step definitions
+You can test your capability using different languages. Here are 2 ways to achieve this:
+1. Set the conversation language with the Given the client language is "<language code>"' step definition, which should be
+before the And I start a new conversation:
+
+ Sample Code
+Feature: Smalltalk capability
+Background:
+Given I log in
+Given the client language is "en-US"
+And I start a new conversation
+Scenario: Ask creator
+When I say "Who made you"
+Then response has 1 message
+And first message has type text
+And first message content contains "I was brought to you by SAP"
+
+2. Set the conversation language with the the client information step definition, in locale property:
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+18
+
+6/10/25, 9:13 PM
+
+ Sample Code
+Scenario: Ask for the client information
+Given the client information:
+"""
+{
+"locale": "en-US",
+"timezone": "Europe/Paris"
+}
+"""
+When I say "client info"
+Then response has 1 messages
+And first message content contains "Europe/Paris"
+
+If a new call to the Given the client language is step definition is done in the same scenario (or call to the client information step
+definition with locale property), the new value will be taken in account.
+
+Testing LLM based responses with GenAI
+You can use GenAI step definitions to test LLM based responses from your capability.
+Check if the response relates to a topic:
+
+ Sample Code
+response relates to "{topic}"
+response relates to
+"""
+{topic}
+"""
+
+Check if the response doesn't relate to a topic:
+
+ Sample Code
+response does not relate to "{topic}"
+response does not relate to
+"""
+{topic}
+"""
+
+ Sample Code
+Feature: Smalltalk capability with GenAI
+Background:
+Given I log in
+And I start a new conversation
+Scenario: Get time for Walldorf
+When I say "What is the time in Walldorf?"
+Then response has 1 messages
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+19
+
+6/10/25, 9:13 PM
+
+And response relates to "current time in Walldorf"
+Scenario: Get time for Walldorf
+When I say "What is the time in Walldorf?"
+Then response has 1 messages
+And response relates to
+"""
+current time in Walldorf
+"""
+Scenario: Get time for UTC
+When I say "What is the time?"
+Then response has 1 messages
+And response does not relate to "current time in Walldorf"
+@data
+Scenario: Get time for UTC
+When I say "What is the time?"
+Then response has 1 messages
+And response does not relate to
+"""
+current time in Walldorf
+"""
+
+Recommendations
+Since these step definitions can increase your test duration and add latency, use them with caution.
+Avoid chaining multiple calls to these step definitions sequentially. Instead, try to increase your prompt size in a single step
+definition call to avoid repeated executions.
+The does not relate to step definition is designed to facilitate testing for a negative result of your initial prompt, eliminating
+the need to rewrite the prompt in a negative form.
+
+Testing capabilities using Dynamic Variables
+You can reuse information received from a Joule response in a subsequent call. The response or parts of the response using a
+JSONPath expression can be stored as a result in a variable for which you specify a name.
+There are several steps available:
+Store the full response content:
+Then set variable myFullReponseVariableSample with the response content.
+Store the first element returned by JSONPath:
+Then set variable myVariableSample with the first element returned by jsonPath $..attributes[?(@.value == "Sent
+
+(04)")].
+Store an array returned by JSONPath:
+Then set variable 'myVariableSample' with array returned by jsonPath $..attributes[?(@.value == "Sent (04)")].
+You should use handlebars syntax in order to reference the variable(s) previously stored in Scenario. In the already existing
+Cucumber steps provided by CLI Test Framework, you can use the previously stored value(s) in a subsequent conversation call by
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+20
+
+6/10/25, 9:13 PM
+
+referencing the variable(s) name inside a handlebars script. A sub property from the same object can also be accessed.
+For example, when I say Show me purchase orders with id {{ myVariableSample.[0].id }}.
+
+Variables Lifecycle and Scope
+Variables have a lifecycle or scope limited to the scenario. This ensures no dependencies are created between scenarios.
+Variables can be overwritten.
+
+ Sample Code
+Feature: variables
+Background:
+Given I log in
+And I start a new conversation
+Scenario: Check if the response is saved
+When I say 'Show me a list of comics book characters'
+Then response has 1 messages
+And first message has type list
+Then set variable 'characters' with the response content
+When I say 'Show me {{ characters.[0].content.elements.[0].title }} info'
+Then response has 1 messages
+And first message has type card
+And messages with jsonPath verify:
+| $[?(@.content.title == '{{ characters.[0].content.elements.[0].title }}')] | 1 |
+Scenario: Check if the first element is saved
+When I say 'Show me a list of comics book characters'
+Then response has 1 messages
+And first message has type list
+Then set variable 'character' with the first element returned by jsonPath "$..content.el
+When I say 'Show me {{ character.title }} info'
+Then response has 1 messages
+And first message has type card
+And messages with jsonPath verify:
+| $[?(@.content.subtitle == "Villain")]
+| 1 |
+| $[?(@.content.title == '{{ character.title }}')] | 1 |
+Scenario: Check if the array is saved
+When I say 'Show me a list of comics book characters'
+Then response has 1 messages
+And first message has type list
+Then set variable 'characters' with array returned by jsonPath "$..content.elements[?(@.
+When I say 'Show me {{ characters.[0].title }} info'
+Then response has 1 messages
+And first message has type card
+And messages with jsonPath verify:
+| $[?(@.content.subtitle == "Villain")]
+| 1 |
+| $[?(@.content.title == '{{ characters.[0].title }}')] | 1 |
+When I say 'Show me {{ characters.[1].title }} info'
+Then response has 1 messages
+And first message has type card
+And messages with jsonPath verify:
+| $[?(@.content.subtitle == "Villain")]
+| 1 |
+| $[?(@.content.title == '{{ characters.[1].title }}')] | 1 |
+
+Testing Configuration
+Apart from Joule test command parameters, you can use cucumber configuration files (https://github.com/cucumber/cucumberjs/blob/main/docs/configuration.md
+
+) to support multiple options and combine the profiles.
+
+For example,
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+21
+
+6/10/25, 9:13 PM
+
+ Sample Code
+cucumber.yaml
+
+default:
+format:
+- progress-bar
+dev:
+format:
+- "@cucumber/pretty-formatter"
+- "rerun:./.joule/test/@rerun.txt"
+pipeline:
+format:
+- progress
+- "junit:./reports/junit.xml"
+- "html:./reports/report.html"
+retry: 2
+rerun:
+paths:
+- ./.joule/test/@rerun.txt
+format:
+- "rerun:./.joule/test/@rerun.txt"
+
+This example shows multiple configurations:
+The default configuration sets the default formatter to the standard progress bar.
+The developed configuration sets the detained formatter to rerun formatter.
+The pipeline uses progress as the console output and generates both JUnit and HTML reports. It also adds the possibility to
+retry up to two times in case of errors.
+The rerun is a specific profile to only run tests that failed after the development profile.
+
+Retry
+When a test fails, you can add the retry option to enable the test command to try again. This is useful if the backend is temporarily
+unavailable or unstable.
+
+Rerun failed tests
+Enabling a run on failed tests requires two cucumber profiles. The first profile uses the provided rerun formatter to store the
+failed tests in the file system. In the example, the file is stored in a folder name .joule and named after @rerun.txt. It is
+described in the cucumber-js documentation that the file can be stored in any location but the file name must start with @.
+When the tests are run with a profile enabling the rerun formatter and in case of failed tests, the rerun profile can be
+executed.
+
+ Note
+The rerun profile defines the path to the rerun file so the rerun formatter writes in the same file. If a test fails again, it is still
+persisted.
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+22
+
+6/10/25, 9:13 PM
+
+Execution
+By default, the test command looks for a configuration file in the working directory (the one from which the Joule command is
+executed) and uses the default profile. To use a different location, use the option --config <path_to_config_file>. As
+mentioned earlier, the profile can be set using the option --profile. It is also possible to combine the profile options as --profile
+
+(profile 1 and profile 2).
+
+Limitations
+While most cucumber options are allowed, the declaration of custom steps are ignored. The reason is that the tests must
+run without the need for additional code.
+Parallel testing is not possible. As Joule conversation is unique per user, each scenario must be executed individually to
+ensure test isolation.
+
+This is custom documentation. For more information, please visit SAP Help Portal.
+
+23
+
+

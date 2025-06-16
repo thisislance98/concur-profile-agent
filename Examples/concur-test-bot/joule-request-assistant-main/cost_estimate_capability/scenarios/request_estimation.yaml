@@ -1,0 +1,15 @@
+description: This function fetches trip cost estimation information from Concur Request API.
+
+slots:
+  - name: from_location
+    description: the location (city/airport/train station) the user wants to start from
+  - name: to_location
+    description: the location (city/airport/train station) the user wants to arrive at   
+  - name: departure_date
+    description: Date on which the trip should depart in format YYYY-MM-DD
+  - name: return_date
+    description: Date on which the trip should return in format YYYY-MM-DD
+
+target:
+  type: function
+  name: estimate/search_request_estimation

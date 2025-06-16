@@ -1,0 +1,79 @@
+parameters:
+  - name: user_id
+    optional: true
+
+action_groups:
+  - actions:
+      - type: status-update
+        message: "<? new i18n('FETCHING_PROFILE') ?>"
+      
+      - type: api-request
+        method: GET
+        system_alias: ConcurApiGateway
+        path: "/api/travelprofile/v2.0/profile?userid=<? user_id != null ? user_id : 'wsadmin%40platformds-connect.com' ?>"
+        timeout: 30
+        result_variable: user_profile
+      
+  - condition: user_profile.status_code != 200
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "<? new i18n('ERROR_FETCHING_PROFILE', user_profile.status_code) ?>"
+      
+  - condition: user_profile.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: response_body
+            value: "<? user_profile.body ?>"
+          - name: response_status
+            value: "<? user_profile.status_code ?>"
+          - name: response_headers
+            value: "<? user_profile.headers ?>"
+          - name: full_response
+            value: "<? user_profile ?>"
+          - name: queried_user_id
+            value: "<? user_id != null ? user_id : 'wsadmin@platformds-connect.com' ?>"
+      
+      - type: message
+        message:
+          type: card
+          content:
+            title: "<? new i18n('USER_PROFILE_TITLE') ?>"
+            subtitle: "<? new i18n('STATUS_CODE', response_status) ?>"
+            description: "<? new i18n('PROFILE_DESCRIPTION') ?>"
+            imageUrl: sap-icon://person-placeholder
+            imageStyle: avatar
+            status: "<? new i18n('API_SUCCESS') ?>"
+            statusState: success
+            buttons:
+              - type: postback
+                title: "<? new i18n('GET_HELP') ?>"
+                value: help_request
+              - type: postback
+                title: "<? new i18n('CREATE_PROFILE') ?>"
+                value: create_profile_request
+      
+      - type: message
+        message:
+          type: text
+          content: "<? new i18n('PROFILE_USER_DETAILS', queried_user_id) ?>"
+      
+      - type: message
+        message:
+          type: quickReplies
+          content:
+            title: "<? new i18n('WHAT_ELSE') ?>"
+            buttons:
+              - title: "<? new i18n('CREATE_PROFILE') ?>"
+                value: create_profile_request
+              - title: "<? new i18n('GET_HELP') ?>"
+                value: help_request
+
+result:
+  response_body: "<? response_body ?>"
+  response_status: "<? response_status ?>"
+  response_headers: "<? response_headers ?>"
+  full_response: "<? full_response ?>"
+  queried_user_id: "<? queried_user_id ?>" 

@@ -1,0 +1,37 @@
+parameters:
+  - name: first_name
+    optional: true
+  - name: last_name
+    optional: true
+
+action_groups:
+  - actions:
+      - type: dialog-function
+        name: select_cap_developer
+        parameters:
+          - name: first_name
+            value: <? first_name ?>
+          - name: last_name
+            value: <? last_name ?>
+          - name: subsequent_action_trigger
+            value: "I want to see information on the capability developer"
+        result_variable: selected_capability_developer
+      # unnest result
+      - type: set-variables
+        variables:
+          - name: selected_capability_developer
+            value: <? selected_capability_developer.selected_capability_developer ?>
+
+
+  - condition: selected_capability_developer.id != null
+    actions:
+    - type: message
+      message:
+          type: card
+          content:
+            title: <? selected_capability_developer.first_name ?> <? selected_capability_developer.last_name ?>
+            subtitle: Developed <? selected_capability_developer.scenario_num ?> scenarios
+            enableDetailView: false
+
+result:
+  selected_capability_developer: <? selected_capability_developer ?>

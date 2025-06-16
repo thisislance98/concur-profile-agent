@@ -1,0 +1,7 @@
+description: This function provides comprehensive help information about the Concur Profile Assistant capabilities and available features
+
+slots: []
+
+target:
+  type: function
+  name: show_help 

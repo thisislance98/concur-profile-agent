@@ -1,0 +1,29 @@
+description: This function retrieves specific types of travel profile information such as name, job title, company, employee ID, address details, car rental preferences, seating preferences, hotel amenities, air travel preferences (including home airport), or travel documentation based on user requests
+
+slots:
+  - name: info_type
+    description: The type of profile information requested (address, car preferences, seat preferences, hotel preferences, visa information, personal details)
+
+target:
+  type: function
+  name: get_specific_profile_info
+
+response_context:
+  - value: $target_result.info_type_requested
+    description: Type of information requested
+  - value: $target_result.profile_retrieved
+    description: Whether profile was retrieved successfully
+  - value: $target_result.error_message
+    description: Error message if retrieval failed
+  - value: $target_result.address_info
+    description: Formatted address and contact information
+  - value: $target_result.car_info
+    description: Formatted car rental preferences
+  - value: $target_result.air_info
+    description: Formatted air travel preferences
+  - value: $target_result.hotel_info
+    description: Formatted hotel preferences
+  - value: $target_result.visa_info
+    description: Formatted travel documentation
+  - value: $target_result.personal_info
+    description: Formatted personal information

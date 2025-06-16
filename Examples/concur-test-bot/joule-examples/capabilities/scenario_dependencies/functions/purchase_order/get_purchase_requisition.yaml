@@ -1,0 +1,58 @@
+parameters:
+  - name: vendor_id
+    optional: false
+
+
+action_groups:
+  # In a productive implementation this function would call a backend service to retrieve the purchase requisitions. This is mocked here for demo purposes.
+
+  - actions:
+    - type: status-update
+      message:  <? "Fetching purchase requisition for vendor id " + vendor_id ?>
+  
+  - condition: vendor_id == "VEN000001"
+    actions:
+      - type: set-variables
+        variables:
+          - name: purchase_requisition_ids
+            value: [ "PR000001" ]
+          - name: material_ids
+            value: [ "MAT000001" ]
+          - name: vendor_ids
+            value: [ "VEN000001" ]
+          - name: quantities
+            value: [ 5 ]
+            
+  - condition: vendor_id == "VEN000002"
+    actions:
+      - type: set-variables
+        variables:
+          - name: purchase_requisition_ids
+            value: [ "PR000002", "PR000003" ]
+          - name: material_ids
+            value: [ "MAT000001", "MAT000002" ]
+          - name: vendor_ids
+            value: [ "VEN000002", "VEN000002" ]
+          - name: quantities
+            value: [ 10, 20 ]
+
+
+  - condition: vendor_id != "VEN000001" && vendor_id != "VEN000002"
+    actions:
+      - type: set-variables
+        variables:
+          - name: purchase_requisition_ids
+            value: []
+          - name: material_ids
+            value: []
+          - name: vendor_ids
+            value: []
+          - name: quantities
+            value: []
+
+result:
+  number_of_purchase_requisitions: <? purchase_requisition_ids.size() ?>
+  purchase_requisition_ids: <? purchase_requisition_ids ?>
+  material_ids: <? material_ids ?>
+  vendor_ids: <? vendor_ids ?>
+  quantities: <? quantities ?>

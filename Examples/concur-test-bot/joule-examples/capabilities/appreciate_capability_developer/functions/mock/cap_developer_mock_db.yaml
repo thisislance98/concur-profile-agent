@@ -1,0 +1,159 @@
+# This function mocks a person data base which allows to search for persons and select them.
+# In a real-world scenario, you would connect here a backend system via an api-request action.
+
+parameters:
+  - name: first_name
+    optional: true
+  - name: last_name
+    optional: true
+  - name: subsequent_action_trigger
+    optional: true
+
+action_groups:
+  # Initialize Variables
+  - actions:
+      - type: set-variables
+        variables:
+          - name: capability_developer_id
+            value: null
+          - name: capability_developer_first_name
+            value: null
+          - name: capability_developer_last_name
+            value: null
+          - name: capability_developer_working_location
+            value: null
+          - name: subsequent_action_trigger
+            value: "<? subsequent_action_trigger != null ? subsequent_action_trigger : 'I want to select' ?>"
+
+  # Mock search for "Peter"
+  - condition: (first_name == "Peter" || first_name == "peter") && last_name == null
+    actions:
+      - type: message
+        message:
+          type: list
+          content:
+            title: Please select one capability developer from the list
+            enableDetailView: false
+            elements:
+              - title: Peter Sheng
+                subtitle: Senior Capability Developer
+                buttons:
+                  - type: postback
+                    title: Select
+                    text: Peter Sheng
+                    value: <? subsequent_action_trigger ?> Peter Sheng
+              - title: Peter Miller
+                subtitle: Junior Capability Developer
+                buttons:
+                  - type: postback
+                    title: Select
+                    text: Peter Miller
+                    value: <? subsequent_action_trigger ?> Peter Miller
+              - title: Peter Kumar
+                subtitle: Expert Capability Developer
+                buttons:
+                  - type: postback
+                    title: Select
+                    text: Peter Kumar
+                    value: <? subsequent_action_trigger ?> Peter Kumar
+
+  # Mock search for "Miller"
+  - condition: first_name == null && (last_name == "Miller" || last_name == "miller")
+    actions:
+      - type: message
+        message:
+          type: list
+          content:
+            title: Please select one capability developer from the list
+            enableDetailView: false
+            elements:
+              - title: William Miller
+                subtitle: Senior Capability Developer
+                buttons:
+                  - type: postback
+                    title: Select
+                    text: William Miller
+                    value: <? subsequent_action_trigger ?> William Miller
+              - title: Peter Miller
+                subtitle: Junior Capability Developer
+                buttons:
+                  - type: postback
+                    title: Select
+                    text: Peter Miller
+                    value: <? subsequent_action_trigger ?> Peter Miller
+
+  # Mock search for other person
+  - condition: (first_name != "Peter" && first_name != "peter") && (last_name != "Miller" && last_name != "miller")
+    actions:
+      - type: message
+        message: 
+          type: text 
+          content: "I could not find any capability developers with first name <? first_name ?> <? last_name ?>"
+
+  # Mock individual capability developers
+  - condition: first_name == "Peter" && last_name == "Miller"
+    actions:
+      - type: set-variables
+        variables:
+          - name: capability_developer_id
+            value: "i123456"
+          - name: capability_developer_first_name
+            value: "Peter"
+          - name: capability_developer_last_name
+            value: "Miller"
+          - name: capability_developer_working_location
+            value: "London"
+          - name: capability_developer_scenarios
+            value: 10
+
+  - condition: first_name == "Peter" && last_name == "Sheng"
+    actions:
+      - type: set-variables
+        variables:
+          - name: capability_developer_id
+            value: "i888888"
+          - name: capability_developer_first_name
+            value: "Peter"
+          - name: capability_developer_last_name
+            value: "Sheng"
+          - name: capability_developer_working_location
+            value: "Shanghai"
+          - name: capability_developer_scenarios
+            value: 15
+
+
+  - condition: first_name == "Peter" && last_name == "Kumar"
+    actions:
+      - type: set-variables
+        variables:
+          - name: capability_developer_id
+            value: "i111111"
+          - name: capability_developer_first_name
+            value: "Peter"
+          - name: capability_developer_last_name
+            value: "Kumar"
+          - name: capability_developer_working_location
+            value: "Bangalore"
+          - name: capability_developer_scenarios
+            value: 20
+
+  - condition: first_name == "William" && last_name == "Miller"
+    actions:
+      - type: set-variables
+        variables:
+          - name: capability_developer_id
+            value: "i000111"
+          - name: capability_developer_first_name
+            value: "William"
+          - name: capability_developer_last_name
+            value: "Miller"
+          - name: capability_developer_scenarios
+            value: 5
+
+      
+result:
+  id: <? capability_developer_id ?>
+  first_name: <? capability_developer_first_name ?>
+  last_name: <? capability_developer_last_name ?>
+  working_location: <? capability_developer_working_location ?>
+  scenario_num: <? capability_developer_scenarios ?>

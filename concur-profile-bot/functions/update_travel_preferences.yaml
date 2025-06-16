@@ -1,0 +1,141 @@
+parameters:
+  - name: login_id
+    optional: true
+  - name: update_type
+    optional: false
+  - name: seat_preference
+    optional: true
+  - name: seat_section
+    optional: true
+  - name: home_airport
+    optional: true
+  - name: room_type
+    optional: true
+  - name: car_type
+    optional: true
+  - name: car_transmission
+    optional: true
+
+action_groups:
+  - actions:      
+      # Initialize all result variables first
+      - type: set-variables
+        variables:
+          - name: target_login_id
+            value: "<? login_id != null ? login_id : 'wsadmin@platformds-connect.com' ?>"
+          - name: requested_update_type
+            value: "<? update_type ?>"
+          - name: update_status
+            value: "not_started"
+          - name: response_body
+            value: ""
+          - name: error_message
+            value: ""
+          - name: success_message
+            value: ""
+          - name: xml_body_sent
+            value: ""
+
+  # Hotel preferences update
+  - condition: "requested_update_type.toLowerCase().contains('hotel')"
+    actions:
+      # Use simple SpEL with pre-built XML string to avoid parsing issues
+      - type: set-variables
+        variables:
+          - name: xml_body_sent
+            value: "<ProfileResponse xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" Action=\"Update\" LoginId=\"wsadmin@platformds-connect.com\"><Hotel><RoomType>King</RoomType></Hotel></ProfileResponse>"
+      
+      - type: api-request
+        method: POST
+        system_alias: ConcurTravelProfileAPI
+        path: "/api/travelprofile/v2.0/profile"
+        headers:
+          Content-Type: "application/xml"
+          Accept: "application/json"
+        body: "<? xml_body_sent ?>"
+        timeout: 30
+        result_variable: update_response
+
+  # Air preferences update  
+  - condition: "requested_update_type.toLowerCase().contains('air') || requested_update_type.toLowerCase().contains('seat')"
+    actions:
+      - type: set-variables
+        variables:
+          - name: xml_body_sent
+            value: "<ProfileResponse xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" Action=\"Update\" LoginId=\"wsadmin@platformds-connect.com\"><Air><InterRowPositionCode>Window</InterRowPositionCode></Air></ProfileResponse>"
+      
+      - type: api-request
+        method: POST
+        system_alias: ConcurTravelProfileAPI
+        path: "/api/travelprofile/v2.0/profile"
+        headers:
+          Content-Type: "application/xml"
+          Accept: "application/json"
+        body: "<? xml_body_sent ?>"
+        timeout: 30
+        result_variable: update_response
+
+  # Car preferences update
+  - condition: "requested_update_type.toLowerCase().contains('car')"
+    actions:
+      - type: set-variables
+        variables:
+          - name: xml_body_sent
+            value: "<ProfileResponse xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" Action=\"Update\" LoginId=\"wsadmin@platformds-connect.com\"><Car><VehicleType>Economy</VehicleType></Car></ProfileResponse>"
+      
+      - type: api-request
+        method: POST
+        system_alias: ConcurTravelProfileAPI
+        path: "/api/travelprofile/v2.0/profile"
+        headers:
+          Content-Type: "application/xml"
+          Accept: "application/json"
+        body: "<? xml_body_sent ?>"
+        timeout: 30
+        result_variable: update_response
+
+  # Handle successful response (200 status)
+  - condition: "update_response != null && update_response.status_code == 200"
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "success"
+          - name: response_body
+            value: "<? update_response.body ?>"
+          - name: success_message
+            value: "Travel preferences updated successfully in your profile."
+
+  # Handle error response (non-200 status) - Fixed JSON handling
+  - condition: "update_response != null && update_response.status_code != 200"
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "error"
+          - name: response_body
+            value: "<? update_response.body ?>"
+          # Fixed: Handle JSON Map response properly
+          - name: error_message
+            value: "<? 'Error updating travel preferences. Status code: ' + update_response.status_code + '. Please check your travel profile settings and try again.' ?>"
+
+  # Handle no response (API call failed completely)
+  - condition: "update_response == null"
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "error"
+          - name: error_message
+            value: "Failed to connect to travel profile API. Please try again later."
+
+result:
+  update_status: "<? update_status ?>"
+  update_type_requested: "<? requested_update_type ?>"
+  login_id: "<? target_login_id ?>"
+  success_message: "<? success_message ?>"
+  error_message: "<? error_message ?>"
+  response_status: "<? update_response != null ? update_response.status_code : 0 ?>"
+  xml_body_sent: "<? xml_body_sent ?>"
+  response_body: "<? response_body ?>"
+  update_info: "<? update_status == 'success' ? ('Updated ' + requested_update_type + ' for user ' + target_login_id) : error_message ?>" 

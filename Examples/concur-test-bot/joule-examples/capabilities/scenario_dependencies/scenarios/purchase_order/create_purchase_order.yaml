@@ -1,0 +1,57 @@
+description: Create a new purchase order (PO)
+
+slots:
+  - name: purchase_requisition_id
+    description: ID of the purchase requisition the new purchase order is based on.
+    sources:
+      - type: scenario
+        name: purchase_order/get_purchase_requisition
+        key: $target_result.purchase_requisition_ids
+        execution_group: get_purchase_requisition
+      - type: scenario
+        name: purchase_order/create_purchase_requisition
+        key: $target_result.id
+        execution_group: create_purchase_requisition
+
+  - name: quantity
+    description: Quantity for the material of the purchase order
+    sources:
+      - type: scenario
+        name: purchase_order/get_purchase_requisition
+        key: $target_result.quantities
+        execution_group: get_purchase_requisition
+      - type: scenario
+        name: purchase_order/create_purchase_requisition
+        key: $target_result.quantity
+        execution_group: create_purchase_requisition
+
+  - name: material_id
+    description: ID of the material which should be ordered with the new purchase order.
+    sources:
+      - type: scenario
+        name: purchase_order/get_purchase_requisition
+        key: $target_result.material_ids
+        execution_group: get_purchase_requisition
+      - type: scenario
+        name: purchase_order/create_purchase_requisition
+        key: $target_result.material_id
+        execution_group: create_purchase_requisition
+
+  - name: shipping_address
+    description: Shipping address for the purchase order
+
+target:
+  type: function
+  name: purchase_order/create_purchase_order
+
+response_context:
+  - description: ID of the created purchase order
+    value: $target_result.id
+  - description: Shipping address
+    value: $target_result.shipping_address
+  - description: Ordered quantity
+    value: $target_result.quantity
+  - description: ID of the material which is ordered
+    value: $target_result.material_id
+  - description: ID of the purchase requisition which is referenced
+    value: $target_result.purchase_requisition_id

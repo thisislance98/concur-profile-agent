@@ -1,0 +1,12 @@
+schema_version: 3.6.0
+
+metadata:
+  namespace: com.sap.das.demo
+  name: products_capability
+  version: 1.0.0
+  display_name: "Products Capability"
+  description: Search for products
+
+system_aliases:
+  ProductService:
+   destination: ES5

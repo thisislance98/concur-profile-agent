@@ -1,0 +1,15 @@
+schema_version: 1.0.0
+name: test_assistant
+capabilities:
+  - type: local
+    folder: ./helloworld
+  - type: local
+    folder: ./weather
+  - type: local
+    folder: ./products
+  - type: local
+    folder: ./employees
+  - type: local
+    folder: ./appreciate_capability_developer
+  - type: local
+    folder: ./scenario_dependencies

@@ -1,0 +1,31 @@
+parameters: []
+
+action_groups:
+  - actions:
+      - type: message
+        message:
+          type: card
+          content:
+            title: "Concur Profile Assistant Help"
+            subtitle: "What I can help you with"
+            description: "I can assist you with managing your Concur profile and travel preferences through natural language."
+            imageUrl: sap-icon://question-mark
+            imageStyle: avatar
+            buttons:
+              - type: postback
+                title: "Get Profile"
+                value: get_identity_or_profile
+              - type: postback
+                title: "Update Preferences"
+                value: update_preferences
+              - type: postback
+                title: "Update Documents"
+                value: update_documents
+      
+      - type: message
+        message:
+          type: text
+          content: "You can ask me to view your user identity, get your travel profile, update travel preferences, or manage identity documents."
+
+result:
+  help_shown: true 

@@ -1,0 +1,11 @@
+description: This function shows employees info
+
+target:
+  type: function
+  name: get_employees
+
+response_context:
+  - value: employees
+    description: peer employees
+  - value: ibn_targets
+    description: cross product navigation to each peer employee

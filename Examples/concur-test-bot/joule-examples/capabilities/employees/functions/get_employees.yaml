@@ -1,0 +1,66 @@
+action_groups:
+  - actions:
+      - type: set-variables
+        variables:
+          - name: employees_api_response
+            value:
+              [
+                {
+                  "first_name": "John",
+                  "last_name": "Doe",
+                  "employee_number": 1001,
+                  "email_address": "john.doe@example.com",
+                  "phone_number": "+1234567890",
+                  "web_url": "https://www.example.com/john-doe",
+                  "job_title": "Software Developer",
+                  "job_description": "Responsible for designing, coding, and maintaining software applications. Defines, designes and ships new features. Ensures the performance, quality, and responsiveness of applications.",
+                  "availability": "available",
+                  "image": "https://raw.github.tools.sap/DAS-Samples/joule-functions-example/main/capabilities/employees/assets/employee_profile1.png?token=GHSAT0AAAAAAAAOEBLGXQHASE2TZVKLEMU2ZYWA6IQ"
+                },
+                {
+                  "first_name": "Jane",
+                  "last_name": "Smith",
+                  "employee_number": 1002,
+                  "email_address": "jane.smith@example.com",
+                  "phone_number": "+0987654321",
+                  "web_url": "https://www.example.com/jane-smith",
+                  "job_title": "DevOps Engineer",
+                  "job_description": "Works on deployment and network operations. Helps to automate and streamline the company’s operations and processes. Ensures the reliability and scalability of applications.",
+                  "availability": "out of office",
+                  "image": "https://raw.github.tools.sap/DAS-Samples/joule-functions-example/main/capabilities/employees/assets/employee_profile2.jpg?token=GHSAT0AAAAAAAAOEBLGW54JCVPIQXKPMM6EZYWA7PA"
+                },
+                {
+                  "first_name": "Alice",
+                  "last_name": "Johnson",
+                  "employee_number": 1003,
+                  "email_address": "alice.johnson@example.com",
+                  "phone_number": "+1122334455",
+                  "web_url": "https://www.example.com/alice-johnson",
+                  "job_title": "Frontend Developer",
+                  "job_description": "Specializes in creating responsive and interactive user interfaces. Works with design and backend teams to develop and integrate features. Optimizes web applications for speed and scalability.",
+                  "availability": "available",
+                  "image": "data:image/png;base64,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"
+                }
+              ]
+          - name: ibn_targets
+            value:
+              [
+                {
+                  "semanticObject": "Employee",
+                  "action": "display",
+                  "intentParameters": {
+                    "employee_number": "<employee_number>"
+                  }
+                },
+                {
+                  "semanticObject": "Employee",
+                  "action": "edit",
+                  "intentParameters": {
+                    "employee_number": "<employee_number>"
+                  }
+                }
+              ]
+
+result:
+  employees: <? employees_api_response ?>
+  ibn_targets: <? ibn_targets ?>

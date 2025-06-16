@@ -1,0 +1,14 @@
+description: Returns product information and answers detailed questions on ratings, price, technical specifications and supplier
+slots:
+  - name: product_name
+    description: Name of the product
+
+target:
+  type: function
+  name: fetch_product_info
+
+response_context:
+  - description: Product details to be displayed
+    value: products
+  - description: Error message in case the product service fails
+    value: error_message

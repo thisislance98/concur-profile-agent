@@ -1,0 +1,25 @@
+parameters:
+  - name: user_id
+    optional: true
+action_groups:
+  - actions:
+      - type: api-request
+        method: GET
+        system_alias: ConcurApiGateway
+        path: /profile/v1/me
+        result_variable: user_profile
+  - condition: user_profile.status_code != 200
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "An error occurred when fetching the concur user information. The result was: <? user_profile ?>"
+result:
+  user_formatted_name: <? user_profile.body.name.formatted ?>
+  #user_currency_code: <? user_profile.body.code ?>
+  user_langugage: <? user_profile.body.preferredLanguage ?>
+  user_dispay_name: <? user_profile.body.displayName ?>
+  companyUUID: <? user_profile.body['com:concur:Employee:1.0'].companyUUID ?>
+  userId: <?  user_profile.body['com:concur:Employee:1.0'].employeeId ?>
+  managerId: <? user_profile.body['com:concur:Employee:1.0'].managerId ?>
+  homeAirport: <? user_profile.body['com:concur:TravelPreferences:1.0'].air.homeAirport ?>

@@ -1,0 +1,18 @@
+parameters:
+  - name: user_id
+    optional: true
+action_groups:
+  - condition: 'true'
+    actions:   
+      - type: dialog-function
+        name: profile/fetch_user_profile
+        result_variable: user_profile
+      - type: message
+        message:
+         type: text
+         content: "Hi <? user_profile.body.name.formatted ?>, welcome to Concur Request Assistant! How can I help you today?"
+result:
+  user_formatted_name: <? user_profile.body.name.formatted ?>
+  #user_currency_code: <? user_profile.body.code ?>
+  user_langugage: <? user_profile.body.preferredLanguage ?>
+  user_dispay_name: <? user_profile.body.displayName ?>

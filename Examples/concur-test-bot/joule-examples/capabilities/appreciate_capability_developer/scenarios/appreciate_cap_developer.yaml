@@ -1,0 +1,14 @@
+description: This scenario allows to appreciate a capability (cap) developer. It allows the user to send an appreciation to him/her.
+
+slots:
+  - name: first_name
+    description: The first name of the capability developer who should be appreciated
+  - name: last_name
+    description: The last name of the capability developer who should be appreciated
+
+target:
+  type: function
+  name: appreciate_cap_developer
+  parameters:
+    - name: selected_capability_developer
+      value: $capability_context.selected_capability_developer

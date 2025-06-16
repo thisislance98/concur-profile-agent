@@ -1,0 +1,27 @@
+parameters:
+  - name: city
+action_groups:
+  - actions:
+      - type: set-variables
+        scripting_type: spel
+        variables:
+          - name: unit
+            value: m
+      - type: dialog-function
+        name: lookup_location
+        parameters:
+          - name: city
+            value: "<? city ?>"
+        result_variable: weather_location
+      - type: api-request
+        method: GET
+        system_alias: WeatherService
+        path: /wx/forecast/daily/3day?placeid=<? weather_location.placeid ?>&units=<? unit ?>&language=<? $transient.processing_locale.raw ?>&format=json
+        result_variable: weather_result
+result:
+  timestamp: <? weather_result.body.validTimeLocal ?>
+  temperatureMax: <? weather_result.body.temperatureMax ?>
+  temperatureMin: <? weather_result.body.temperatureMin ?>
+  dayOfWeek: <? weather_result.body.dayOfWeek ?>
+  narrative: <? weather_result.body.narrative ?>
+  city: <? city ?>

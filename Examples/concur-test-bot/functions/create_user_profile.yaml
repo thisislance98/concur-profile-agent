@@ -1,0 +1,176 @@
+parameters:
+  - name: login_id
+    optional: true
+
+action_groups:
+  - actions:
+      - type: status-update
+        message: "<? new i18n('CREATING_PROFILE') ?>"
+      
+      - type: api-request
+        method: POST
+        system_alias: ConcurApiGateway
+        path: /api/travelprofile/v2.0/profile
+        timeout: 30
+        headers:
+          Content-Type: "application/xml"
+        body: |
+          <?xml version="1.0" encoding="utf-8"?>
+          <ProfileResponse Action="Create" LoginId="<? login_id != null ? login_id : 'wsadmin@platformds-connect.com' ?>">
+            <General>
+              <NamePrefix>Mr.</NamePrefix>
+              <FirstName>John</FirstName>
+              <MiddleName>A</MiddleName>
+              <LastName>Doe</LastName>
+              <NameSuffix></NameSuffix>
+              <PreferredName>John</PreferredName>
+              <JobTitle>Software Developer</JobTitle>
+              <PreferredLanguage>en</PreferredLanguage>
+              <Locale>en_US</Locale>
+              <CountryCode>US</CountryCode>
+              <CompanyEmployeeID>EMP12345</CompanyEmployeeID>
+              <RuleClass>Default Travel Class</RuleClass>
+              <TravelConfigID>250027436</TravelConfigID>
+            </General>
+            <Addresses>
+              <Address Type="Home">
+                <Street>123 Main Street</Street>
+                <City>Seattle</City>
+                <StateProvince>WA</StateProvince>
+                <CountryCode>US</CountryCode>
+                <PostalCode>98101</PostalCode>
+              </Address>
+              <Address Type="Work">
+                <Street>456 Business Ave</Street>
+                <City>Seattle</City>
+                <StateProvince>WA</StateProvince>
+                <CountryCode>US</CountryCode>
+                <PostalCode>98102</PostalCode>
+              </Address>
+            </Addresses>
+            <Telephones>
+              <Telephone Type="Home">
+                <CountryCode>1</CountryCode>
+                <PhoneNumber>206-555-0123</PhoneNumber>
+              </Telephone>
+              <Telephone Type="Work">
+                <CountryCode>1</CountryCode>
+                <PhoneNumber>206-555-0124</PhoneNumber>
+              </Telephone>
+              <Telephone Type="Cell">
+                <CountryCode>1</CountryCode>
+                <PhoneNumber>206-555-0125</PhoneNumber>
+              </Telephone>
+            </Telephones>
+            <EmailAddresses>
+              <EmailAddress Type="Business"><? login_id != null ? login_id : 'wsadmin@platformds-connect.com' ?></EmailAddress>
+              <EmailAddress Type="Personal">john.doe@gmail.com</EmailAddress>
+            </EmailAddresses>
+            <Air>
+              <Seat>
+                <InterRowPositionCode>Window</InterRowPositionCode>
+                <SectionPositionCode>Forward</SectionPositionCode>
+              </Seat>
+              <MealCode>VGML</MealCode>
+              <HomeAirport>SEA</HomeAirport>
+              <AirOther>No special requests</AirOther>
+            </Air>
+            <Hotel>
+              <HotelMemberships></HotelMemberships>
+              <RoomType>King</RoomType>
+              <HotelOther>High floor preferred</HotelOther>
+              <PreferFoamPillows>true</PreferFoamPillows>
+              <PreferGym>true</PreferGym>
+              <PreferPool>true</PreferPool>
+            </Hotel>
+            <Car>
+              <CarType>Intermediate</CarType>
+              <CarTransmission>Automatic</CarTransmission>
+              <CarSmokingCode>NonSmoking</CarSmokingCode>
+              <CarGPS>true</CarGPS>
+            </Car>
+            <RatePreferences>
+              <AAARate>false</AAARate>
+              <AARPRate>false</AARPRate>
+              <GovtRate>false</GovtRate>
+              <MilitaryRate>false</MilitaryRate>
+            </RatePreferences>
+            <TSAInfo>
+              <Gender>Male</Gender>
+              <DateOfBirth>1985-06-15</DateOfBirth>
+              <NoMiddleName>false</NoMiddleName>
+              <PreCheckNumber>12345678</PreCheckNumber>
+              <RedressNumber></RedressNumber>
+            </TSAInfo>
+            <CustomFields>
+              <CustomField Name="Department">Engineering</CustomField>
+              <CustomField Name="CostCenter">CC1001</CustomField>
+            </CustomFields>
+          </ProfileResponse>
+        result_variable: create_response
+      
+  - condition: create_response.status_code != 200
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "<? new i18n('ERROR_CREATING_PROFILE', create_response.status_code) ?>"
+      
+  - condition: create_response.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: response_body
+            value: "<? create_response.body ?>"
+          - name: response_status
+            value: "<? create_response.status_code ?>"
+          - name: response_headers
+            value: "<? create_response.headers ?>"
+          - name: created_login_id
+            value: "<? login_id != null ? login_id : 'wsadmin@platformds-connect.com' ?>"
+      
+      - type: message
+        message:
+          type: card
+          content:
+            title: "<? new i18n('PROFILE_CREATED_TITLE') ?>"
+            subtitle: "<? new i18n('STATUS_CODE', response_status) ?>"
+            description: "<? new i18n('PROFILE_CREATED_DESCRIPTION', created_login_id) ?>"
+            imageUrl: sap-icon://add-employee
+            imageStyle: avatar
+            status: "<? new i18n('API_SUCCESS') ?>"
+            statusState: success
+            buttons:
+              - type: postback
+                title: "<? new i18n('GET_PROFILE') ?>"
+                value: profile_request
+              - type: postback
+                title: "<? new i18n('GET_HELP') ?>"
+                value: help_request
+      
+      - type: message
+        message:
+          type: text
+          content: "<? new i18n('CREATED_PROFILE_DETAILS', created_login_id) ?>"
+      
+      - type: message
+        message:
+          type: text
+          content: "<? new i18n('RESPONSE_BODY', response_body) ?>"
+      
+      - type: message
+        message:
+          type: quickReplies
+          content:
+            title: "<? new i18n('WHAT_ELSE') ?>"
+            buttons:
+              - title: "<? new i18n('GET_PROFILE') ?>"
+                value: profile_request
+              - title: "<? new i18n('GET_HELP') ?>"
+                value: help_request
+
+result:
+  response_body: "<? response_body ?>"
+  response_status: "<? response_status ?>"
+  response_headers: "<? response_headers ?>"
+  created_login_id: "<? created_login_id ?>" 

@@ -1,0 +1,16 @@
+schema_version: 3.7.0
+
+metadata:
+  namespace: com.sap.concur
+  name: concur_profile_bot
+  version: 1.0.0
+  display_name: "Concur Profile Assistant"
+  description: AI assistant for managing Concur user profiles and travel preferences through natural language.
+
+system_aliases:
+  ConcurApiGateway:
+    destination: TEST
+  ConcurIdentityAPI:
+    destination: TEST
+  ConcurTravelProfileAPI:
+    destination: TEST 

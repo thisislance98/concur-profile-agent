@@ -1,0 +1,83 @@
+parameters:
+  - name: location_list
+    optional: true
+  - name: location_name
+action_groups:
+  - actions:
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: locations_formatted
+            value: >
+              {{#each location_list}}
+                {{#with this}}
+                  {{#if preferredName}}
+                    {
+                      "locationName": "{{preferredName.name}}",
+                      "locationNameId": "{{#if preferredName.id}}{{uppercase (remove preferredName.id '-')}}{{/if}}",
+                      "locationSubDivision": "{{#if parent}}{{#unless (eq parent.preferredName.type 'COUNTRY')}}{{parent.preferredName.name}}{{/unless}}{{/if}}",
+                      "locationCountry": "{{#if parent}}{{#if (eq parent.preferredName.type 'COUNTRY')}}{{parent.preferredName.name}}{{else}}{{#if parent.parent}}{{parent.parent.preferredName.name}}{{/if}}{{/if}}{{/if}}"
+                    }{{#unless @last}},{{/unless}}
+                  {{/if}}
+                {{/with}}
+              {{/each}}
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: locations_json
+            value: >
+              {{json locations_formatted}}
+      - type: message
+        message:
+          type: ui5integrationCard
+          content: >-
+            {
+            "submit_message": "{submitted_data.action}",
+            "manifest": {
+              "_version": "1.17.0",
+              "sap.app": {
+                "id": "com.sap.concur.request.assistant.location.adaptivecard",
+                "type": "card"
+              },
+              "sap.card": {
+                "type": "AdaptiveCard",
+                "content": {
+                  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                  "version": "1.0",
+                  "data": {
+                    "json": {
+                        "choiceset_values": [<? locations_json ?>]
+                      }
+                  },
+                  "body": [
+                    {
+                        "type": "Input.ChoiceSet",
+                        "choices": [
+                            {
+                                "$data": "${choiceset_values}",
+                                "title": "${locationName}-${locationSubDivision}-${locationCountry}",
+                                "value": "${locationNameId}"
+                            }
+                        ],
+                        "placeholder": "Please select matching location",
+                        "label": "Location Details" 
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "type": "Action.Submit",
+                      "style": "positive",
+                      "title": "Confirm location",
+                      "data": {
+                        "id": "_id_accept",
+                        "action": "${locationNameId}",
+                        "locationName": "${locationName}",
+                        "locationCountry": "${locationCountry}",
+                        "locationSubDivision": "${locationSubDivision}"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+            }

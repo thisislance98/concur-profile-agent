@@ -1,0 +1,12 @@
+schema_version: 3.7.0
+
+metadata:
+  namespace: com.sap.example
+  name: futurama_info_bot
+  version: 1.0.0
+  display_name: "Futurama Info Bot"
+  description: A bot that provides information about the TV show Futurama
+
+system_aliases:
+  FuturamaAPI:
+    destination: TEST 

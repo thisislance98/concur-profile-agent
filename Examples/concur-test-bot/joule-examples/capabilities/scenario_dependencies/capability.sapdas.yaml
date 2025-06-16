@@ -1,0 +1,8 @@
+schema_version: 3.13.0
+
+metadata:
+  namespace: com.sap.das.demo
+  name: scenario_dependencies_capability
+  version: 1.0.0
+  display_name: "Scenario Dependencies Capability"
+  description: Capability for scenario dependencies

@@ -1,0 +1,52 @@
+parameters:
+  - name: name
+    optional: true
+action_groups:
+  # In a productive implementation this function would call a backend service to retrieve the vendors. This is mocked here for demo purposes.
+
+  - condition: name == null
+    actions:
+      - type: status-update
+        message: <? "Retrieving all vendors ?>
+      - type: set-variables
+        variables:
+          - name: vendor_ids
+            value: [ "VEN000001", "VEN000002" ]
+          - name: vendor_names
+            value: [ "Electro Supplies", "Style Boutique" ]
+
+  - condition: name != null
+    actions:
+    - type: status-update
+      message: <? "Retrieving vendor information for " + name ?>
+
+  - condition: name == "Electro Supplies"
+    actions:
+      - type: set-variables
+        variables:
+          - name: vendor_ids
+            value: [ "VEN000001" ]
+          - name: vendor_names
+            value: [ "Electro Supplies" ]
+
+  - condition: name == "Style Boutique"
+    actions:
+      - type: set-variables
+        variables:
+          - name: vendor_ids
+            value: [ "VEN000002" ]
+          - name: vendor_names
+            value: [ "Style Boutique" ]
+
+  - condition: name != "Electro Supplies" && name != "Style Boutique" && name != null
+    actions:
+      - type: set-variables
+        variables:
+          - name: vendor_ids
+            value: []
+          - name: vendor_names
+            value: []
+result:
+  number_of_vendors: <? vendor_ids.size() ?>
+  vendor_ids: <? vendor_ids ?>
+  vendor_names: <? vendor_names ?>

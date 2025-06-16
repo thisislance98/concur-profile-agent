@@ -1,0 +1,26 @@
+parameters:
+  - name: vendor_id
+    optional: false
+  - name: material_id
+    optional: false
+  - name: quantity    
+    optional: false
+
+action_groups:
+  - actions:
+      - type: status-update
+        message:  <? "Creating purchase requisition for vendor id " + vendor_id ?>
+      
+      # In a productive scenario a backend service would be called here to persist the Purchase Requisition.
+      - type: set-variables
+        variables:
+          - name: id
+            value: "PR000004"
+
+
+
+result:
+  id: <? id ?>
+  vendor_id: <? vendor_id ?>
+  material_id: <? material_id ?>
+  quantity: <? quantity ?>

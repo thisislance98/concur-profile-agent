@@ -1,0 +1,15 @@
+description: This function provides detailed information about the TV show Futurama including synopsis, creators, and years aired
+
+slots: []
+
+target:
+  type: function
+  name: get_futurama_info
+
+response_context:
+  - value: $target_result.show_title
+    description: The title of the TV show
+  - value: $target_result.years_aired
+    description: The years the show was aired
+  - value: $target_result.creators
+    description: The creators of the show 

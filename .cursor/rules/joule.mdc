@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+refer to [Joule_Docs.md](mdc:Joule_Docs.md) when do anything Joule 
+We are focused on the bot in the concur-profile-bot folder
+Bot name: concurprofileassistant

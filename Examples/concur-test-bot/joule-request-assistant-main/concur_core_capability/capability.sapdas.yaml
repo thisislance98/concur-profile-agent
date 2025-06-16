@@ -1,0 +1,14 @@
+schema_version: 3.6.0
+
+metadata:
+  namespace: com.sap.concur.request.core
+  name: sap_concur_request_core_capability
+  version: 1.0.0
+  display_name: "Concur Request Core Capability"
+  description: >-
+    This capability calls Concur Request APIs for user profile and location information.
+    The user profile information is fetched from Concur Profile API. The location information is fetched from Concur Localities API.
+
+system_aliases:
+  ConcurApiGateway:
+    destination: CONCUR_API_GATEWAY

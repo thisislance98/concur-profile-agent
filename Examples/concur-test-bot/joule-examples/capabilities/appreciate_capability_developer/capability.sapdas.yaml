@@ -1,0 +1,9 @@
+schema_version: 3.5.0
+
+metadata:
+  namespace: com.sap.das.dev
+  name: appreciate_capability
+  version: 1.0.0
+  display_name: "Appreciate Capability"
+  description: >- 
+   This capability allows to appreciate capability developers.

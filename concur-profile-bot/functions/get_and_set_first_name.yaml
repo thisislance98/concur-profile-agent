@@ -1,0 +1,141 @@
+parameters:
+  - name: login_id
+    optional: true
+  - name: new_first_name
+    optional: true
+
+action_groups:
+  # Initialize variables for all scenarios
+  - actions:
+      - type: set-variables
+        scripting_type: spel
+        variables:
+          - name: operation_type
+            value: "<? new_first_name != null ? 'set' : 'get' ?>"
+          - name: target_login_id
+            value: "<? login_id != null ? login_id : 'default@company.com' ?>"
+          - name: first_name
+            value: null
+          - name: has_first_name
+            value: false
+          - name: update_success
+            value: false
+          - name: response_message
+            value: null
+          - name: xml_data
+            value: null
+          - name: profile_response
+            value: null
+          - name: update_response
+            value: null
+          - name: response_body
+            value: null
+
+  # Get the user's profile
+  - condition: new_first_name == null
+    actions:
+      - type: api-request
+        method: GET
+        system_alias: ConcurTravelProfileAPI
+        path: "/api/travelprofile/v2.0/profile?userid=<? target_login_id ?>"
+        headers:
+          Accept: application/xml
+        timeout: 30
+        result_variable: profile_response
+      
+      - type: set-variables
+        scripting_type: spel
+        variables:
+          - name: xml_data
+            value: "<? profile_response.body ?>"
+          - name: has_first_name
+            value: "<? xml_data != null && xml_data.contains('<FirstName>') && xml_data.contains('</FirstName>') ?>"
+          - name: response_message
+            value: "<? has_first_name ? 'Retrieved first name successfully' : 'No first name found in profile' ?>"
+
+  # Handle get first name response
+  - condition: new_first_name == null && has_first_name
+    actions:
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: "{{i18n 'GET_FIRST_NAME_SUCCESS' 'your name'}}"
+
+  - condition: new_first_name == null && !has_first_name
+    actions:
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: "{{i18n 'GET_FIRST_NAME_FAIL'}}"
+
+  # Set the user's first name
+  - condition: new_first_name != null
+    actions:
+      - type: api-request
+        method: POST
+        system_alias: ConcurTravelProfileAPI
+        path: "/api/travelprofile/v2.0/profile"
+        headers:
+          Content-Type: application/xml
+          Accept: application/xml
+        body: |
+          <?xml version="1.0" encoding="utf-8"?>
+          <ProfileResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Action="Update" LoginId="<? target_login_id ?>">
+            <General>
+              <FirstName><? new_first_name ?></FirstName>
+            </General>
+          </ProfileResponse>
+        timeout: 30
+        result_variable: update_response
+      
+  - condition: new_first_name != null && update_response != null
+    actions:
+      - type: set-variables
+        scripting_type: spel
+        variables:
+          - name: update_success
+            value: "<? update_response.status_code == 200 ?>"
+          - name: response_message
+            value: "<? update_success ? 'First name updated successfully' : 'Failed to update first name' ?>"
+          - name: response_body
+            value: "<? update_response.body ?>"
+
+  - condition: new_first_name != null && update_response == null
+    actions:
+      - type: set-variables
+        scripting_type: spel
+        variables:
+          - name: update_success
+            value: false
+          - name: response_message
+            value: "API request failed"
+          - name: response_body
+            value: null
+
+  # Handle set first name response
+  - condition: new_first_name != null && update_success
+    actions:
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: "{{i18n 'SET_FIRST_NAME_SUCCESS' new_first_name}}"
+
+  - condition: new_first_name != null && !update_success
+    actions:
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: "{{i18n 'SET_FIRST_NAME_FAIL'}}"
+
+result:
+  operation_type: "<? operation_type ?>"
+  login_id: "<? target_login_id ?>"
+  first_name: "<? first_name ?>"
+  has_first_name: "<? has_first_name ?>"
+  update_success: "<? update_success ?>"
+  new_first_name: "<? new_first_name ?>"
+  response_message: "<? response_message ?>" 

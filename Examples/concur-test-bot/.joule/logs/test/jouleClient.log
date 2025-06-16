@@ -1,0 +1,5116 @@
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show my profile
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Help
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Get my Concur info
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show my profile
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Help
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Get my Concur info
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Create profile
+info: [dasClient] <<< received [
+  {
+    "type": "text",
+    "content": "Could you please provide the login ID or email address you would like to use for the new user profile? This information will help me create the profile accurately. If you prefer, I can proceed without this information.",
+    "markdown": true,
+    "delay": 0,
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749494913095
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749494913095
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749494913336
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749494913338
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          }
+        ],
+        "timestamp": 1749494913948
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749494913948
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494914627
+      },
+      {
+        "level": "info",
+        "code": "SLOT_FILLING_REQUESTED",
+        "message": "Joule generated a direct response to fill missing slots",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494915646
+      }
+    ],
+    "debug": {
+      "correlationId": "d331fea6-4b7d-4a9b-5323-eec7f22cd485"
+    }
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] >>> What can you do?
+info: [dasClient] <<< received [
+  {
+    "type": "card",
+    "content": {
+      "buttons": [
+        {
+          "title": "Get My Profile",
+          "type": "postback",
+          "value": "profile_request"
+        },
+        {
+          "title": "Create Profile",
+          "type": "postback",
+          "value": "create_profile_request"
+        }
+      ],
+      "subtitle": "What I can do for you",
+      "imageUrl": "sap-icon://question-mark",
+      "description": "I'm a test bot that calls the Concur API and shows you the complete response including body, headers, and status code for debugging.",
+      "title": "Concur Test Bot Help",
+      "imageStyle": "avatar"
+    },
+    "markdown": false,
+    "delay": 0,
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749494917498
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749494917498
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749494917558
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749494917560
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          }
+        ],
+        "timestamp": 1749494918285
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749494918286
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "show_help"
+        },
+        "data": {},
+        "timestamp": 1749494918756
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function show_help started",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "show_help",
+          "dialog_function_name": "show_help"
+        },
+        "data": {
+          "parameters": {}
+        },
+        "timestamp": 1749494918866
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function show_help finished",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "show_help",
+          "dialog_function_name": "show_help"
+        },
+        "data": {
+          "results": {}
+        },
+        "timestamp": 1749494918871
+      }
+    ],
+    "debug": {
+      "correlationId": "ea313a5f-00dd-45ed-79d7-0b0e1f5c5d9f"
+    }
+  },
+  {
+    "type": "text",
+    "content": "You can ask me to:\n• Get your profile (try: 'Show my profile' or 'Get my Concur info')\n• Create a new profile (try: 'Create profile' or 'Create new user')\n• Provide this help information",
+    "markdown": false,
+    "delay": 0,
+    "logs": null,
+    "debug": null
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show my profile
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Get profile for test.user@example.com
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Create a new profile
+info: [dasClient] <<< received [
+  {
+    "type": "text",
+    "content": "Sorry, I encountered an error while fetching your profile. Status code: 400",
+    "markdown": false,
+    "delay": 0,
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749494923630
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749494923630
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749494923699
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749494923701
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          }
+        ],
+        "timestamp": 1749494924281
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749494924282
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494924764
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_EXECUTED_WITH_PARAMETERS",
+        "message": "The scenario user_profile is called with parameters",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {
+          "user_id": "test.user@example.com"
+        },
+        "timestamp": 1749494925305
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function fetch_user_profile started",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "parameters": {
+            "user_id": "test.user@example.com"
+          }
+        },
+        "timestamp": 1749494925358
+      },
+      {
+        "level": "warning",
+        "code": "W_API_REQUEST_EXECUTION",
+        "message": "Request execution failed",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "http_status": "400",
+          "error": "Error while processing request. Server response with an error { \"Error\": { \"Message\":\"Missing required parameters\", \"Server-Time\":\"2025-06-09T14:48:45\", \"Id\":\"84D43D73-4544-4A2A-A468-4C31DE5A53FB\" } } and response headers [Server:\"cnqr-fire-hose-796ed08d\", Content-Type:\"application/json; charset=UTF-8\", Content-Length:\"138\", Cache-Control:\"private\", Expires:\"Sun, 08 Jun 2025 18:48:45 GMT\", X-Frame-Options:\"SAMEORIGIN\", Strict-Transport-Security:\"max-age=31536000; includeSubDomains\", Access-Control-Allow-Origin:\"https://us2.concursolutions.com\", Access-Control-Allow-Methods:\"GET, POST, PUT, DELETE, PATCH, OPTIONS\", Access-Control-Allow-Headers:\"accept,accept-language,access-control-allow-origin,authorization,cache-control,content-type,dnt,if-match,if-modified-since,link,keep-alive,origin,user-agent,x-mx-reqtoken,x-requested-with,concur-correlationid,concur-debug,x-csrf-token,appid,userid,x-token,newrelic,traceparent,tracestate,concur-environment\", Access-Control-Expose-Headers:\"content-length,concur-correlationid,concur-debug,etag\", Access-Control-Allow-Credentials:\"true\", Vary:\"Origin\", concur-correlationid:\"1a2182755140f2fc589809127e79a677\", sap-server:\"33\", Date:\"Mon, 09 Jun 2025 18:48:46 GMT\", Connection:\"keep-alive\", Set-Cookie:\"AWSALBTG=mH+5nj1AzjZVkl/q+j2zhMvfYBiNBwTITnW+1GHSs30ZWOsIfbH/trOOSt46XiWskjJnFY5ewcB6wUpEnPbYTP32NpJiguVR03ZkB3tYt+VQoFWsNVpCIlBoCEbfPHEfQtoqTOVND7XLDZnfCtBFdQjCg6JP2hvf25BX9Ktp5ihUWaE4VMg=; Expires=Mon, 16 Jun 2025 18:48:45 GMT; Path=/\", \"AWSALBTGCORS=mH+5nj1AzjZVkl/q+j2zhMvfYBiNBwTITnW+1GHSs30ZWOsIfbH/trOOSt46XiWskjJnFY5ewcB6wUpEnPbYTP32NpJiguVR03ZkB3tYt+VQoFWsNVpCIlBoCEbfPHEfQtoqTOVND7XLDZnfCtBFdQjCg6JP2hvf25BX9Ktp5ihUWaE4VMg=; Expires=Mon, 16 Jun 2025 18:48:45 GMT; Path=/; SameSite=None; Secure\"] and status code 400 BAD_REQUEST",
+          "url": "https://us.api.concursolutions.com/api/travelprofile/v2.0/profile?userid=test.user@example.com"
+        },
+        "timestamp": 1749494926027
+      },
+      {
+        "level": "warning",
+        "code": "RESULT_FAILED",
+        "message": "Result variables executed with errors due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "variables": [
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_body' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_body ?>"
+                }
+              ],
+              "name": "response_body",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_status' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_status ?>"
+                }
+              ],
+              "name": "response_status",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_headers' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_headers ?>"
+                }
+              ],
+              "name": "response_headers",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'full_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? full_response ?>"
+                }
+              ],
+              "name": "full_response",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'queried_user_id' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? queried_user_id ?>"
+                }
+              ],
+              "name": "queried_user_id",
+              "value": null
+            }
+          ]
+        },
+        "timestamp": 1749494926046
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function fetch_user_profile finished",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "results": {
+            "response_headers": null,
+            "response_status": null,
+            "queried_user_id": null,
+            "response_body": null,
+            "full_response": null
+          }
+        },
+        "timestamp": 1749494926046
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_body\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494926097
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_status\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494926097
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_headers\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494926097
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"full_response\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494926097
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"queried_user_id\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494926098
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_INVALID",
+        "message": "Response context is invalid, response generation is skipped",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494926098
+      }
+    ],
+    "debug": {
+      "correlationId": "70ba0156-60d8-454f-784e-8ee4c82ee7a7"
+    }
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Create profile for newuser@example.com
+info: [dasClient] <<< received [
+  {
+    "type": "empty",
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749494926148
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749494926149
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749494926224
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749494926226
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          }
+        ],
+        "timestamp": 1749494926870
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749494926871
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494927341
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_EXECUTED_WITH_PARAMETERS",
+        "message": "The scenario create_profile is called with parameters",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494927868
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function create_user_profile started",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "parameters": {
+            "login_id": null
+          }
+        },
+        "timestamp": 1749494927921
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_FAILED",
+        "message": "API request action skipped due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "Expression [xml version=\"1.0\" encoding=\"utf-8\"] @4: EL1041E: After parsing a valid expression, there is still more data in the expression: 'version'",
+              "invalid_expression": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ProfileResponse Action=\"Create\" LoginId=\"<? login_id != null ? login_id : 'sample.user@example.com' ?>\">\n  <General>\n    <NamePrefix>Mr.</NamePrefix>\n    <FirstName>John</FirstName>\n    <MiddleName>A</MiddleName>\n    <LastName>Doe</LastName>\n    <NameSuffix></NameSuffix>\n    <PreferredName>John</PreferredName>\n    <JobTitle>Software Developer</JobTitle>\n    <PreferredLanguage>en</PreferredLanguage>\n    <Locale>en_US</Locale>\n    <CountryCode>US</CountryCode>\n    <CompanyEmployeeID>EMP12345</CompanyEmployeeID>\n    <RuleClass>Default Travel Class</RuleClass>\n  </General>\n  <Addresses>\n    <Address Type=\"Home\">\n      <Street>123 Main Street</Street>\n      <City>Seattle</City>\n      <StateProvince>WA</StateProvince>\n      <CountryCode>US</CountryCode>\n      <PostalCode>98101</PostalCode>\n    </Address>\n    <Address Type=\"Work\">\n      <Street>456 Business Ave</Street>\n      <City>Seattle</City>\n      <StateProvince>WA</StateProvince>\n      <CountryCode>US</CountryCode>\n      <PostalCode>98102</PostalCode>\n    </Address>\n  </Addresses>\n  <Telephones>\n    <Telephone Type=\"Home\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0123</PhoneNumber>\n    </Telephone>\n    <Telephone Type=\"Work\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0124</PhoneNumber>\n    </Telephone>\n    <Telephone Type=\"Cell\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0125</PhoneNumber>\n    </Telephone>\n  </Telephones>\n  <EmailAddresses>\n    <EmailAddress Type=\"Business\"><? login_id != null ? login_id : 'sample.user@example.com' ?></EmailAddress>\n    <EmailAddress Type=\"Personal\">john.doe@gmail.com</EmailAddress>\n  </EmailAddresses>\n  <Air>\n    <Seat>\n      <InterRowPositionCode>Window</InterRowPositionCode>\n      <SectionPositionCode>Forward</SectionPositionCode>\n    </Seat>\n    <MealCode>VGML</MealCode>\n    <HomeAirport>SEA</HomeAirport>\n    <AirOther>No special requests</AirOther>\n  </Air>\n  <Hotel>\n    <HotelMemberships></HotelMemberships>\n    <RoomType>King</RoomType>\n    <HotelOther>High floor preferred</HotelOther>\n    <PreferFoamPillows>true</PreferFoamPillows>\n    <PreferGym>true</PreferGym>\n    <PreferPool>true</PreferPool>\n  </Hotel>\n  <Car>\n    <CarType>Intermediate</CarType>\n    <CarTransmission>Automatic</CarTransmission>\n    <CarSmokingCode>NonSmoking</CarSmokingCode>\n    <CarGPS>true</CarGPS>\n  </Car>\n  <RatePreferences>\n    <AAARate>false</AAARate>\n    <AARPRate>false</AARPRate>\n    <GovtRate>false</GovtRate>\n    <MilitaryRate>false</MilitaryRate>\n  </RatePreferences>\n  <TSAInfo>\n    <Gender>Male</Gender>\n    <DateOfBirth>1985-06-15</DateOfBirth>\n    <NoMiddleName>false</NoMiddleName>\n    <PreCheckNumber>12345678</PreCheckNumber>\n    <RedressNumber></RedressNumber>\n  </TSAInfo>\n  <CustomFields>\n    <CustomField Name=\"Department\">Engineering</CustomField>\n    <CustomField Name=\"CostCenter\">CC1001</CustomField>\n  </CustomFields>\n</ProfileResponse>\n"
+            }
+          ]
+        },
+        "timestamp": 1749494927925
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_GROUP_FAILED",
+        "message": "Action group skipped due to invalid scripting expression in condition",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "EL1008E: Property or field 'create_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+              "invalid_expression": "<? create_response.status_code != 200 ?>"
+            },
+            {
+              "scripting_error": "Expression does not evaluate to a boolean result. Evaluated result: \"null\"",
+              "invalid_expression": "create_response.status_code != 200"
+            }
+          ]
+        },
+        "timestamp": 1749494927931
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_GROUP_FAILED",
+        "message": "Action group skipped due to invalid scripting expression in condition",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "EL1008E: Property or field 'create_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+              "invalid_expression": "<? create_response.status_code == 200 ?>"
+            },
+            {
+              "scripting_error": "Expression does not evaluate to a boolean result. Evaluated result: \"null\"",
+              "invalid_expression": "create_response.status_code == 200"
+            }
+          ]
+        },
+        "timestamp": 1749494927932
+      },
+      {
+        "level": "warning",
+        "code": "RESULT_FAILED",
+        "message": "Result variables executed with errors due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "variables": [
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_body' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_body ?>"
+                }
+              ],
+              "name": "response_body",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_status' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_status ?>"
+                }
+              ],
+              "name": "response_status",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_headers' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_headers ?>"
+                }
+              ],
+              "name": "response_headers",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'created_login_id' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? created_login_id ?>"
+                }
+              ],
+              "name": "created_login_id",
+              "value": null
+            }
+          ]
+        },
+        "timestamp": 1749494927936
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function create_user_profile finished",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "results": {
+            "response_headers": null,
+            "response_status": null,
+            "response_body": null,
+            "created_login_id": null
+          }
+        },
+        "timestamp": 1749494927936
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_body\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494927989
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_status\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494927989
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"created_login_id\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494927989
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_INVALID",
+        "message": "Response context is invalid, response generation is skipped",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494927989
+      }
+    ],
+    "debug": {
+      "correlationId": "4a6f9a9b-5d13-42f2-741f-0797ea26ce52"
+    }
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Help
+info: [dasClient] <<< received [
+  {
+    "type": "empty",
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749494927796
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749494927796
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749494927872
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749494927874
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          }
+        ],
+        "timestamp": 1749494928448
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749494928448
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494928909
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_EXECUTED_WITH_PARAMETERS",
+        "message": "The scenario create_profile is called with parameters",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {
+          "login_id": "newuser@example.com"
+        },
+        "timestamp": 1749494929475
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function create_user_profile started",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "parameters": {
+            "login_id": "newuser@example.com"
+          }
+        },
+        "timestamp": 1749494929538
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_FAILED",
+        "message": "API request action skipped due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "Expression [xml version=\"1.0\" encoding=\"utf-8\"] @4: EL1041E: After parsing a valid expression, there is still more data in the expression: 'version'",
+              "invalid_expression": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ProfileResponse Action=\"Create\" LoginId=\"<? login_id != null ? login_id : 'sample.user@example.com' ?>\">\n  <General>\n    <NamePrefix>Mr.</NamePrefix>\n    <FirstName>John</FirstName>\n    <MiddleName>A</MiddleName>\n    <LastName>Doe</LastName>\n    <NameSuffix></NameSuffix>\n    <PreferredName>John</PreferredName>\n    <JobTitle>Software Developer</JobTitle>\n    <PreferredLanguage>en</PreferredLanguage>\n    <Locale>en_US</Locale>\n    <CountryCode>US</CountryCode>\n    <CompanyEmployeeID>EMP12345</CompanyEmployeeID>\n    <RuleClass>Default Travel Class</RuleClass>\n  </General>\n  <Addresses>\n    <Address Type=\"Home\">\n      <Street>123 Main Street</Street>\n      <City>Seattle</City>\n      <StateProvince>WA</StateProvince>\n      <CountryCode>US</CountryCode>\n      <PostalCode>98101</PostalCode>\n    </Address>\n    <Address Type=\"Work\">\n      <Street>456 Business Ave</Street>\n      <City>Seattle</City>\n      <StateProvince>WA</StateProvince>\n      <CountryCode>US</CountryCode>\n      <PostalCode>98102</PostalCode>\n    </Address>\n  </Addresses>\n  <Telephones>\n    <Telephone Type=\"Home\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0123</PhoneNumber>\n    </Telephone>\n    <Telephone Type=\"Work\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0124</PhoneNumber>\n    </Telephone>\n    <Telephone Type=\"Cell\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0125</PhoneNumber>\n    </Telephone>\n  </Telephones>\n  <EmailAddresses>\n    <EmailAddress Type=\"Business\"><? login_id != null ? login_id : 'sample.user@example.com' ?></EmailAddress>\n    <EmailAddress Type=\"Personal\">john.doe@gmail.com</EmailAddress>\n  </EmailAddresses>\n  <Air>\n    <Seat>\n      <InterRowPositionCode>Window</InterRowPositionCode>\n      <SectionPositionCode>Forward</SectionPositionCode>\n    </Seat>\n    <MealCode>VGML</MealCode>\n    <HomeAirport>SEA</HomeAirport>\n    <AirOther>No special requests</AirOther>\n  </Air>\n  <Hotel>\n    <HotelMemberships></HotelMemberships>\n    <RoomType>King</RoomType>\n    <HotelOther>High floor preferred</HotelOther>\n    <PreferFoamPillows>true</PreferFoamPillows>\n    <PreferGym>true</PreferGym>\n    <PreferPool>true</PreferPool>\n  </Hotel>\n  <Car>\n    <CarType>Intermediate</CarType>\n    <CarTransmission>Automatic</CarTransmission>\n    <CarSmokingCode>NonSmoking</CarSmokingCode>\n    <CarGPS>true</CarGPS>\n  </Car>\n  <RatePreferences>\n    <AAARate>false</AAARate>\n    <AARPRate>false</AARPRate>\n    <GovtRate>false</GovtRate>\n    <MilitaryRate>false</MilitaryRate>\n  </RatePreferences>\n  <TSAInfo>\n    <Gender>Male</Gender>\n    <DateOfBirth>1985-06-15</DateOfBirth>\n    <NoMiddleName>false</NoMiddleName>\n    <PreCheckNumber>12345678</PreCheckNumber>\n    <RedressNumber></RedressNumber>\n  </TSAInfo>\n  <CustomFields>\n    <CustomField Name=\"Department\">Engineering</CustomField>\n    <CustomField Name=\"CostCenter\">CC1001</CustomField>\n  </CustomFields>\n</ProfileResponse>\n"
+            }
+          ]
+        },
+        "timestamp": 1749494929544
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_GROUP_FAILED",
+        "message": "Action group skipped due to invalid scripting expression in condition",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "EL1008E: Property or field 'create_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+              "invalid_expression": "<? create_response.status_code != 200 ?>"
+            },
+            {
+              "scripting_error": "Expression does not evaluate to a boolean result. Evaluated result: \"null\"",
+              "invalid_expression": "create_response.status_code != 200"
+            }
+          ]
+        },
+        "timestamp": 1749494929548
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_GROUP_FAILED",
+        "message": "Action group skipped due to invalid scripting expression in condition",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "EL1008E: Property or field 'create_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+              "invalid_expression": "<? create_response.status_code == 200 ?>"
+            },
+            {
+              "scripting_error": "Expression does not evaluate to a boolean result. Evaluated result: \"null\"",
+              "invalid_expression": "create_response.status_code == 200"
+            }
+          ]
+        },
+        "timestamp": 1749494929549
+      },
+      {
+        "level": "warning",
+        "code": "RESULT_FAILED",
+        "message": "Result variables executed with errors due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "variables": [
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_body' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_body ?>"
+                }
+              ],
+              "name": "response_body",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_status' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_status ?>"
+                }
+              ],
+              "name": "response_status",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_headers' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_headers ?>"
+                }
+              ],
+              "name": "response_headers",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'created_login_id' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? created_login_id ?>"
+                }
+              ],
+              "name": "created_login_id",
+              "value": null
+            }
+          ]
+        },
+        "timestamp": 1749494929553
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function create_user_profile finished",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "results": {
+            "response_headers": null,
+            "response_status": null,
+            "response_body": null,
+            "created_login_id": null
+          }
+        },
+        "timestamp": 1749494929553
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_body\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494929607
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_status\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494929607
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"created_login_id\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494929607
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_INVALID",
+        "message": "Response context is invalid, response generation is skipped",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749494929608
+      }
+    ],
+    "debug": {
+      "correlationId": "4049a402-a6a3-489a-5467-2cef58444b9b"
+    }
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Create new user
+info: [dasClient] <<< received [
+  {
+    "type": "card",
+    "content": {
+      "buttons": [
+        {
+          "title": "Get My Profile",
+          "type": "postback",
+          "value": "profile_request"
+        },
+        {
+          "title": "Create Profile",
+          "type": "postback",
+          "value": "create_profile_request"
+        }
+      ],
+      "subtitle": "What I can do for you",
+      "imageUrl": "sap-icon://question-mark",
+      "description": "I'm a test bot that calls the Concur API and shows you the complete response including body, headers, and status code for debugging.",
+      "title": "Concur Test Bot Help",
+      "imageStyle": "avatar"
+    },
+    "markdown": false,
+    "delay": 0,
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749494929724
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749494929724
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749494929828
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749494929831
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          }
+        ],
+        "timestamp": 1749494930420
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749494930421
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "show_help"
+        },
+        "data": {},
+        "timestamp": 1749494931092
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function show_help started",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "show_help",
+          "dialog_function_name": "show_help"
+        },
+        "data": {
+          "parameters": {}
+        },
+        "timestamp": 1749494931282
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function show_help finished",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "show_help",
+          "dialog_function_name": "show_help"
+        },
+        "data": {
+          "results": {}
+        },
+        "timestamp": 1749494931290
+      }
+    ],
+    "debug": {
+      "correlationId": "eba138de-6872-432e-70d3-64747e360e90"
+    }
+  },
+  {
+    "type": "text",
+    "content": "You can ask me to:\n• Get your profile (try: 'Show my profile' or 'Get my Concur info')\n• Create a new profile (try: 'Create profile' or 'Create new user')\n• Provide this help information",
+    "markdown": false,
+    "delay": 0,
+    "logs": null,
+    "debug": null
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Get my Concur info
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show my profile
+info: [dasClient] <<< received [
+  {
+    "type": "text",
+    "content": "Sorry, I encountered an error while fetching your profile. Status code: 400",
+    "markdown": false,
+    "delay": 0,
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749494933496
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749494933496
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749494933568
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749494933570
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          }
+        ],
+        "timestamp": 1749494934264
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749494934265
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494934727
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_EXECUTED_WITH_PARAMETERS",
+        "message": "The scenario user_profile is called with parameters",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494935221
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function fetch_user_profile started",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "parameters": {
+            "user_id": null
+          }
+        },
+        "timestamp": 1749494935278
+      },
+      {
+        "level": "warning",
+        "code": "W_API_REQUEST_EXECUTION",
+        "message": "Request execution failed",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "http_status": "400",
+          "error": "Error while processing request. Server response with an error { \"Error\": { \"Message\":\"Missing required parameters\", \"Server-Time\":\"2025-06-09T14:48:55\", \"Id\":\"5A65C114-B661-44E2-9BE0-E935ED6CACA3\" } } and response headers [Server:\"cnqr-fire-hose-796ed08d\", Content-Type:\"application/json; charset=UTF-8\", Content-Length:\"138\", Cache-Control:\"private\", Expires:\"Sun, 08 Jun 2025 18:48:55 GMT\", X-Frame-Options:\"SAMEORIGIN\", Strict-Transport-Security:\"max-age=31536000; includeSubDomains\", Access-Control-Allow-Origin:\"https://us2.concursolutions.com\", Access-Control-Allow-Methods:\"GET, POST, PUT, DELETE, PATCH, OPTIONS\", Access-Control-Allow-Headers:\"accept,accept-language,access-control-allow-origin,authorization,cache-control,content-type,dnt,if-match,if-modified-since,link,keep-alive,origin,user-agent,x-mx-reqtoken,x-requested-with,concur-correlationid,concur-debug,x-csrf-token,appid,userid,x-token,newrelic,traceparent,tracestate,concur-environment\", Access-Control-Expose-Headers:\"content-length,concur-correlationid,concur-debug,etag\", Access-Control-Allow-Credentials:\"true\", Vary:\"Origin\", concur-correlationid:\"5396cba4c0e7c5bdd8c70fcf1e3c33c7\", sap-server:\"33\", Date:\"Mon, 09 Jun 2025 18:48:55 GMT\", Connection:\"keep-alive\", Set-Cookie:\"AWSALBTG=XLdL2KnXPRqcIrq7Fg4QbfrBFBTPrairkz0jUdFFQmTi5ImrMwdeDdY7PzAh2CsK/zUYPn7nx0DscfvZtYJwVZPU83d7Wi/8GpCeoF3+/7Jv4zrMjdMT+JfCiSwwuWk3qbS4HzBOz1njpQz1zbQ5obW2+atRL/QeDTAnenHrNAJv2AOANTU=; Expires=Mon, 16 Jun 2025 18:48:55 GMT; Path=/\", \"AWSALBTGCORS=XLdL2KnXPRqcIrq7Fg4QbfrBFBTPrairkz0jUdFFQmTi5ImrMwdeDdY7PzAh2CsK/zUYPn7nx0DscfvZtYJwVZPU83d7Wi/8GpCeoF3+/7Jv4zrMjdMT+JfCiSwwuWk3qbS4HzBOz1njpQz1zbQ5obW2+atRL/QeDTAnenHrNAJv2AOANTU=; Expires=Mon, 16 Jun 2025 18:48:55 GMT; Path=/; SameSite=None; Secure\"] and status code 400 BAD_REQUEST",
+          "url": "https://us.api.concursolutions.com/api/travelprofile/v2.0/profile?userid=sample.user@example.com"
+        },
+        "timestamp": 1749494935592
+      },
+      {
+        "level": "warning",
+        "code": "RESULT_FAILED",
+        "message": "Result variables executed with errors due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "variables": [
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_body' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_body ?>"
+                }
+              ],
+              "name": "response_body",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_status' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_status ?>"
+                }
+              ],
+              "name": "response_status",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_headers' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_headers ?>"
+                }
+              ],
+              "name": "response_headers",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'full_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? full_response ?>"
+                }
+              ],
+              "name": "full_response",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'queried_user_id' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? queried_user_id ?>"
+                }
+              ],
+              "name": "queried_user_id",
+              "value": null
+            }
+          ]
+        },
+        "timestamp": 1749494935674
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function fetch_user_profile finished",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "results": {
+            "response_headers": null,
+            "response_status": null,
+            "queried_user_id": null,
+            "response_body": null,
+            "full_response": null
+          }
+        },
+        "timestamp": 1749494935675
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_body\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494935714
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_status\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494935714
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_headers\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494935714
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"full_response\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494935714
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"queried_user_id\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494935715
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_INVALID",
+        "message": "Response context is invalid, response generation is skipped",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749494935715
+      }
+    ],
+    "debug": {
+      "correlationId": "52e50d44-20a6-4255-6707-17705293e511"
+    }
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show profile for invalid.user@example.com
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show my profile
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Help
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Get my Concur info
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Create profile
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> What can you do?
+info: [dasClient] <<< received [
+  {
+    "type": "card",
+    "content": {
+      "buttons": [
+        {
+          "title": "Get My Profile",
+          "type": "postback",
+          "value": "profile_request"
+        },
+        {
+          "title": "Create Profile",
+          "type": "postback",
+          "value": "create_profile_request"
+        }
+      ],
+      "subtitle": "What I can do for you",
+      "imageUrl": "sap-icon://question-mark",
+      "description": "I'm a test bot that calls the Concur API and shows you the complete response including body, headers, and status code for debugging.",
+      "title": "Concur Test Bot Help",
+      "imageStyle": "avatar"
+    },
+    "markdown": false,
+    "delay": 0,
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749495032688
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749495032688
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749495032749
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749495032751
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          }
+        ],
+        "timestamp": 1749495033362
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749495033363
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "show_help"
+        },
+        "data": {},
+        "timestamp": 1749495034104
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function show_help started",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "show_help",
+          "dialog_function_name": "show_help"
+        },
+        "data": {
+          "parameters": {}
+        },
+        "timestamp": 1749495034204
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function show_help finished",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "show_help",
+          "dialog_function_name": "show_help"
+        },
+        "data": {
+          "results": {}
+        },
+        "timestamp": 1749495034210
+      }
+    ],
+    "debug": {
+      "correlationId": "c6b7412f-86b1-4b4b-4945-094a5e16130b"
+    }
+  },
+  {
+    "type": "text",
+    "content": "You can ask me to:\n• Get your profile (try: 'Show my profile' or 'Get my Concur info')\n• Create a new profile (try: 'Create profile' or 'Create new user')\n• Provide this help information",
+    "markdown": false,
+    "delay": 0,
+    "logs": null,
+    "debug": null
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show my profile
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show my profile
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Get profile for test.user@example.com
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Create a new profile
+info: [dasClient] <<< received [
+  {
+    "type": "text",
+    "content": "Sorry, I encountered an error while fetching your profile. Status code: 400",
+    "markdown": false,
+    "delay": 0,
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749495042071
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749495042071
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749495042151
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749495042153
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          }
+        ],
+        "timestamp": 1749495042793
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749495042794
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749495043269
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_EXECUTED_WITH_PARAMETERS",
+        "message": "The scenario user_profile is called with parameters",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {
+          "user_id": "test.user@example.com"
+        },
+        "timestamp": 1749495043845
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function fetch_user_profile started",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "parameters": {
+            "user_id": "test.user@example.com"
+          }
+        },
+        "timestamp": 1749495043920
+      },
+      {
+        "level": "warning",
+        "code": "W_API_REQUEST_EXECUTION",
+        "message": "Request execution failed",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "http_status": "400",
+          "error": "Error while processing request. Server response with an error { \"Error\": { \"Message\":\"Missing required parameters\", \"Server-Time\":\"2025-06-09T14:50:44\", \"Id\":\"C1EA1B55-8083-4072-B36E-E586117342E4\" } } and response headers [Server:\"cnqr-fire-hose-796ed08d\", Content-Type:\"application/json; charset=UTF-8\", Content-Length:\"138\", Cache-Control:\"private\", Expires:\"Sun, 08 Jun 2025 18:50:44 GMT\", X-Frame-Options:\"SAMEORIGIN\", Strict-Transport-Security:\"max-age=31536000; includeSubDomains\", Access-Control-Allow-Origin:\"https://us2.concursolutions.com\", Access-Control-Allow-Methods:\"GET, POST, PUT, DELETE, PATCH, OPTIONS\", Access-Control-Allow-Headers:\"accept,accept-language,access-control-allow-origin,authorization,cache-control,content-type,dnt,if-match,if-modified-since,link,keep-alive,origin,user-agent,x-mx-reqtoken,x-requested-with,concur-correlationid,concur-debug,x-csrf-token,appid,userid,x-token,newrelic,traceparent,tracestate,concur-environment\", Access-Control-Expose-Headers:\"content-length,concur-correlationid,concur-debug,etag\", Access-Control-Allow-Credentials:\"true\", Vary:\"Origin\", concur-correlationid:\"3f798885ff321d6d4a8c3938722072b6\", sap-server:\"33\", Date:\"Mon, 09 Jun 2025 18:50:44 GMT\", Connection:\"keep-alive\", Set-Cookie:\"AWSALBTG=DpUARYSmWeSJLTDA6hoAh/OkL716BBdpAcEMbvYAXYqwJyO2YlTPe1FUG5BG+7MrCZqAEx9sbTONWIKRTjxHjsKYxx3ZEWRAs/gcdhPdjAByb9wc/DH3JjHy/ANQ+AGuDWzQ74S4eorZOBFEIAV6ZBRQmp1RpW2N2/kuNkJePoRXJMpcL7Y=; Expires=Mon, 16 Jun 2025 18:50:44 GMT; Path=/\", \"AWSALBTGCORS=DpUARYSmWeSJLTDA6hoAh/OkL716BBdpAcEMbvYAXYqwJyO2YlTPe1FUG5BG+7MrCZqAEx9sbTONWIKRTjxHjsKYxx3ZEWRAs/gcdhPdjAByb9wc/DH3JjHy/ANQ+AGuDWzQ74S4eorZOBFEIAV6ZBRQmp1RpW2N2/kuNkJePoRXJMpcL7Y=; Expires=Mon, 16 Jun 2025 18:50:44 GMT; Path=/; SameSite=None; Secure\"] and status code 400 BAD_REQUEST",
+          "url": "https://us.api.concursolutions.com/api/travelprofile/v2.0/profile?userid=test.user@example.com"
+        },
+        "timestamp": 1749495044160
+      },
+      {
+        "level": "warning",
+        "code": "RESULT_FAILED",
+        "message": "Result variables executed with errors due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "variables": [
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_body' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_body ?>"
+                }
+              ],
+              "name": "response_body",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_status' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_status ?>"
+                }
+              ],
+              "name": "response_status",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_headers' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_headers ?>"
+                }
+              ],
+              "name": "response_headers",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'full_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? full_response ?>"
+                }
+              ],
+              "name": "full_response",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'queried_user_id' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? queried_user_id ?>"
+                }
+              ],
+              "name": "queried_user_id",
+              "value": null
+            }
+          ]
+        },
+        "timestamp": 1749495044188
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function fetch_user_profile finished",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile",
+          "dialog_function_name": "fetch_user_profile"
+        },
+        "data": {
+          "results": {
+            "response_headers": null,
+            "response_status": null,
+            "queried_user_id": null,
+            "response_body": null,
+            "full_response": null
+          }
+        },
+        "timestamp": 1749495044188
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_body\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749495044230
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_status\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749495044230
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_headers\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749495044230
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"full_response\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749495044230
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"queried_user_id\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749495044231
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_INVALID",
+        "message": "Response context is invalid, response generation is skipped",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "user_profile"
+        },
+        "data": {},
+        "timestamp": 1749495044231
+      }
+    ],
+    "debug": {
+      "correlationId": "76e5315d-2b60-4107-71c0-be40c775d9cc"
+    }
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Create profile for newuser@example.com
+info: [dasClient] <<< received [
+  {
+    "type": "empty",
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749495044181
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749495044181
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749495044244
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749495044246
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          }
+        ],
+        "timestamp": 1749495044853
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749495044854
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495045355
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_EXECUTED_WITH_PARAMETERS",
+        "message": "The scenario create_profile is called with parameters",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495045860
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function create_user_profile started",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "parameters": {
+            "login_id": null
+          }
+        },
+        "timestamp": 1749495045910
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_FAILED",
+        "message": "API request action skipped due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "Expression [xml version=\"1.0\" encoding=\"utf-8\"] @4: EL1041E: After parsing a valid expression, there is still more data in the expression: 'version'",
+              "invalid_expression": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ProfileResponse Action=\"Create\" LoginId=\"<? login_id != null ? login_id : 'sample.user@example.com' ?>\">\n  <General>\n    <NamePrefix>Mr.</NamePrefix>\n    <FirstName>John</FirstName>\n    <MiddleName>A</MiddleName>\n    <LastName>Doe</LastName>\n    <NameSuffix></NameSuffix>\n    <PreferredName>John</PreferredName>\n    <JobTitle>Software Developer</JobTitle>\n    <PreferredLanguage>en</PreferredLanguage>\n    <Locale>en_US</Locale>\n    <CountryCode>US</CountryCode>\n    <CompanyEmployeeID>EMP12345</CompanyEmployeeID>\n    <RuleClass>Default Travel Class</RuleClass>\n  </General>\n  <Addresses>\n    <Address Type=\"Home\">\n      <Street>123 Main Street</Street>\n      <City>Seattle</City>\n      <StateProvince>WA</StateProvince>\n      <CountryCode>US</CountryCode>\n      <PostalCode>98101</PostalCode>\n    </Address>\n    <Address Type=\"Work\">\n      <Street>456 Business Ave</Street>\n      <City>Seattle</City>\n      <StateProvince>WA</StateProvince>\n      <CountryCode>US</CountryCode>\n      <PostalCode>98102</PostalCode>\n    </Address>\n  </Addresses>\n  <Telephones>\n    <Telephone Type=\"Home\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0123</PhoneNumber>\n    </Telephone>\n    <Telephone Type=\"Work\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0124</PhoneNumber>\n    </Telephone>\n    <Telephone Type=\"Cell\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0125</PhoneNumber>\n    </Telephone>\n  </Telephones>\n  <EmailAddresses>\n    <EmailAddress Type=\"Business\"><? login_id != null ? login_id : 'sample.user@example.com' ?></EmailAddress>\n    <EmailAddress Type=\"Personal\">john.doe@gmail.com</EmailAddress>\n  </EmailAddresses>\n  <Air>\n    <Seat>\n      <InterRowPositionCode>Window</InterRowPositionCode>\n      <SectionPositionCode>Forward</SectionPositionCode>\n    </Seat>\n    <MealCode>VGML</MealCode>\n    <HomeAirport>SEA</HomeAirport>\n    <AirOther>No special requests</AirOther>\n  </Air>\n  <Hotel>\n    <HotelMemberships></HotelMemberships>\n    <RoomType>King</RoomType>\n    <HotelOther>High floor preferred</HotelOther>\n    <PreferFoamPillows>true</PreferFoamPillows>\n    <PreferGym>true</PreferGym>\n    <PreferPool>true</PreferPool>\n  </Hotel>\n  <Car>\n    <CarType>Intermediate</CarType>\n    <CarTransmission>Automatic</CarTransmission>\n    <CarSmokingCode>NonSmoking</CarSmokingCode>\n    <CarGPS>true</CarGPS>\n  </Car>\n  <RatePreferences>\n    <AAARate>false</AAARate>\n    <AARPRate>false</AARPRate>\n    <GovtRate>false</GovtRate>\n    <MilitaryRate>false</MilitaryRate>\n  </RatePreferences>\n  <TSAInfo>\n    <Gender>Male</Gender>\n    <DateOfBirth>1985-06-15</DateOfBirth>\n    <NoMiddleName>false</NoMiddleName>\n    <PreCheckNumber>12345678</PreCheckNumber>\n    <RedressNumber></RedressNumber>\n  </TSAInfo>\n  <CustomFields>\n    <CustomField Name=\"Department\">Engineering</CustomField>\n    <CustomField Name=\"CostCenter\">CC1001</CustomField>\n  </CustomFields>\n</ProfileResponse>\n"
+            }
+          ]
+        },
+        "timestamp": 1749495045914
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_GROUP_FAILED",
+        "message": "Action group skipped due to invalid scripting expression in condition",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "EL1008E: Property or field 'create_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+              "invalid_expression": "<? create_response.status_code != 200 ?>"
+            },
+            {
+              "scripting_error": "Expression does not evaluate to a boolean result. Evaluated result: \"null\"",
+              "invalid_expression": "create_response.status_code != 200"
+            }
+          ]
+        },
+        "timestamp": 1749495045925
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_GROUP_FAILED",
+        "message": "Action group skipped due to invalid scripting expression in condition",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "EL1008E: Property or field 'create_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+              "invalid_expression": "<? create_response.status_code == 200 ?>"
+            },
+            {
+              "scripting_error": "Expression does not evaluate to a boolean result. Evaluated result: \"null\"",
+              "invalid_expression": "create_response.status_code == 200"
+            }
+          ]
+        },
+        "timestamp": 1749495045927
+      },
+      {
+        "level": "warning",
+        "code": "RESULT_FAILED",
+        "message": "Result variables executed with errors due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "variables": [
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_body' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_body ?>"
+                }
+              ],
+              "name": "response_body",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_status' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_status ?>"
+                }
+              ],
+              "name": "response_status",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_headers' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_headers ?>"
+                }
+              ],
+              "name": "response_headers",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'created_login_id' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? created_login_id ?>"
+                }
+              ],
+              "name": "created_login_id",
+              "value": null
+            }
+          ]
+        },
+        "timestamp": 1749495045930
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function create_user_profile finished",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "results": {
+            "response_headers": null,
+            "response_status": null,
+            "response_body": null,
+            "created_login_id": null
+          }
+        },
+        "timestamp": 1749495045930
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_body\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495045976
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_status\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495045976
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"created_login_id\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495045976
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_INVALID",
+        "message": "Response context is invalid, response generation is skipped",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495045977
+      }
+    ],
+    "debug": {
+      "correlationId": "b960436d-c345-488e-6fb3-59fe87f23b31"
+    }
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Help
+info: [dasClient] <<< received [
+  {
+    "type": "empty",
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749495046087
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749495046087
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749495046154
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749495046157
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 3 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "create_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "user_profile"
+          },
+          {
+            "capability_name": "concur_test_bot",
+            "scenario_name": "show_help"
+          }
+        ],
+        "timestamp": 1749495046764
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "concurtestassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "113f9442-c71f-496e-8c8b-29b25cdedee4"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "create_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "ac061ec9-6c76-479c-b74d-3331c0072360",
+                            "content": "This function creates a new user profile in Concur using the Travel Profile v2 API with sample data"
+                          }
+                        ],
+                        "id": "7cec2eb4-9081-407e-8a05-ec7a70a82605"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "user_profile"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "bd4b91f7-55e5-4b06-a6bf-fead9e88961f",
+                            "content": "This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging"
+                          }
+                        ],
+                        "id": "96d916e2-07cf-4040-b09b-ae150b363050"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "concur_test_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "059d4ee9-8daf-416a-80fa-25f0d21bf9d0",
+                            "content": "This function provides help information about what the Concur test bot can do"
+                          }
+                        ],
+                        "id": "84d5bffa-6455-43f7-aac3-3e6612f89500"
+                      }
+                    ],
+                    "id": "5f22fb5a-5a8e-4ab7-8142-2ca4e8a33087",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749495046764
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495047230
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_EXECUTED_WITH_PARAMETERS",
+        "message": "The scenario create_profile is called with parameters",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {
+          "login_id": "newuser@example.com"
+        },
+        "timestamp": 1749495047809
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function create_user_profile started",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "parameters": {
+            "login_id": "newuser@example.com"
+          }
+        },
+        "timestamp": 1749495047858
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_FAILED",
+        "message": "API request action skipped due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "Expression [xml version=\"1.0\" encoding=\"utf-8\"] @4: EL1041E: After parsing a valid expression, there is still more data in the expression: 'version'",
+              "invalid_expression": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<ProfileResponse Action=\"Create\" LoginId=\"<? login_id != null ? login_id : 'sample.user@example.com' ?>\">\n  <General>\n    <NamePrefix>Mr.</NamePrefix>\n    <FirstName>John</FirstName>\n    <MiddleName>A</MiddleName>\n    <LastName>Doe</LastName>\n    <NameSuffix></NameSuffix>\n    <PreferredName>John</PreferredName>\n    <JobTitle>Software Developer</JobTitle>\n    <PreferredLanguage>en</PreferredLanguage>\n    <Locale>en_US</Locale>\n    <CountryCode>US</CountryCode>\n    <CompanyEmployeeID>EMP12345</CompanyEmployeeID>\n    <RuleClass>Default Travel Class</RuleClass>\n  </General>\n  <Addresses>\n    <Address Type=\"Home\">\n      <Street>123 Main Street</Street>\n      <City>Seattle</City>\n      <StateProvince>WA</StateProvince>\n      <CountryCode>US</CountryCode>\n      <PostalCode>98101</PostalCode>\n    </Address>\n    <Address Type=\"Work\">\n      <Street>456 Business Ave</Street>\n      <City>Seattle</City>\n      <StateProvince>WA</StateProvince>\n      <CountryCode>US</CountryCode>\n      <PostalCode>98102</PostalCode>\n    </Address>\n  </Addresses>\n  <Telephones>\n    <Telephone Type=\"Home\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0123</PhoneNumber>\n    </Telephone>\n    <Telephone Type=\"Work\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0124</PhoneNumber>\n    </Telephone>\n    <Telephone Type=\"Cell\">\n      <CountryCode>1</CountryCode>\n      <PhoneNumber>206-555-0125</PhoneNumber>\n    </Telephone>\n  </Telephones>\n  <EmailAddresses>\n    <EmailAddress Type=\"Business\"><? login_id != null ? login_id : 'sample.user@example.com' ?></EmailAddress>\n    <EmailAddress Type=\"Personal\">john.doe@gmail.com</EmailAddress>\n  </EmailAddresses>\n  <Air>\n    <Seat>\n      <InterRowPositionCode>Window</InterRowPositionCode>\n      <SectionPositionCode>Forward</SectionPositionCode>\n    </Seat>\n    <MealCode>VGML</MealCode>\n    <HomeAirport>SEA</HomeAirport>\n    <AirOther>No special requests</AirOther>\n  </Air>\n  <Hotel>\n    <HotelMemberships></HotelMemberships>\n    <RoomType>King</RoomType>\n    <HotelOther>High floor preferred</HotelOther>\n    <PreferFoamPillows>true</PreferFoamPillows>\n    <PreferGym>true</PreferGym>\n    <PreferPool>true</PreferPool>\n  </Hotel>\n  <Car>\n    <CarType>Intermediate</CarType>\n    <CarTransmission>Automatic</CarTransmission>\n    <CarSmokingCode>NonSmoking</CarSmokingCode>\n    <CarGPS>true</CarGPS>\n  </Car>\n  <RatePreferences>\n    <AAARate>false</AAARate>\n    <AARPRate>false</AARPRate>\n    <GovtRate>false</GovtRate>\n    <MilitaryRate>false</MilitaryRate>\n  </RatePreferences>\n  <TSAInfo>\n    <Gender>Male</Gender>\n    <DateOfBirth>1985-06-15</DateOfBirth>\n    <NoMiddleName>false</NoMiddleName>\n    <PreCheckNumber>12345678</PreCheckNumber>\n    <RedressNumber></RedressNumber>\n  </TSAInfo>\n  <CustomFields>\n    <CustomField Name=\"Department\">Engineering</CustomField>\n    <CustomField Name=\"CostCenter\">CC1001</CustomField>\n  </CustomFields>\n</ProfileResponse>\n"
+            }
+          ]
+        },
+        "timestamp": 1749495047864
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_GROUP_FAILED",
+        "message": "Action group skipped due to invalid scripting expression in condition",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "EL1008E: Property or field 'create_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+              "invalid_expression": "<? create_response.status_code != 200 ?>"
+            },
+            {
+              "scripting_error": "Expression does not evaluate to a boolean result. Evaluated result: \"null\"",
+              "invalid_expression": "create_response.status_code != 200"
+            }
+          ]
+        },
+        "timestamp": 1749495047869
+      },
+      {
+        "level": "warning",
+        "code": "ACTION_GROUP_FAILED",
+        "message": "Action group skipped due to invalid scripting expression in condition",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "warnings": [
+            {
+              "scripting_error": "EL1008E: Property or field 'create_response' cannot be found on object of type 'Map' - maybe not public or not valid?",
+              "invalid_expression": "<? create_response.status_code == 200 ?>"
+            },
+            {
+              "scripting_error": "Expression does not evaluate to a boolean result. Evaluated result: \"null\"",
+              "invalid_expression": "create_response.status_code == 200"
+            }
+          ]
+        },
+        "timestamp": 1749495047870
+      },
+      {
+        "level": "warning",
+        "code": "RESULT_FAILED",
+        "message": "Result variables executed with errors due to invalid scripting expression",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "variables": [
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_body' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_body ?>"
+                }
+              ],
+              "name": "response_body",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_status' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_status ?>"
+                }
+              ],
+              "name": "response_status",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'response_headers' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? response_headers ?>"
+                }
+              ],
+              "name": "response_headers",
+              "value": null
+            },
+            {
+              "warnings": [
+                {
+                  "scripting_error": "EL1008E: Property or field 'created_login_id' cannot be found on object of type 'Map' - maybe not public or not valid?",
+                  "invalid_expression": "<? created_login_id ?>"
+                }
+              ],
+              "name": "created_login_id",
+              "value": null
+            }
+          ]
+        },
+        "timestamp": 1749495047875
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function create_user_profile finished",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile",
+          "dialog_function_name": "create_user_profile"
+        },
+        "data": {
+          "results": {
+            "response_headers": null,
+            "response_status": null,
+            "response_body": null,
+            "created_login_id": null
+          }
+        },
+        "timestamp": 1749495047875
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_body\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495047923
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"response_status\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495047923
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_VALUE_NULL",
+        "message": "The dialog function result variable corresponding to response context value \"created_login_id\" is null or empty",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495047924
+      },
+      {
+        "level": "warning",
+        "code": "RESPONSE_CONTEXT_INVALID",
+        "message": "Response context is invalid, response generation is skipped",
+        "context": {
+          "capability": {
+            "name": "concur_test_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "create_profile"
+        },
+        "data": {},
+        "timestamp": 1749495047924
+      }
+    ],
+    "debug": {
+      "correlationId": "e53aa9bf-389f-4e69-57f8-53be68a186a8"
+    }
+  }
+]
+info: [dasClient] Conversation reset
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show my profile
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show my profile
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Show my profile
+info: [dasClient] <<< received []

@@ -1,0 +1,14 @@
+description: This scenario allows to show information on a capability (cap) developer.
+slots:
+  - name: first_name
+    description: The first name of the capability developer who the user wants to see
+  - name: last_name
+    description: The last name of the capability developer who the user wants to see
+
+target:
+  type: function
+  name: show_cap_developer_info
+
+capability_context:
+   - name: selected_capability_developer
+     value: $target_result.selected_capability_developer

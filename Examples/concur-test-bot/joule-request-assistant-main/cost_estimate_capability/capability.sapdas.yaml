@@ -1,0 +1,13 @@
+schema_version: 3.0.0
+
+metadata:
+  namespace: com.sap.concur.request.assistant
+  name: concur_request_assistant_capability
+  version: 1.0.0
+  display_name: "Concur Request Assistant Capability"
+  description: >-
+    This capability calls Concur Request APIs for travel cost estimation.
+
+system_aliases:
+  ConcurApiGateway:
+    destination: CONCUR_API_GATEWAY

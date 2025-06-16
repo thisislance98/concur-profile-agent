@@ -1,0 +1,23 @@
+description: Get and set the user's first name in Concur Travel Profile.
+
+slots:
+  - name: login_id
+    description: The login ID of the user whose first name to get or set
+  - name: new_first_name
+    description: The new first name to set (if updating)
+
+target:
+  type: function
+  name: get_and_set_first_name
+
+response_context:
+  - value: $target_result.operation_type
+    description: Whether this was a get or set operation
+  - value: $target_result.first_name
+    description: The user's first name
+  - value: $target_result.update_success
+    description: Whether the update was successful
+  - value: $target_result.new_first_name
+    description: The new first name set for the user
+  - value: $target_result.has_first_name
+    description: Whether the user has a first name in their profile 

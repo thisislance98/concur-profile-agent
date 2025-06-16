@@ -1,0 +1,52 @@
+parameters:
+  - name: name
+    optional: true
+action_groups:
+  # In a productive implementation this function would call a backend service to retrieve the materials. This is mocked here for demo purposes.
+
+  - condition: name == null
+    actions:
+      - type: status-update
+        message: <? "Retrieving all materials ?>
+      - type: set-variables
+        variables:
+          - name: material_ids
+            value: [ "MAT000001", "MAT000002" ]
+          - name: material_names
+            value: [ "Computer", "Smartphone" ]
+
+  - condition: name != null
+    actions:
+    - type: status-update
+      message: <? "Retrieving vendor information for " + name ?>
+
+  - condition: name == "Computer"
+    actions:
+      - type: set-variables
+        variables:
+          - name: material_ids
+            value: [ "MAT000001" ]
+          - name: material_names
+            value: [ "Computer" ]
+
+  - condition: name == "Smartphone"
+    actions:
+      - type: set-variables
+        variables:
+          - name: material_ids
+            value: [ "MAT000002" ]
+          - name: material_names
+            value: [ "Smartphone" ]
+
+  - condition: name != "Computer" && name != "Smartphone" && name != null
+    actions:
+      - type: set-variables
+        variables:
+          - name: material_ids
+            value: []
+          - name: material_names
+            value: []
+result:
+  number_of_materials: <? material_ids.size() ?>
+  material_ids: <? material_ids ?>
+  material_names: <? material_names ?>

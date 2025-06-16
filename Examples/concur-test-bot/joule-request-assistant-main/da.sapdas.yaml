@@ -1,0 +1,7 @@
+schema_version: 3.0.0
+name: request_assistant
+capabilities:
+  - type: local
+    folder: ./cost_estimate_capability
+  - type: local
+    folder: ./concur_core_capability

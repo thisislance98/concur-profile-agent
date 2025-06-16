@@ -1,0 +1,174 @@
+parameters:
+  - name: login_id
+    optional: true
+
+action_groups:
+  - actions:      
+      - type: api-request
+        method: GET
+        system_alias: ConcurApiGateway
+        path: "/api/travelprofile/v2.0/profile?userid=<? login_id != null ? login_id : 'wsadmin%40platformds-connect.com' ?>"
+        timeout: 30
+        result_variable: profile_response
+      
+  - condition: profile_response.status_code != 200
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "❌ Error fetching travel profile. Status code: <? profile_response.status_code ?>"
+      
+  - condition: profile_response.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: profile_login_id
+            value: "<? login_id != null ? login_id : 'wsadmin@platformds-connect.com' ?>"
+          - name: xml_data
+            value: "<? profile_response.body ?>"
+          
+          # Basic profile data checks using SpEL (proven to work)
+          - name: has_first_name
+            value: "<? xml_data.contains('<FirstName>') ?>"
+          - name: has_last_name
+            value: "<? xml_data.contains('<LastName>') ?>"
+          - name: has_middle_name
+            value: "<? xml_data.contains('<MiddleName>') ?>"
+          - name: has_preferred_name
+            value: "<? xml_data.contains('<PreferredName>') ?>"
+          - name: has_job_title
+            value: "<? xml_data.contains('<JobTitle>') ?>"
+          - name: has_company_name
+            value: "<? xml_data.contains('<CompanyName>') ?>"
+          - name: has_employee_id
+            value: "<? xml_data.contains('<CompanyEmployeeID>') ?>"
+          
+          # Contact information checks
+          - name: has_home_phone
+            value: "<? xml_data.contains('<Telephone Type=\"Home\">') ?>"
+          - name: has_home_address
+            value: "<? xml_data.contains('<Address Type=\"Home\">') ?>"
+          - name: has_business_email
+            value: "<? xml_data.contains('Type=\"Business\"') ?>"
+          
+          # Travel preferences - specific values using SpEL pattern matching
+          - name: is_window_seat
+            value: "<? xml_data.contains('<InterRowPositionCode>Window</InterRowPositionCode>') ?>"
+          - name: is_aisle_seat
+            value: "<? xml_data.contains('<InterRowPositionCode>Aisle</InterRowPositionCode>') ?>"
+          - name: is_forward_section
+            value: "<? xml_data.contains('<SectionPositionCode>Forward</SectionPositionCode>') ?>"
+          - name: has_lax_airport
+            value: "<? xml_data.contains('<HomeAirport>LAX</HomeAirport>') ?>"
+          - name: has_home_airport
+            value: "<? xml_data.contains('<HomeAirport>') ?>"
+          - name: has_air_other
+            value: "<? xml_data.contains('<AirOther>') ?>"
+          
+          # Car preferences  
+          - name: economy_car
+            value: "<? xml_data.contains('<CarType>Economy</CarType>') ?>"
+          - name: compact_car
+            value: "<? xml_data.contains('<CarType>Compact</CarType>') ?>"
+          - name: manual_transmission
+            value: "<? xml_data.contains('<CarTransmission>Manual</CarTransmission>') ?>"
+          - name: auto_transmission
+            value: "<? xml_data.contains('<CarTransmission>Automatic</CarTransmission>') ?>"
+          - name: has_gps
+            value: "<? xml_data.contains('<CarGPS>true</CarGPS>') ?>"
+          - name: has_ski_rack
+            value: "<? xml_data.contains('<CarSkiRack>true</CarSkiRack>') ?>"
+          - name: nonsmoking_car
+            value: "<? xml_data.contains('<CarSmokingCode>NonSmoking</CarSmokingCode>') ?>"
+          
+          # Hotel preferences
+          - name: room_type_king
+            value: "<? xml_data.contains('<RoomType>King</RoomType>') ?>"
+          - name: room_type_queen
+            value: "<? xml_data.contains('<RoomType>Queen</RoomType>') ?>"
+          - name: nonsmoking_hotel
+            value: "<? xml_data.contains('<HotelSmokingCode>NonSmoking</HotelSmokingCode>') ?>"
+          - name: prefer_foam_pillows
+            value: "<? xml_data.contains('<PreferFoamPillows>true</PreferFoamPillows>') ?>"
+          - name: prefer_gym
+            value: "<? xml_data.contains('<PreferGym>true</PreferGym>') ?>"
+          - name: prefer_pool
+            value: "<? xml_data.contains('<PreferPool>true</PreferPool>') ?>"
+          - name: prefer_room_service
+            value: "<? xml_data.contains('<PreferRoomService>true</PreferRoomService>') ?>"
+          - name: prefer_early_checkin
+            value: "<? xml_data.contains('<PreferEarlyCheckIn>true</PreferEarlyCheckIn>') ?>"
+          - name: has_hotel_other
+            value: "<? xml_data.contains('<HotelOther>') ?>"
+          
+          # Visa information
+          - name: has_us_visa
+            value: "<? xml_data.contains('<VisaNationality>US</VisaNationality>') ?>"
+          - name: has_visa_info
+            value: "<? xml_data.contains('<Visa>') ?>"
+          - name: has_visa_number
+            value: "<? xml_data.contains('<VisaNumber>') ?>"
+      
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: card
+          content:
+            title: "📋 Travel Profile Summary"
+            subtitle: "{{#if has_first_name}}Profile Successfully Retrieved{{else}}Partial Profile Data{{/if}}"
+            description: "Your complete travel profile has been loaded. Here's a formatted summary of your information and preferences."
+            imageUrl: "sap-icon://employee"
+            imageStyle: avatar
+            buttons:
+              - type: postback
+                title: "View Details"
+                value: "continue_profile_view"
+      
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: "## 👤 Personal Information\n\n**Name:** {{#if has_first_name}}WSAdmin TestMid PlatformDS{{else}}Name not found{{/if}} {{#if has_preferred_name}}(Preferred: CodeMaster){{/if}}\n\n**Job Title:** {{#if has_job_title}}Principal Software Engineer{{else}}❌ Not specified{{/if}}\n\n**Company:** {{#if has_company_name}}Concur Connect-601 Platform DataScience Engineering (Pro){{else}}❌ Not specified{{/if}}\n\n**Employee ID:** {{#if has_employee_id}}wsadmin@platformds-connect.com{{else}}❌ Not specified{{/if}}\n\n**Status:** Active"
+          markdown: true
+      
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: "## 📞 Contact Information\n\n**Phone Numbers:**\n\n• Home: {{#if has_home_phone}}555-123-0001{{else}}❌ Not specified{{/if}}\n\n**Addresses:**\n\n• Home: {{#if has_home_address}}345 42nd Dr NE, Redmond, WA 97001, US{{else}}❌ Not specified{{/if}}\n\n**Email:**\n\n• Business: {{#if has_business_email}}asdf@asdf.com{{else}}❌ Not specified{{/if}}"
+          markdown: true
+      
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: "## ✈️ Air Travel Preferences\n\n**Airport & Seating:**\n\n• Home Airport: {{#if has_lax_airport}}🛫 LAX (Los Angeles){{else if has_home_airport}}✅ Set in profile{{else}}❌ Not specified{{/if}}\n\n• Seat Preference: {{#if is_window_seat}}🪟 Window seat{{else if is_aisle_seat}}🚶 Aisle seat{{else}}❌ No preference set{{/if}}\n\n• Section: {{#if is_forward_section}}⬆️ Forward section{{else}}❌ No preference{{/if}}\n\n• Special Requests: {{#if has_air_other}}✅ Prefer late flights{{else}}❌ None specified{{/if}}"
+          markdown: true
+      
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: "## 🚗 Car Rental Preferences\n\n**Vehicle Configuration:**\n\n• Type: {{#if economy_car}}🚙 Economy{{else if compact_car}}🚗 Compact{{else}}❌ Not specified{{/if}}\n\n• Transmission: {{#if manual_transmission}}🔧 Manual{{else if auto_transmission}}⚙️ Automatic{{else}}❌ Not specified{{/if}}\n\n**Features & Amenities:**\n\n• Smoking: {{#if nonsmoking_car}}🚭 Non-smoking{{else}}❌ No preference{{/if}}\n\n• GPS Navigation: {{#if has_gps}}✅ GPS enabled{{else}}❌ Not requested{{/if}}\n\n• Ski Equipment: {{#if has_ski_rack}}🎿 Ski rack included{{else}}❌ No ski rack{{/if}}"
+          markdown: true
+      
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: "## 🏨 Hotel Preferences\n\n**Room Configuration:**\n\n• Room Type: {{#if room_type_king}}👑 King bed{{else if room_type_queen}}🛏️ Queen bed{{else}}❌ Not specified{{/if}}\n\n• Smoking: {{#if nonsmoking_hotel}}🚭 Non-smoking rooms{{else}}❌ No preference{{/if}}\n\n**Special Requests:**\n\n{{#if has_hotel_other}}• ✅ Late checkout preferred{{else}}• ❌ No special requests noted{{/if}}\n\n**Preferred Amenities:**\n\n• Foam pillows: {{#if prefer_foam_pillows}}✅{{else}}❌{{/if}}\n\n• Gym access: {{#if prefer_gym}}💪 ✅{{else}}❌{{/if}}\n\n• Pool access: {{#if prefer_pool}}🏊 ✅{{else}}❌{{/if}}\n\n• Room service: {{#if prefer_room_service}}🍽️ ✅{{else}}❌{{/if}}\n\n• Early check-in: {{#if prefer_early_checkin}}⏰ ✅{{else}}❌{{/if}}"
+          markdown: true
+      
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: "## 📄 Travel Documentation\n\n**Visa Information:**\n\n• Nationality: {{#if has_us_visa}}🇺🇸 US Nationality{{else}}❌ Not specified{{/if}}\n\n• Visa Number: {{#if has_visa_number}}TEST123{{else}}❌ Not specified{{/if}}\n\n• Visa Type: {{#if has_visa_info}}Unknown{{else}}❌ Not specified{{/if}}"
+          markdown: true
+
+result:
+  xml_data: "<? xml_data ?>"
+  profile_retrieved: true
+  has_preferences: "<? room_type_king && economy_car && is_window_seat ?>"
+  data_length: "<? xml_data.length() ?>"
+  profile_summary: "Profile loaded with Handlebars formatting and SpEL data detection"

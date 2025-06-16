@@ -1,0 +1,17 @@
+description: Show available vendors
+
+slots:
+  - name: name
+    description: Name of the vendor which is used for filtering available vendors
+
+target:
+  type: function
+  name: purchase_order/get_vendor
+
+response_context:
+  - description: Number of vendors which were fetched
+    value: $target_result.number_of_vendors
+  - description: List of vendor IDs
+    value: $target_result.vendor_ids
+  - description: List of vendor names
+    value: $target_result.vendor_names

@@ -1,0 +1,26 @@
+parameters:
+  - name: purchase_requisition_id
+    optional: false
+  - name: material_id
+    optional: false
+  - name: shipping_address
+    optional: false
+  - name: quantity    
+    optional: false
+
+action_groups:
+  - actions:
+      - type: status-update
+        message:  <? "Creating purchase order for purchase requisition id " + purchase_requisition_id ?>
+      
+      # In a productive scenario a backend service would be called here to persist the purchase order.
+      - type: set-variables
+        variables:
+          - name: id
+            value: "PO000001"
+result:
+  quantity: <? quantity ?>
+  shipping_address: <? shipping_address ?>
+  id: <? id ?>
+  material_id: <? material_id ?>
+  purchase_requisition_id: <? purchase_requisition_id ?>

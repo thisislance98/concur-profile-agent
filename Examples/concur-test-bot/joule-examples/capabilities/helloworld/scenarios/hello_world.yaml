@@ -1,0 +1,9 @@
+description: This function says hello world or the name of the user
+
+slots:
+  - name: name
+    description: The name of the person to be greeted
+
+target:
+  type: function
+  name: say_hello

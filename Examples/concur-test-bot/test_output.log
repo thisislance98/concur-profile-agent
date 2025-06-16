@@ -1,0 +1,47 @@
+Testing using logged in user
+Feature: Debug Travel Profile Retrieval # tests/features/debug_profile.feature:1
+
+  Single test to debug travel profile API call
+
+  Scenario: Test travel profile retrieval # tests/features/debug_profile.feature:8
+    Given I log in
+    And I start a new conversation
+    When I say "Show my profile"
+    Then response has 1 message
+    ✖ failed
+      AssertionError [ERR_ASSERTION]: Expected 1 messages, found 0
+       []
+          + expected - actual
+
+          -0
+          +1
+
+          at BasicDialog.responseHasMessageLength (file:///usr/local/lib/node_modules/sapdas-cli/dist/esm/test/bdd/step-definitions/basic-dialog.steps.js:83:16)
+          at BasicDialog.responseHasMessageLengthOne (file:///usr/local/lib/node_modules/sapdas-cli/dist/esm/test/bdd/step-definitions/basic-dialog.steps.js:76:14)
+          at World.bindingFunc (/usr/local/lib/node_modules/sapdas-cli/node_modules/cucumber-tsflow/dist/binding-decorator.js:180:77)
+
+Failures:
+
+1) Scenario: Test travel profile retrieval # tests/features/debug_profile.feature:8
+   ✔ Before # ../../../../../../usr/local/lib/node_modules/sapdas-cli/node_modules/cucumber-tsflow/dist/binding-decorator.js:118
+   ✔ Before # node:internal/modules/esm/module_job:268
+   ✔ Given I log in # node:internal/modules/esm/module_job:268
+   ✔ And I start a new conversation # node:internal/modules/esm/module_job:268
+   ✔ When I say "Show my profile" # node:internal/modules/esm/module_job:268
+   ✖ Then response has 1 message # node:internal/modules/esm/module_job:268
+       AssertionError [ERR_ASSERTION]: Expected 1 messages, found 0 
+        []
+           + expected - actual
+
+           -0
+           +1
+
+           at BasicDialog.responseHasMessageLength (file:///usr/local/lib/node_modules/sapdas-cli/dist/esm/test/bdd/step-definitions/basic-dialog.steps.js:83:16)
+           at BasicDialog.responseHasMessageLengthOne (file:///usr/local/lib/node_modules/sapdas-cli/dist/esm/test/bdd/step-definitions/basic-dialog.steps.js:76:14)
+           at World.bindingFunc (/usr/local/lib/node_modules/sapdas-cli/node_modules/cucumber-tsflow/dist/binding-decorator.js:180:77)
+   ✔ After # node:internal/modules/esm/module_job:268
+   ✔ After # ../../../../../../usr/local/lib/node_modules/sapdas-cli/node_modules/cucumber-tsflow/dist/binding-decorator.js:128
+
+1 scenario (1 failed)
+4 steps (1 failed, 3 passed)
+0m04.615s (executing steps: 0m04.604s)

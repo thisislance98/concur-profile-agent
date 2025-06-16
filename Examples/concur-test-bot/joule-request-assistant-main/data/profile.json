@@ -1,0 +1,261 @@
+{
+  "addresses": [
+    {
+      "country": "FR",
+      "streetAddress": "test street",
+      "postalCode": "75000",
+      "locality": "test city",
+      "id": "$1$SG9tZTo6MA==",
+      "type": "Home",
+      "region": "YV"
+    },
+    {
+      "country": "FR",
+      "streetAddress": "test street",
+      "postalCode": "75000",
+      "locality": "test city",
+      "id": "$1$V29yazo6MQ==",
+      "type": "Work",
+      "region": "YV"
+    }
+  ],
+  "preferredLanguage": "en-US",
+  "gender": null,
+  "timezone": "America/New_York",
+  "displayName": "William Never",
+  "com:concur:LocaleOverrides:1.0": {
+    "preferenceDefaultCalView": 2,
+    "preferenceFirstDayOfWeek": 1,
+    "preferenceNumberFormat": "1,000.00",
+    "preferenceNegativeCurrencyFormat": "(100)",
+    "preferenceTimeFormat": ":",
+    "preference24Hour": "H:mm",
+    "preferenceCurrencySymbolLocation": "BeforeAmount",
+    "preferenceDistance": "M",
+    "preferenceDateFormat": "mm/dd/yyyy",
+    "preferenceStartDayViewHour": 8,
+    "preferenceNegativeNumberFormat": "-100",
+    "preferenceEndDayViewHour": 20
+  },
+  "phoneNumbers": [
+    {
+      "countryISDCode": null,
+      "countryCode": null,
+      "id": "$1$SG9tZTo6MA==",
+      "type": "Home",
+      "value": "tel:33333333",
+      "operatingSystem": null,
+      "notifications": false,
+      "primary": false
+    },
+    {
+      "countryISDCode": null,
+      "countryCode": null,
+      "id": "$1$V29yazo6MQ==",
+      "type": "Work",
+      "value": "tel:111111111;ext=123",
+      "operatingSystem": null,
+      "notifications": false,
+      "primary": false
+    },
+    {
+      "countryISDCode": null,
+      "countryCode": null,
+      "id": "$1$V29yazI6OjI=",
+      "type": "Work2",
+      "value": "tel:22222222",
+      "operatingSystem": null,
+      "notifications": false,
+      "primary": false
+    },
+    {
+      "countryISDCode": null,
+      "countryCode": null,
+      "id": "$1$T3RoZXI6OjM=",
+      "type": "Other",
+      "value": "tel:55555555",
+      "operatingSystem": null,
+      "notifications": false,
+      "primary": false
+    },
+    {
+      "countryISDCode": null,
+      "countryCode": null,
+      "id": "$1$UGFnZXI6OjQ=",
+      "type": "Pager",
+      "value": "tel:44444444",
+      "operatingSystem": null,
+      "notifications": false,
+      "primary": false
+    },
+    {
+      "countryISDCode": null,
+      "countryCode": null,
+      "id": "$1$RmF4Ojo1",
+      "type": "Fax",
+      "value": "tel:11111111",
+      "operatingSystem": null,
+      "notifications": false,
+      "primary": false
+    }
+  ],
+  "emails": [
+    {
+      "verified": false,
+      "id": "$1$QnVzaW5lc3M6OjA=",
+      "type": "Business",
+      "value": "user@p1000472s6bj.com",
+      "notifications": true
+    }
+  ],
+  "com:concur:internal:product:Settings:1.0": {
+    "travel": {
+      "travelCrsName": ""
+    }
+  },
+  "id": "2cb70c82-f984-4781-82ad-e9980d2693d6",
+  "com:concur:Programs:1.0": {
+    "car": [],
+    "rail": [],
+    "hotel": [],
+    "air": []
+  },
+  "emergencyContact": {
+    "country": "FR",
+    "phone": "66666666",
+    "streetAddress": "test street",
+    "postalCode": "75000",
+    "locality": "test city",
+    "name": "test emergency contact",
+    "phone2": "77777777",
+    "relationship": "Sister",
+    "region": "YV"
+  },
+  "nickName": "",
+  "com:concur:Documents:1.0": {
+    "passport": [],
+    "visa": []
+  },
+  "active": true,
+  "dateOfBirth": "1974-12-12",
+  "com:concur:internal:product:Identifiers:1.0": {
+    "cteUsername": "user@p1000472s6bj.com",
+    "travelIds": {
+      "ruleClassId": 3438,
+      "companyId": "1993abee-239d-4820-8782-261403a48e17",
+      "companyInternalId": 1500001365,
+      "travelConfigId": 1500002572,
+      "travelProfileId": "",
+      "setId": 1504466600,
+      "userId": 1504550195
+    },
+    "expenseIds": {
+      "guuid": "8000012130000068815",
+      "entityId": "p1000472s6bj"
+    }
+  },
+  "com:concur:internal:Login:1.0": [
+    {
+      "product": "com.concur.cte",
+      "usernames": [
+        "user@p1000472s6bj.com"
+      ],
+      "id": "$1$Y29tLmNvbmN1ci5jdGU6OjA="
+    }
+  ],
+  "com:concur:internal:Roles:1.0": {
+    "legacyUserRole": "User",
+    "travel": [
+      "approvethenbook",
+      "autocanceluser",
+      "cesuser",
+      "demouser",
+      "traveluser",
+      "webapiadmin"
+    ]
+  },
+  "meta": {
+    "created": "2021-04-12T00:00:00.000",
+    "lastModified": "2023-07-14T02:24:00.000",
+    "principalType": "user",
+    "resourceType": "EnterpriseUser"
+  },
+  "schemas": [
+    "com:concur:User:1.0",
+    "com:concur:internal:product:Identifiers:1.0",
+    "com:concur:Employee:1.0",
+    "com:concur:TravelPreferences:1.0",
+    "com:concur:Programs:1.0",
+    "com:concur:Documents:1.0",
+    "com:concur:internal:Roles:1.0",
+    "com:concur:internal:Login:1.0"
+  ],
+  "name": {
+    "honorificSuffix": "",
+    "hasNoMiddleName": false,
+    "formatted": "William Never",
+    "familyName": "Never",
+    "givenName": "William",
+    "honorificPrefix": "",
+    "middleName": ""
+  },
+  "userType": "Enterprise",
+  "com:concur:TravelPreferences:1.0": {
+    "car": {
+      "carType": "DontCare",
+      "transmission": "DontCare",
+      "smoking": "DontCare",
+      "skirack": false,
+      "gpsEnabled": false
+    },
+    "rail": {
+      "meal": "DontCare",
+      "bed": "DontCare",
+      "seat": "DontCare",
+      "bedCategory": "DontCare",
+      "deck": "DontCare",
+      "berth": "DontCare",
+      "contingency": "DontCare",
+      "noiseComfort": "DontCare",
+      "coach": "DontCare",
+      "space": "DontCare",
+      "fareSpaceComfort": "DontCare"
+    },
+    "hotel": {
+      "roomService": false,
+      "crib": false,
+      "restaurant": false,
+      "pool": false,
+      "remark": null,
+      "accessForBlind": false,
+      "foamPillows": false,
+      "accessForWheelchair": false,
+      "smoking": "NonSmoking",
+      "gym": false,
+      "earlyCheckin": false,
+      "roomType": "DontCare",
+      "rollawayBed": false
+    },
+    "air": {
+      "seat": {
+        "interrowPosition": "NOPREF",
+        "sectionPosition": "NOPREF"
+      },
+      "meal": "DontCare",
+      "homeAirport": null
+    }
+  },
+  "com:concur:Employee:1.0": {
+    "terminationDate": null,
+    "costCenter": "",
+    "companyInternalId": 1500001365,
+    "jobTitle": "",
+    "companyUUID": "1993abee-239d-4820-8782-261403a48e17",
+    "vacationBackupManagerId": null,
+    "employeeId": "user@p1000472s6bj.com",
+    "managerId": "e06b11c5-0040-4585-b382-36a46938c8b9",
+    "orgUnitId": null,
+    "startDate": "2021-04-12T00:00:00.000",
+    "orgUnitName": null
+  }
+}

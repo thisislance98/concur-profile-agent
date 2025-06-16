@@ -1,0 +1,27 @@
+description: This function displays help information for the Concur test bot, showing available features and options through an interactive card interface with buttons for profile-related actions.
+
+parameters: []
+
+action_groups:
+  - actions:
+      - type: message
+        message: 
+          type: card
+          content:
+            title: "<? new i18n('HELP_TITLE') ?>"
+            subtitle: "<? new i18n('HELP_SUBTITLE') ?>"
+            description: "<? new i18n('HELP_DESCRIPTION') ?>"
+            imageUrl: sap-icon://question-mark
+            imageStyle: avatar
+            buttons:
+              - type: postback
+                title: "<? new i18n('GET_PROFILE') ?>"
+                value: profile_request
+              - type: postback
+                title: "<? new i18n('CREATE_PROFILE') ?>"
+                value: create_profile_request
+      
+      - type: message
+        message: 
+          type: text 
+          content: "<? new i18n('HELP_FEATURES') ?>" 

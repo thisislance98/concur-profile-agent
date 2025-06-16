@@ -1,0 +1,9 @@
+description: The Concur profile application fetches the user profile information from Concur Profile API.
+
+slots:
+  - name: user_id
+    description: The user id to fetch details of
+
+target:
+  type: function
+  name: profile/fetch_user_profile

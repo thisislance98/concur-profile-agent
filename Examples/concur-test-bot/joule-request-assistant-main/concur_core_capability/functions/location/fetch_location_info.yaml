@@ -1,0 +1,31 @@
+parameters:
+  - name: location_name
+    optional: true
+action_groups:
+  - actions:
+      - type: api-request
+        method: GET
+        system_alias: ConcurApiGateway
+        path: /profile/v1/me
+        result_variable: user_profile
+      - type: api-request
+        method: GET
+        system_alias: ConcurApiGateway
+        path: "/localities/v4/company/<? user_profile.body['com:concur:Employee:1.0'].companyUUID ?>/searchtext/<? location_name ?>"
+        result_variable: localities_result
+  - condition: localities_result.status_code != 200
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "No matching location found: <? location_name ?>"
+  - condition: localities_result.status_code == 200
+    actions:
+      - type: dialog-function
+        name: location/display_location
+        parameters:
+          - name: location_list
+            value: "<? localities_result.body.localities ?>"
+          - name: location_name
+            value: "<? location_name ?>"
+        result_variable: location_selected

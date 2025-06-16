@@ -1,0 +1,50 @@
+parameters: []
+
+action_groups:
+  - actions:
+      - type: status-update
+        message: "<? new i18n('FETCHING_INFO') ?>"
+      
+      - type: api-request
+        method: GET
+        system_alias: FuturamaAPI
+        path: /
+        timeout: 15
+        result_variable: futurama_data
+      
+      - type: set-variables
+        variables:
+          - name: show_info
+            value: "<? futurama_data.body[0] ?>"
+          - name: creators_text
+            value: "<? show_info.creators[0].name + ' and ' + show_info.creators[1].name ?>"
+      
+      - type: message
+        message:
+          type: card
+          content:
+            title: "Futurama"
+            subtitle: "<? new i18n('YEARS_AIRED', show_info.yearsAired) ?>"
+            description: "<? show_info.synopsis ?>"
+            imageUrl: sap-icon://tv
+            imageStyle: avatar
+            status: "<? new i18n('CREATED_BY', creators_text) ?>"
+            statusState: information
+            buttons:
+              - type: postback
+                title: "<? new i18n('MORE_HELP') ?>"
+                value: help_request
+      
+      - type: message
+        message:
+          type: quickReplies
+          content:
+            title: "<? new i18n('WHAT_ELSE') ?>"
+            buttons:
+              - title: "<? new i18n('GET_HELP') ?>"
+                value: help_request
+
+result:
+  show_title: "Futurama"
+  years_aired: "<? show_info.yearsAired ?>"
+  creators: "<? creators_text ?>" 

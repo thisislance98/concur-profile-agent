@@ -1,0 +1,7 @@
+.idea
+
+# DTA artifacts
+**/*.daar
+
+# CLI debug file
+/**/debug-*.json

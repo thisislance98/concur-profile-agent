@@ -1,0 +1,14 @@
+description: This scenario allows to select a capability (cap) developer to execute subsequent actions.
+slots:
+  - name: first_name
+    description: The first name of the capability developer who should be selected
+  - name: last_name
+    description: The last name of the capability developer who should be selected
+
+target:
+  type: function
+  name: select_cap_developer
+
+capability_context:
+   - name: selected_capability_developer
+     value: $target_result.selected_capability_developer

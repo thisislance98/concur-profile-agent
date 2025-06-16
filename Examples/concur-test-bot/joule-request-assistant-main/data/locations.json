@@ -1,0 +1,234 @@
+{
+  "localities": [
+    {
+      "type": "LOCALITY",
+      "id": "21416d4c-f2ed-486c-9dca-3947984901e3",
+      "code": "USPZT",
+      "preferredName": {
+        "id": "338dde90-0d5e-4273-ad95-a8bce6b7f060",
+        "name": "Paris",
+        "languageCode": "en"
+      },
+      "aliases": [
+      ],
+      "parent": {
+        "type": "SUBDIVISION",
+        "code": "US-KY",
+        "preferredName": {
+          "name": "Kentucky",
+          "languageCode": "en"
+        },
+        "parent": {
+          "type": "COUNTRY",
+          "code": "US",
+          "preferredName": {
+            "name": "UNITED STATES",
+            "languageCode": "en"
+          },
+          "links": [
+            {
+              "rel": "self",
+              "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/countryCode/US"
+            }
+          ]
+        },
+        "links": [
+          {
+            "rel": "self",
+            "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/countryCode/US/subdivisionCode/US-KY"
+          }
+        ]
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/localityId/21416d4c-f2ed-486c-9dca-3947984901e3"
+        }
+      ]
+    },
+    {
+      "type": "LOCALITY",
+      "id": "eaa8cad2-e1b0-994b-9f66-d36358cdda35",
+      "code": "CAPAO",
+      "preferredName": {
+        "id": "76611b1b-0ff4-1948-a9f0-e21979e0dd19",
+        "name": "Paris",
+        "languageCode": "en"
+      },
+      "aliases": [
+      ],
+      "parent": {
+        "type": "SUBDIVISION",
+        "code": "CA-ON",
+        "preferredName": {
+          "name": "Ontario",
+          "languageCode": "en"
+        },
+        "parent": {
+          "type": "COUNTRY",
+          "code": "CA",
+          "preferredName": {
+            "name": "CANADA",
+            "languageCode": "en"
+          },
+          "links": [
+            {
+              "rel": "self",
+              "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/countryCode/CA"
+            }
+          ]
+        },
+        "links": [
+          {
+            "rel": "self",
+            "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/countryCode/CA/subdivisionCode/CA-ON"
+          }
+        ]
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/localityId/eaa8cad2-e1b0-994b-9f66-d36358cdda35"
+        }
+      ]
+    },
+    {
+      "type": "LOCALITY",
+      "id": "63859244-5bec-43dd-abdf-7c6cc9d8559a",
+      "code": "FRPAR",
+      "preferredName": {
+        "id": "3e114e21-bff9-4bf2-bcec-785c088434d3",
+        "name": "Paris",
+        "languageCode": "fr"
+      },
+      "aliases": [
+      ],
+      "parent": {
+        "type": "SUBDIVISION",
+        "code": "FR-75",
+        "preferredName": {
+          "name": "Paris",
+          "languageCode": "en"
+        },
+        "parent": {
+          "type": "COUNTRY",
+          "code": "FR",
+          "preferredName": {
+            "name": "FRANCE",
+            "languageCode": "en"
+          },
+          "links": [
+            {
+              "rel": "self",
+              "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/countryCode/FR"
+            }
+          ]
+        },
+        "links": [
+          {
+            "rel": "self",
+            "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/countryCode/FR/subdivisionCode/FR-75"
+          }
+        ]
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/localityId/63859244-5bec-43dd-abdf-7c6cc9d8559a"
+        }
+      ]
+    },
+    {
+      "type": "LOCALITY",
+      "id": "dae32a3b-c0d7-4097-abae-c544ddfc9639",
+      "code": "USPRX",
+      "preferredName": {
+        "id": "a191dbf3-fe27-4fac-98c2-2ef5f9a791b7",
+        "name": "Paris",
+        "languageCode": "en"
+      },
+      "aliases": [
+      ],
+      "parent": {
+        "type": "SUBDIVISION",
+        "code": "US-TX",
+        "preferredName": {
+          "name": "Texas",
+          "languageCode": "en"
+        },
+        "parent": {
+          "type": "COUNTRY",
+          "code": "US",
+          "preferredName": {
+            "name": "UNITED STATES",
+            "languageCode": "en"
+          },
+          "links": [
+            {
+              "rel": "self",
+              "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/countryCode/US"
+            }
+          ]
+        },
+        "links": [
+          {
+            "rel": "self",
+            "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/countryCode/US/subdivisionCode/US-TX"
+          }
+        ]
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/localityId/dae32a3b-c0d7-4097-abae-c544ddfc9639"
+        }
+      ]
+    },
+    {
+      "type": "LOCALITY",
+      "id": "915beaa2-1235-c748-bb22-4fe6457abbd8",
+      "code": "FRATY",
+      "preferredName": {
+        "id": "87cae4a9-2972-8b4c-8ade-b9a1426765ec",
+        "name": "Paris-Antony",
+        "languageCode": "fr"
+      },
+      "aliases": [
+      ],
+      "parent": {
+        "type": "SUBDIVISION",
+        "code": "FR-92",
+        "preferredName": {
+          "name": "Hauts-de-Seine",
+          "languageCode": "en"
+        },
+        "parent": {
+          "type": "COUNTRY",
+          "code": "FR",
+          "preferredName": {
+            "name": "FRANCE",
+            "languageCode": "en"
+          },
+          "links": [
+            {
+              "rel": "self",
+              "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/countryCode/FR"
+            }
+          ]
+        },
+        "links": [
+          {
+            "rel": "self",
+            "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/countryCode/FR/subdivisionCode/FR-92"
+          }
+        ]
+      },
+      "links": [
+        {
+          "rel": "self",
+          "href": "https://integration.api.concursolutions.com/localities/v4/company/1993abee-239d-4820-8782-261403a48e17/localityId/915beaa2-1235-c748-bb22-4fe6457abbd8"
+        }
+      ]
+    }
+  ]
+}

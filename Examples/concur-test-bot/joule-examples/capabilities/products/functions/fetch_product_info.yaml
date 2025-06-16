@@ -1,0 +1,46 @@
+parameters:
+  - name: product_name
+    optional: true
+action_groups:
+  - actions:
+      - type: set-variables
+        variables:
+          - name: odata_filters
+            value: []
+  - condition: product_name != null
+    actions:
+      - type: set-variables
+        variables:
+          - name: name_filter
+            value:
+              service-attribute: substringof(Name, '<? product_name ?>')
+              filter-operator: eq
+              service-value: true
+          - name: odata_filters
+            value: <? odata_filters.append(name_filter) ?>
+  - actions:
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: filter_string
+            value: "{{odataFilter odata_filters}}"
+      - type: api-request
+        method: GET
+        system_alias: ProductService
+        path: "/EPM_REF_APPS_SHOP_SRV/Products?$format=json&$top=5<? filter_string != null ? '&$filter=' + filter_string : '' ?>&language=<? $transient.processing_locale.raw ?>"
+        result_variable: product_results
+  - condition: product_results == null || product_results.status_code != 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: error_message
+            value: An error occured when fetching products
+  - condition: product_results != null && product_results.body.d.results.size() == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: error_message
+            value: No products found
+result:
+  error_message: "<? error_message ?>"
+  products: <? product_results.body.d.results ?>

@@ -1,0 +1,17 @@
+parameters:
+  - name: name
+    optional: true
+action_groups:
+  - condition: name != null
+    actions:
+      - type: message
+        message: 
+            type: text 
+            content: "<? new i18n('HELLO_WITH_PARAM', name) ?>"
+  - condition: name == null
+    actions:
+      - type: message
+        scripting_type: handlebars
+        message:
+            type: text
+            content: "{{ i18n 'HELLO' }}"

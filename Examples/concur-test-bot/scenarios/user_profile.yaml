@@ -1,0 +1,21 @@
+description: This function fetches user profile information from Concur using the Travel Profile v2 API and displays the complete response for debugging. The data is contained in the travel profile and includes personal details, contact information, travel preferences, and other profile-related information.
+
+slots:
+  - name: user_id
+    description: The user ID or login ID to fetch the profile for
+
+target:
+  type: function
+  name: fetch_user_profile
+
+response_context:
+  - value: $target_result.response_body
+    description: XML response body from travel profile API
+  - value: $target_result.response_status
+    description: HTTP status code from the API call
+  - value: $target_result.response_headers
+    description: HTTP response headers from the API call
+  - value: $target_result.full_response
+    description: Complete API response object with metadata
+  - value: $target_result.queried_user_id
+    description: The user ID that was queried 

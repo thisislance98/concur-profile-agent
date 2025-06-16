@@ -1,0 +1,89 @@
+parameters:
+  - name: location_list
+    optional: true
+  - name: location_name
+    optional: true
+action_groups:
+  - actions:
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: locations_formatted
+            value: >
+              {{#each location_list}}
+                {{#with this}}
+                  {{#if preferredName}}
+                    {
+                      "locationName": "{{preferredName.name}}",
+                      "locationNameId": "{{#if preferredName.id}}{{uppercase (remove preferredName.id '-')}}{{/if}}",
+                      "locationSubDivision": "{{#if parent}}{{#unless (eq parent.preferredName.type 'COUNTRY')}}{{parent.preferredName.name}}{{/unless}}{{/if}}",
+                      "locationCountry": "{{#if parent}}{{#if (eq parent.preferredName.type 'COUNTRY')}}{{parent.preferredName.name}}{{else}}{{#if parent.parent}}{{parent.parent.preferredName.name}}{{/if}}{{/if}}{{/if}}"
+                    }{{#unless @last}},{{/unless}}
+                  {{/if}}
+                {{/with}}
+              {{/each}}
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: locations_json
+            value: >
+              [{{json locations_formatted}}]
+      - type: message
+        scripting_type: handlebars
+        message: >-
+         {
+            "type": "list",
+            "content": {
+              "title": "I could not identify {{location_name}}, please select from one of matching Concur locations:",
+              "total": {{length locations_json}},
+              "elements": [
+                {{#eachJoin locations_json}}
+                        {
+                          "title": "{{locationName}}",
+                          "subtitle": "{{locationSubDivision}} - {{locationCountry}}",
+                          "hideHeaderInDetailView": true,
+                          "sections": [
+                            {
+                              "title": "Details of Location",
+                              "maxItems": 3,
+                              "attributes": [
+                                {
+                                  "type": "text",
+                                  "label": "Name",
+                                  "value": "{{locationName}}",
+                                  "markdown": true
+                                },
+                                {
+                                  "type": "text",
+                                  "label": "Name ID",
+                                  "value": "{{locationNameId}}",
+                                  "markdown": true
+                                },
+                                {
+                                  "type": "text",
+                                  "label": "SubDivision/State",
+                                  "value": "{{locationSubDivision}}",
+                                  "markdown": true
+                                },
+                                {
+                                  "type": "text",
+                                  "label": "Country",
+                                  "value": "{{locationCountry}}",
+                                  "markdown": true
+                                }  
+                              ]
+                            }
+                          ],
+                          "buttons": [
+                            {
+                              "type": "postback",
+                              "title": "Select",
+                              "text": "{{locationName}} - {{locationSubDivision}} - {{locationCountry}} - {{locationNameId}}",
+                              "value": "{{locationName}} - {{locationSubDivision}} - {{locationCountry}} - {{locationNameId}}"
+                            }
+                          ]
+                        }
+                {{/eachJoin}}
+              ]
+            }
+          }

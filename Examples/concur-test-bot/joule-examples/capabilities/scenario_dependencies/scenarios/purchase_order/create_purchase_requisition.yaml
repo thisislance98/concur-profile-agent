@@ -1,0 +1,33 @@
+description: Create a new purchase requisition (PR)
+
+slots:
+  - name: vendor_id
+    description: Technical identifier for the vendor
+    sources:
+      - type: scenario
+        name: purchase_order/get_vendor
+        key: $target_result.vendor_ids
+
+  - name: material_id
+    description: ID of the material which should be ordered with the new purchase order.
+    sources:
+      - type: scenario
+        name: purchase_order/get_material
+        key: $target_result.material_ids
+
+  - name: quantity
+    description: Quantity of the purchase order
+
+target:
+  type: function
+  name: purchase_order/create_purchase_requisition
+
+response_context:
+  - description: ID of the created purchase requisition
+    value: $target_result.id
+  - description: ID of the material which is ordered
+    value: $target_result.material_id
+  - description: ID of the vendor which is referenced
+    value: $target_result.vendor_id
+  - description: Quantity to be ordered
+    value: $target_result.quantity

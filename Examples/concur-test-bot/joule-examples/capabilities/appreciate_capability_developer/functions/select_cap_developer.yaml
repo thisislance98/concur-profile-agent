@@ -1,0 +1,42 @@
+parameters:
+  - name: first_name
+    optional: true
+  - name: last_name
+    optional: true
+  - name: subsequent_action_trigger
+    optional: true
+
+action_groups:
+  - condition: first_name == null && last_name == null
+    actions:
+      - type: message
+        message: 
+          type: text 
+          content: "You need to provide a first name or a last name to select a capability developer."
+      - type: set-variables
+        variables:
+          - name: selected_capability_developer
+            value: null
+  
+  - condition: first_name != null || last_name != null
+    actions:
+      - type: dialog-function
+        name: mock/cap_developer_mock_db
+        parameters:
+          - name: first_name
+            value: <? first_name ?>
+          - name: last_name
+            value: <? last_name ?>
+          - name: subsequent_action_trigger
+            value: <? subsequent_action_trigger ?>
+        result_variable: selected_capability_developer
+      
+  - condition: selected_capability_developer.id != null && subsequent_action_trigger == null
+    actions:
+      - type: message
+        message:
+          type: text
+          content: Selected <? selected_capability_developer.first_name ?> <? selected_capability_developer.last_name ?>
+
+result:
+  selected_capability_developer: <? selected_capability_developer ?>

@@ -1,0 +1,28 @@
+description: Returns existing purchase requisitions
+
+slots:
+  - name: vendor_id
+    description: Technical identifier for the vendor
+    sources:
+      - type: scenario
+        name: purchase_order/get_vendor
+        key: $target_result.vendor_ids
+  # In a productive implementation, additional filters like material_id could be added here
+
+
+target:
+  type: function
+  name: purchase_order/get_purchase_requisition
+
+response_context:
+  - description: Number of returned purchase requisitions
+    value: $target_result.number_of_purchase_requisitions
+
+  - description: IDs of the returned purchase requisitions
+    value: $target_result.purchase_requisition_ids
+  - description: IDs of the materials which are ordered
+    value: $target_result.material_ids
+  - description: IDs of the vendors which are referenced
+    value: $target_result.vendor_ids
+  - description: Quantities to be ordered
+    value: $target_result.quantities

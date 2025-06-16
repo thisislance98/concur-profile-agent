@@ -1,0 +1,12 @@
+schema_version: 3.7.0
+
+metadata:
+  namespace: com.sap.example
+  name: concur_test_bot
+  version: 1.0.0
+  display_name: "Concur Test Bot"
+  description: A bot that fetches user profile information from Concur API
+
+system_aliases:
+  ConcurApiGateway:
+    destination: TEST 

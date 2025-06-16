@@ -1,0 +1,17 @@
+description: This function creates a new user profile in Concur using the Travel Profile v2 API with sample data
+
+slots:
+  - name: login_id
+    description: The login ID/email address for the new user profile
+
+target:
+  type: function
+  name: create_user_profile
+
+response_context:
+  - value: $target_result.response_body
+    description: The XML response from profile creation
+  - value: $target_result.response_status
+    description: HTTP status code from profile creation
+  - value: $target_result.created_login_id
+    description: The login ID of the created profile 

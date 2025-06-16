@@ -1,0 +1,105 @@
+{
+  "id": "81e8fd41-9578-4756-aebc-e69c2f270403",
+  "name": "Flight cost estimation from Barcelona to Paris on 2024-06-09 to 2024-06-10",
+  "explanation": "Here is the cost estimate for a trip (Airfare, Lodging, Ground Transportation) from Barcelona, ES to Paris, FR from 2024-06-09 to 2024-06-10 with the booking date of 2024-03-18:\n\nEstimate Service Base Cost:\n- Airfare: The base cost for a round-trip flight from Barcelona to Paris is typically around 200 EUR. This is based on average prices for tickets booked in advance.\n- Lodging: A mid-range hotel in Paris costs around 150 EUR per night. For the number of nights, this would be 150 (1*150) EUR.\n- Ground Transportation: Taxi fares in Paris are relatively expensive, with an average cost of around 50 EUR for a trip within the city. Assuming two taxi trips for the duration of the trip, this would be 100 (2*50) EUR.\n\nReturn Final Estimate:\n\n```\nCURRENCY: EUR\nAIRFARE: 200.0\nLODGING: 150.0\nGROUND_TRANSPORTATION: 100.0\nTOTAL: 450.0\n```",
+  "startDate": "2024-06-09",
+  "endDate": "2024-06-10",
+  "startLocation": {
+    "id": "ED0DE44F82DA435CBAFDE50FF9330BFD",
+    "countryCode": "ES",
+    "countryName": "SPAIN",
+    "city": "Barcelona",
+    "name": "Barcelona",
+    "locationCode": "ESBCN"
+  },
+  "endLocation": {
+    "id": "3E114E21BFF94BF2BCEC785C088434D3",
+    "countryCode": "FR",
+    "countryName": "FRANCE",
+    "countrySubDivisionCode": "FR-75",
+    "city": "Paris",
+    "iataCode": "PAR",
+    "name": "Paris",
+    "locationCode": "FRPAR"
+  },
+  "estimatedTotalAmount": {
+    "value": 450.0,
+    "currency": "EUR"
+  },
+  "services": [
+    {
+      "service": "AIRFARE",
+      "startDate": "2024-06-09",
+      "endDate": "2024-06-10",
+      "startLocation": {
+        "id": "ED0DE44F82DA435CBAFDE50FF9330BFD",
+        "countryCode": "ES",
+        "countryName": "SPAIN",
+        "city": "Barcelona",
+        "name": "Barcelona",
+        "locationCode": "ESBCN"
+      },
+      "endLocation": {
+        "id": "3E114E21BFF94BF2BCEC785C088434D3",
+        "countryCode": "FR",
+        "countryName": "FRANCE",
+        "countrySubDivisionCode": "FR-75",
+        "city": "Paris",
+        "iataCode": "PAR",
+        "name": "Paris",
+        "locationCode": "FRPAR"
+      },
+      "estimatedTransactionAmount": {
+        "value": 200.0,
+        "currency": "EUR"
+      },
+      "explanation": "The base cost for a round-trip flight from Barcelona to Paris is typically around 200 EUR. This is based on average prices for tickets booked in advance.",
+      "criteria": [
+        "rt"
+      ]
+    },
+    {
+      "service": "LODGING",
+      "startDate": "2024-06-09",
+      "endDate": "2024-06-10",
+      "endLocation": {
+        "id": "3E114E21BFF94BF2BCEC785C088434D3",
+        "countryCode": "FR",
+        "countryName": "FRANCE",
+        "countrySubDivisionCode": "FR-75",
+        "city": "Paris",
+        "iataCode": "PAR",
+        "name": "Paris",
+        "locationCode": "FRPAR"
+      },
+      "estimatedTransactionAmount": {
+        "value": 150.0,
+        "currency": "EUR"
+      },
+      "explanation": "A mid-range hotel in Paris costs around 150 EUR per night. For the number of nights, this would be 150 (1*150) EUR.",
+      "criteria": []
+    },
+    {
+      "service": "GROUND_TRANSPORTATION",
+      "startDate": "2024-06-09",
+      "endDate": "2024-06-10",
+      "endLocation": {
+        "id": "3E114E21BFF94BF2BCEC785C088434D3",
+        "countryCode": "FR",
+        "countryName": "FRANCE",
+        "countrySubDivisionCode": "FR-75",
+        "city": "Paris",
+        "iataCode": "PAR",
+        "name": "Paris",
+        "locationCode": "FRPAR"
+      },
+      "estimatedTransactionAmount": {
+        "value": 100.0,
+        "currency": "EUR"
+      },
+      "explanation": "Taxi fares in Paris are relatively expensive, with an average cost of around 50 EUR for a trip within the city. Assuming two taxi trips for the duration of the trip, this would be 100 (2*50) EUR.",
+      "criteria": []
+    }
+  ],
+  "estimationUuid": "5055042a34dd4f87aa54a5fc8f97f8ea"
+}

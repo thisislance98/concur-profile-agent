@@ -1,0 +1,352 @@
+parameters:
+  - name: estimation
+action_groups:
+  - condition: estimation.services.size() > 0
+    actions:
+      - type: message
+        message:
+          type: ui5integrationCard
+          content: >-
+            {
+            "submit_message": "{submitted_data.action}",
+            "manifest": {
+              "_version": "1.17.0",
+              "sap.app": {
+                "id": "com.sap.concur.request.assistant.location.adaptivecard",
+                "type": "card"
+              },
+              "sap.card": {
+                "type": "AdaptiveCard",
+                "content": {
+                  "data": {
+                     "json":  <? estimation ?>
+                  },
+                  "body": [
+                                           {
+                                               "type": "Container",
+                                               "style": "emphasis",
+                                               "items": [
+                                                   {
+                                                       "type": "ColumnSet",
+                                                       "columns": [
+                                                           {
+                                                               "type": "Column",
+                                                               "items": [
+                                                                   {
+                                                                       "type": "TextBlock",
+                                                                       "size": "Medium",
+                                                                       "weight": "Bolder",
+                                                                       "text": "**Trip Cost Estimation**"
+                                                                   }
+                                                               ],
+                                                               "width": "stretch"
+                                                           }
+                                                       ]
+                                                   }
+                                               ]
+                                           },
+                                           {
+                                               "type": "Container",
+                                               "items": [
+                                                   {
+                                                       "type": "ColumnSet",
+                                                       "columns": [
+                                                           {
+                                                               "type": "Column",
+                                                               "items": [
+                                                                   {
+                                                                       "type": "TextBlock",
+                                                                       "size": "Medium",
+                                                                       "text": "${$root.name}",
+                                                                       "wrap": true
+                                                                   }
+                                                               ],
+                                                               "width": "stretch"
+                                                           }
+                                                       ]
+                                                   }
+                                               ]
+                                           },
+                                           {
+                                               "type": "Container",
+                                               "spacing": "Large",
+                                               "style": "emphasis",
+                                               "items": [
+                                                   {
+                                                       "type": "ColumnSet",
+                                                       "columns": [
+                                                           {
+                                                               "type": "Column",
+                                                               "items": [
+                                                                   {
+                                                                       "type": "TextBlock",
+                                                                       "weight": "Bolder",
+                                                                       "text": "DATE"
+                                                                   }
+                                                               ],
+                                                               "width": "auto"
+                                                           },
+                                                           {
+                                                               "type": "Column",
+                                                               "spacing": "Large",
+                                                               "items": [
+                                                                   {
+                                                                       "type": "TextBlock",
+                                                                       "weight": "Bolder",
+                                                                       "text": "CATEGORY",
+                                                                       "horizontalAlignment": "Center"
+                                                                   }
+                                                               ],
+                                                               "width": "stretch"
+                                                           },
+                                                           {
+                                                               "type": "Column",
+                                                               "items": [
+                                                                   {
+                                                                       "type": "TextBlock",
+                                                                       "weight": "Bolder",
+                                                                       "text": "AMOUNT"
+                                                                   }
+                                                               ],
+                                                               "width": "auto"
+                                                           }
+                                                       ]
+                                                   }
+                                               ]
+                                           },
+                                           {
+                                               "type": "ColumnSet",
+                                               "columns": [
+                                                   {
+                                                       "type": "Column",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${$root.services[0].startDate} - ${$root.services[0].endDate}",
+                                                               "wrap": true
+                                                           }
+                                                       ],
+                                                       "width": "auto"
+                                                   },
+                                                   {
+                                                       "type": "Column",
+                                                       "spacing": "Medium",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${$root.services[0].service}",
+                                                               "wrap": true,
+                                                               "horizontalAlignment": "Center"
+                                                           }
+                                                       ],
+                                                       "width": "stretch"
+                                                   },
+                                                   {
+                                                       "type": "Column",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${string($root.services[0].estimatedTransactionAmount.value)} ${string($root.services[0].estimatedTransactionAmount.currency)}",
+                                                               "wrap": true
+                                                           }
+                                                       ],
+                                                       "width": "auto"
+                                                   }
+                                               ]
+                                           },
+                                           {
+                                               "type": "Container",
+                                               "id": "cardContent1",
+                                               "items": [
+                                                   {
+                                                       "type": "Container",
+                                                       "items": [
+                                                           {
+                                                               "text": "${$root.services[0].startLocation.city} - ${$root.services[0].endLocation.city}",
+                                                               "type": "TextBlock"
+                                                           },
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${$root.services[0].explanation}",
+                                                               "isSubtle": true,
+                                                               "wrap": true
+                                                           }
+                                                       ]
+                                                   }
+                                               ]
+                                           },
+                                           {
+                                               "type": "ColumnSet",
+                                               "columns": [
+                                                   {
+                                                       "type": "Column",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "horizontalAlignment": "Center",
+                                                               "text": "${$root.services[1].startDate} - ${$root.services[1].endDate}",
+                                                               "wrap": true
+                                                           }
+                                                       ],
+                                                       "width": "auto"
+                                                   },
+                                                   {
+                                                       "type": "Column",
+                                                       "spacing": "Medium",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${$root.services[1].service}",
+                                                               "wrap": true,
+                                                               "horizontalAlignment": "Center"
+                                                           }
+                                                       ],
+                                                       "width": "stretch"
+                                                   },
+                                                   {
+                                                       "type": "Column",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${string($root.services[1].estimatedTransactionAmount.value)} ${string($root.services[1].estimatedTransactionAmount.currency)}",
+                                                               "wrap": true
+                                                           }
+                                                       ],
+                                                       "width": "auto"
+                                                   }
+                                               ]
+                                           },
+                                           {
+                                               "type": "Container",
+                                               "id": "cardContent2",
+                                               "items": [
+                                                   {
+                                                       "type": "Container",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${$root.services[1].endLocation.city}",
+                                                               "isSubtle": true,
+                                                               "wrap": true
+                                                           },
+                                                           {
+                                                               "type": "Container",
+                                                               "items": [
+                                                                   {
+                                                                       "text": "${$root.services[1].explanation}",
+                                                                       "type": "TextBlock"
+                                                                   }
+                                                               ]
+                                                           }
+                                                       ]
+                                                   }
+                                               ]
+                                           },
+                                           {
+                                               "type": "ColumnSet",
+                                               "columns": [
+                                                   {
+                                                       "type": "Column",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${$root.services[2].startDate} - ${$root.services[2].endDate}",
+                                                               "wrap": true
+                                                           }
+                                                       ],
+                                                       "width": "auto"
+                                                   },
+                                                   {
+                                                       "type": "Column",
+                                                       "spacing": "Medium",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${$root.services[2].service}",
+                                                               "wrap": true,
+                                                               "horizontalAlignment": "Center"
+                                                           }
+                                                       ],
+                                                       "width": "stretch"
+                                                   },
+                                                   {
+                                                       "type": "Column",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${string($root.services[2].estimatedTransactionAmount.value)} ${string($root.services[2].estimatedTransactionAmount.currency)}",
+                                                               "wrap": true
+                                                           }
+                                                       ],
+                                                       "width": "auto"
+                                                   }
+                                               ]
+                                           },
+                                           {
+                                               "type": "Container",
+                                               "id": "cardContent4",
+                                               "items": [
+                                                   {
+                                                       "type": "Container",
+                                                       "items": [
+                                                           {
+                                                               "text": "${$root.services[2].endLocation.city}",
+                                                               "type": "TextBlock"
+                                                           },
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${$root.services[2].explanation}",
+                                                               "isSubtle": true,
+                                                               "wrap": true
+                                                           }
+                                                       ]
+                                                   }
+                                               ]
+                                           },
+                                           {
+                                               "type": "ColumnSet",
+                                               "spacing": "Large",
+                                               "separator": true,
+                                               "columns": [
+                                                   {
+                                                       "type": "Column",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "horizontalAlignment": "Right",
+                                                               "text": "Total Amount \t",
+                                                               "wrap": true
+                                                           }
+                                                       ],
+                                                       "width": "stretch"
+                                                   },
+                                                   {
+                                                       "type": "Column",
+                                                       "items": [
+                                                           {
+                                                               "type": "TextBlock",
+                                                               "text": "${string($root.estimatedTotalAmount.value)} ${string($root.estimatedTotalAmount.currency)}"
+                                                           }
+                                                       ],
+                                                       "width": "auto"
+                                                   }
+                                               ]
+                                           },
+                                           {
+                                               "type": "Container"
+                                           }
+                                       ],                  
+                  "actions": [
+                      {
+                          "title": "Create Request",
+                          "type": "Action.Submit"
+                      },
+                      {
+                          "title": "Regenerate",
+                          "type": "Action.Submit"
+                      }
+                  ]
+                }
+              }
+            }
+            }

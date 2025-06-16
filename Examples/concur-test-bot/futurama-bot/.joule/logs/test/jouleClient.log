@@ -1,0 +1,401 @@
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Tell me about Futurama
+info: [dasClient] <<< received []
+info: [dasClient] Conversation reset
+info: [dasClient] >>> Help
+info: [dasClient] <<< received [
+  {
+    "type": "card",
+    "content": {
+      "buttons": [
+        {
+          "title": "More Help",
+          "type": "postback",
+          "value": "help_request"
+        }
+      ],
+      "subtitle": "Aired: 1999–2013",
+      "statusState": "information",
+      "imageUrl": "sap-icon://tv",
+      "description": "Philip J. Fry is a 25 year old delivery boy living in New York City who is cryogenically frozen on New Year's 1999 for 1000 years, where he wakes up in New New York City on December 31, 2999. There, he meets Turanga Leela, a tough but loving, beautiful one-eyed alien; and Bender, an alcohol-powered bending robot who is addicted to liquor, cigars, stealing, amongst other things. Eventually, they all meet up with Fry's Great, Great, Great, etc... Nephew, Hubert J. Farnsworth. Farnsworth is a very old man who is a genius but is very senile and forgetful. Fry, Leela, and Bender wind up working for Farnsworth's Planet Express Delivery Service. They then meet their co-workers; Amy Wong, who is a Martian intern who comes from a rich family, but is still a human who is very hip. Also, there is Hermes Conrad, who manages the delivery service and is pretty strict. Hermes seems Jamaican in voice and look. And finally, there's Dr. John Zoidberg, a lobster-like alien who is the crew's doctor. Unfortunately, he knows nothing about humans. Fry, Leela, Bender, and sometimes Amy and Dr. Zoidberg travel around the universe risking life and limb delivering packages and performing charitable tasks for tax deductions.",
+      "title": "Futurama",
+      "imageStyle": "avatar",
+      "status": "Created by David X. Cohen and Matt Groening"
+    },
+    "markdown": false,
+    "delay": 0,
+    "logs": [
+      {
+        "level": "warning",
+        "code": "DEFAULT_LANGUAGE_SELECTED",
+        "message": "English is being used as the default language",
+        "context": {},
+        "data": "{}",
+        "timestamp": 1749157675428
+      },
+      {
+        "level": "warning",
+        "code": "MISSING_USER_DATA",
+        "message": "Missing user data: timezone is not present",
+        "context": {},
+        "data": {},
+        "timestamp": 1749157675429
+      },
+      {
+        "level": "info",
+        "code": "SAC_SCENARIOS_NOT_FOUND",
+        "message": "No SAC scenarios are returned as the SAC capability is not deployed in the Joule tenant",
+        "context": {},
+        "data": null,
+        "timestamp": 1749157675642
+      },
+      {
+        "level": "info",
+        "code": "RAGE_SEARCHFILTER",
+        "message": "Preselection triggered with filters",
+        "context": {},
+        "data": [
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [
+              {
+                "value": [
+                  "en"
+                ],
+                "key": "sap.document-grounding/language"
+              }
+            ],
+            "dataRepositoryType": "vector",
+            "dataRepositoryMetadata": [
+              {
+                "value": [
+                  "custom",
+                  "MSSharePoint"
+                ],
+                "key": "type"
+              }
+            ],
+            "dataRepositories": [
+              "*"
+            ],
+            "id": "customer_documents_search",
+            "searchConfiguration": {
+              "maxChunkCount": 5,
+              "maxDocumentCount": null
+            }
+          },
+          {
+            "documentMetadata": [],
+            "chunkMetadata": [],
+            "dataRepositoryType": "vector",
+            "dataRepositories": [
+              "434d89d4-8f04-4afd-8eab-fbf6a825064d"
+            ],
+            "id": "scenarios_search",
+            "searchConfiguration": {
+              "maxChunkCount": null,
+              "maxDocumentCount": 10
+            }
+          }
+        ],
+        "timestamp": 1749157675646
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information: 2 scenario(s), 0 customer document(s), 0 SAP document(s)",
+        "context": {},
+        "data": [
+          {
+            "capability_name": "futurama_info_bot",
+            "scenario_name": "futurama_info"
+          },
+          {
+            "capability_name": "futurama_info_bot",
+            "scenario_name": "show_help"
+          }
+        ],
+        "timestamp": 1749157676245
+      },
+      {
+        "level": "info",
+        "code": "RESULTS_FOUND",
+        "message": "Preselection identified relevant information with details ",
+        "context": {},
+        "data": {
+          "results": [
+            {
+              "filterId": "customer_documents_search",
+              "error": null,
+              "results": []
+            },
+            {
+              "filterId": "scenarios_search",
+              "error": null,
+              "results": [
+                {
+                  "dataRepository": {
+                    "metadata": [
+                      {
+                        "value": [
+                          "futuramainfoassistant"
+                        ],
+                        "key": "digital_assistant"
+                      },
+                      {
+                        "value": [
+                          "7b708982-2395-46e8-ac7c-dfa2934f392e"
+                        ],
+                        "key": "version"
+                      },
+                      {
+                        "value": [
+                          "dee78886-4031-4561-9da8-ca113f5d8816"
+                        ],
+                        "key": "tenant_id"
+                      },
+                      {
+                        "value": [
+                          "predefined"
+                        ],
+                        "key": "type"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "futurama_info"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "futurama_info_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "dc3e3ff7-d38c-4fdc-9c3c-1a3af0ef8a31",
+                            "content": "This function provides detailed information about the TV show Futurama including synopsis, creators, and years aired"
+                          }
+                        ],
+                        "id": "6454e891-ebac-4073-8adf-460b5f595527"
+                      },
+                      {
+                        "metadata": [
+                          {
+                            "value": [
+                              "show_help"
+                            ],
+                            "key": "scenario_name"
+                          },
+                          {
+                            "value": [
+                              "futurama_info_bot"
+                            ],
+                            "key": "capability_name"
+                          },
+                          {
+                            "value": [
+                              "com.sap.example"
+                            ],
+                            "key": "capability_namespace"
+                          }
+                        ],
+                        "chunks": [
+                          {
+                            "metadata": [
+                              {
+                                "value": [
+                                  "en"
+                                ],
+                                "key": "sap.document-grounding/language"
+                              }
+                            ],
+                            "id": "7d6e2d88-24c2-45d3-8a53-d8c8f619617b",
+                            "content": "This function provides help information about what the Futurama bot can do"
+                          }
+                        ],
+                        "id": "b1666697-0e93-46cd-aa1e-9ac4464e4ba9"
+                      }
+                    ],
+                    "id": "434d89d4-8f04-4afd-8eab-fbf6a825064d",
+                    "title": "scenarios"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "timestamp": 1749157676246
+      },
+      {
+        "level": "info",
+        "code": "SCENARIO_SELECTED",
+        "message": "Joule selected a scenario to execute",
+        "context": {
+          "capability": {
+            "name": "futurama_info_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "futurama_info"
+        },
+        "data": {},
+        "timestamp": 1749157676749
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_STARTED",
+        "message": "Dialog function get_futurama_info started",
+        "context": {
+          "capability": {
+            "name": "futurama_info_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "futurama_info",
+          "dialog_function_name": "get_futurama_info"
+        },
+        "data": {
+          "parameters": {}
+        },
+        "timestamp": 1749157676942
+      },
+      {
+        "level": "info",
+        "code": "I_API_EXECUTION",
+        "message": "Request successfully executed",
+        "context": {
+          "capability": {
+            "name": "futurama_info_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "futurama_info",
+          "dialog_function_name": "get_futurama_info"
+        },
+        "data": {
+          "http_status": "200",
+          "url": "https://api.sampleapis.com/futurama/info/",
+          "info": "External service successfully called. Service responded with HTTP status 200 OK"
+        },
+        "timestamp": 1749157677635
+      },
+      {
+        "level": "info",
+        "code": "DIALOG_FUNCTION_FINISHED",
+        "message": "Dialog function get_futurama_info finished",
+        "context": {
+          "capability": {
+            "name": "futurama_info_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "futurama_info",
+          "dialog_function_name": "get_futurama_info"
+        },
+        "data": {
+          "results": {
+            "show_title": "Futurama",
+            "creators": "David X. Cohen and Matt Groening",
+            "years_aired": "1999–2013"
+          }
+        },
+        "timestamp": 1749157677665
+      },
+      {
+        "level": "info",
+        "code": "RESPONSE_GENERATION_TRIGGERED",
+        "message": "Response context is present in the scenario, response generation is triggered",
+        "context": {
+          "capability": {
+            "name": "futurama_info_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "futurama_info"
+        },
+        "data": {
+          "The creators of the show": "David X. Cohen and Matt Groening",
+          "The years the show was aired": "1999–2013",
+          "The title of the TV show": "Futurama"
+        },
+        "timestamp": 1749157677833
+      },
+      {
+        "level": "info",
+        "code": "RESPONSE_GENERATION_SUCCESS",
+        "message": "Response generation has been completed successfully",
+        "context": {
+          "capability": {
+            "name": "futurama_info_bot",
+            "namespace": "com.sap.example"
+          },
+          "scenario_name": "futurama_info"
+        },
+        "data": {},
+        "timestamp": 1749157679061
+      }
+    ],
+    "debug": {
+      "correlationId": "eaab8529-6ccb-45c2-528f-fc3796cae206"
+    }
+  },
+  {
+    "type": "quickReplies",
+    "content": {
+      "buttons": [
+        {
+          "title": "Get Help",
+          "value": "help_request"
+        }
+      ],
+      "title": "What else would you like to know?"
+    },
+    "markdown": false,
+    "delay": 0,
+    "logs": null,
+    "debug": null
+  },
+  {
+    "type": "card",
+    "content": {
+      "description": "Futurama is a TV show created by David X. Cohen and Matt Groening. It aired from 1999 to 2013.",
+      "title": "Futurama",
+      "sections": [
+        {
+          "attributes": [
+            {
+              "label": "Creators",
+              "type": "text",
+              "value": "David X. Cohen and Matt Groening"
+            },
+            {
+              "label": "Years Aired",
+              "type": "text",
+              "value": "1999–2013"
+            }
+          ]
+        }
+      ]
+    },
+    "markdown": false,
+    "delay": 0,
+    "logs": null,
+    "debug": null
+  }
+]

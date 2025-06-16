@@ -1,0 +1,12 @@
+schema_version: 3.6.0
+
+metadata:
+  namespace: com.sap.das.demo
+  name: weather_response_gen_capability
+  version: 1.0.0
+  display_name: "Weather Capability"
+  description: Collects weather information for a given location
+
+system_aliases:
+  WeatherService:
+   destination: WEATHER
