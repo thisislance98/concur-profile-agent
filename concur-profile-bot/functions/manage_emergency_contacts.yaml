@@ -1,0 +1,610 @@
+parameters:
+  - name: action
+    optional: true  # view, update, delete
+  - name: delete_type
+    optional: true  # daytime_phone, alternate_phone, address, contact
+  - name: name
+    optional: true
+  - name: relationship
+    optional: true
+  - name: daytime_phone
+    optional: true
+  - name: alternate_phone
+    optional: true
+  - name: street_address
+    optional: true
+  - name: city
+    optional: true
+  - name: state
+    optional: true
+  - name: zip_code
+    optional: true
+  - name: country
+    optional: true
+  - name: chat_id
+    optional: true
+
+action_groups:
+  # Initialize variables
+  - actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "initializing"
+          - name: emergency_contact_data
+            value: null
+          - name: has_emergency_contact
+            value: false
+          - name: result_message
+            value: ""
+          - name: graphql_query
+            value: "{ JouleCompleteUserProfile { id userName emergencyContact { name relationship telephones { phoneNumber type } address { street city stateProvince zipCode countryCode } } } }"
+          - name: jwt_token
+            value: "<? new i18n('JWT').toString() ?>"
+          - name: action_type
+            value: "<? action != null ? action.toLowerCase() : null ?>"
+          - name: delete_type_value
+            value: "<? delete_type != null ? delete_type.toLowerCase() : null ?>"
+          - name: country_code
+            value: "<? country != null ? country : 'US' ?>"
+          - name: mutation_result
+            value: null
+          - name: mutation_status
+            value: 0
+          - name: has_complete_info
+            value: false
+          
+  # First, retrieve current emergency contact
+  - actions:
+      - type: set-variables
+        variables:
+          - name: get_graphql_body
+            value: |
+              {
+                "query": "<? graphql_query ?>"
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? get_graphql_body ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: get_result
+        timeout: 30
+
+  # Process emergency contact retrieval response
+  - condition: get_result != null && get_result.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: get_response_body
+            value: "<? get_result.body ?>"
+          - name: emergency_contact_data
+            value: "<? get_response_body.data.JouleCompleteUserProfile.emergencyContact ?>"
+          - name: has_emergency_contact
+            value: "<? emergency_contact_data != null ?>"
+          # Now address and telephones are structured objects, not JSON strings
+          - name: address_data
+            value: "<? has_emergency_contact && emergency_contact_data.address != null ? emergency_contact_data.address : null ?>"
+          - name: telephones_data
+            value: "<? (has_emergency_contact && emergency_contact_data.telephones != null) ? emergency_contact_data.telephones : null ?>"
+          # Set display flags
+          - name: has_phone
+            value: "<? telephones_data != null && telephones_data.size() > 0 ?>"
+          - name: has_address
+            value: "<? address_data != null ?>"
+
+
+  # Case 1: No action specified or view action - show current emergency contact and options
+  - condition: action_type == null || action_type == 'view' || action_type == 'show'
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "show_options"
+
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: |
+            🆘 **Emergency Contact Information**
+            
+            {{#if has_emergency_contact}}
+            **Current Emergency Contact:**
+            • **Name:** {{emergency_contact_data.name}}
+            • **Relationship:** {{emergency_contact_data.relationship}}
+            {{#if has_phone}}
+            {{#each telephones_data}}
+            • **{{type}} Phone:** {{phoneNumber}}
+            {{/each}}
+            {{/if}}
+            {{#if has_address}}
+            • **Address:** {{address_data.street}}, {{address_data.city}}, {{address_data.stateProvince}} {{address_data.zipCode}}
+            {{/if}}
+            {{else}}
+            No emergency contact on file.
+            {{/if}}
+            
+            **What would you like to do?**
+            {{#if has_emergency_contact}}
+            • **Update** your emergency contact
+            • **Delete** your emergency contact
+            {{else}}
+            • **Add** an emergency contact
+            {{/if}}
+            
+            💡 **Examples:**
+            {{#if has_emergency_contact}}
+            "Change their name to John Smith"
+            "Change their daytime phone to 555-123-4567"
+            "Change their alternate phone to 555-987-6543"
+            "Delete their daytime phone"
+            "Delete their alternate phone"
+            "Delete their address"
+            "Delete this emergency contact"
+            {{else}}
+            "Add emergency contact Jane Doe, spouse, daytime phone 555-123-4567, 123 Main St, Boston, MA 02101"
+            {{/if}}
+
+  # Case 2: UPDATE/ADD action - validate required fields
+  - condition: (action_type == 'update' || action_type == 'add') && (name == null && relationship == null && daytime_phone == null && alternate_phone == null && street_address == null && city == null && state == null && zip_code == null && country == null)
+    actions:
+      - type: message
+        message:
+          type: text
+          content: |
+            ❓ **What would you like to update?**
+            
+            Please provide at least one field to update:
+            • **Name**
+            • **Relationship**
+            • **Daytime phone**
+            • **Alternate phone**
+            • **Address** (street, city, state, zip)
+            
+            💡 **Examples:**
+            "Update emergency contact name to John Smith"
+            "Update emergency contact daytime phone to 555-123-4567"
+            "Update emergency contact alternate phone to 555-987-6543"
+            "Update emergency contact address to 456 Oak St, Boston, MA 02101"
+
+  # No need for structured query - the data is already in emergency_contact_data as JSON strings
+
+  # Case 2b: UPDATE/ADD with at least one field - prepare emergency contact
+  - condition: (action_type == 'update' || action_type == 'add') && (name != null || relationship != null || daytime_phone != null || alternate_phone != null || street_address != null || city != null || state != null || zip_code != null || country != null)
+    actions:
+      # Set up values for the operation - use provided values or fall back to existing
+      - type: set-variables
+        variables:
+          - name: final_name
+            value: "<? name != null ? name : (has_emergency_contact ? emergency_contact_data.name : '') ?>"
+          - name: final_relationship
+            value: "<? relationship != null ? relationship : (has_emergency_contact ? emergency_contact_data.relationship : '') ?>"
+          
+          # Extract existing phone numbers from structured data
+          # Find DayTime and Alternate phones from the telephones array
+          - name: existing_daytime_phone
+            value: "<? telephones_data != null && telephones_data.size() > 0 ? (telephones_data[0].type == 'DayTime' ? telephones_data[0].phoneNumber : (telephones_data.size() > 1 && telephones_data[1].type == 'DayTime' ? telephones_data[1].phoneNumber : '')) : '' ?>"
+          - name: existing_alternate_phone
+            value: "<? telephones_data != null && telephones_data.size() > 0 ? (telephones_data[0].type == 'Alternate' ? telephones_data[0].phoneNumber : (telephones_data.size() > 1 && telephones_data[1].type == 'Alternate' ? telephones_data[1].phoneNumber : '')) : '' ?>"
+          
+          # Extract address fields from structured object
+          - name: existing_street
+            value: "<? address_data != null && address_data.street != null ? address_data.street : '' ?>"
+          - name: existing_city
+            value: "<? address_data != null && address_data.city != null ? address_data.city : '' ?>"
+          - name: existing_state
+            value: "<? address_data != null && address_data.stateProvince != null ? address_data.stateProvince : '' ?>"
+          - name: existing_zip
+            value: "<? address_data != null && address_data.zipCode != null ? address_data.zipCode : '' ?>"
+          - name: existing_country
+            value: "<? address_data != null && address_data.countryCode != null ? address_data.countryCode : '' ?>"
+          
+      # Set final values - use provided or fall back to existing  
+      - type: set-variables
+        variables:
+          - name: final_daytime_phone
+            value: "<? daytime_phone != null ? daytime_phone : existing_daytime_phone ?>"
+          - name: final_alternate_phone  
+            value: "<? alternate_phone != null ? alternate_phone : existing_alternate_phone ?>"
+          - name: final_street
+            value: "<? street_address != null ? street_address : existing_street ?>"
+          - name: final_city
+            value: "<? city != null ? city : existing_city ?>"
+          - name: final_state
+            value: "<? state != null ? state : existing_state ?>"
+          - name: final_zip
+            value: "<? zip_code != null ? zip_code : existing_zip ?>"
+          - name: final_country
+            value: "<? country != null ? country : existing_country ?>"
+          
+          - name: has_complete_info
+            value: "<? final_name != null && final_name != '' && final_relationship != null && final_relationship != '' ?>"
+          - name: has_address_input
+            value: "<? street_address != null || city != null || state != null || zip_code != null || country != null ?>"
+          - name: has_phone_input
+            value: "<? daytime_phone != null || alternate_phone != null ?>"
+          
+
+
+  # Check if we have minimum required fields (required only when adding or updating while no contact exists)
+  - condition: ((action_type == 'add') || (action_type == 'update' && has_emergency_contact == false)) && has_complete_info == false
+    actions:
+      - type: message
+        message:
+          type: text
+          content: |
+            ❓ **Missing Required Information**
+            
+            Emergency contacts require:
+            • **Name** <? final_name == null ? '(missing)' : '✓' ?>
+            • **Relationship** <? final_relationship == null ? '(missing)' : '✓' ?>
+            
+            💡 **Example:**
+            "Add emergency contact John Smith, brother, 555-123-4567"
+
+  # Process the emergency contact operation
+  - condition: (action_type == 'add' && has_complete_info == true) || (action_type == 'update' && (name != null || relationship != null || daytime_phone != null || alternate_phone != null || street_address != null || city != null || state != null || zip_code != null || country != null))
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "<? has_emergency_contact ? '🔄 **Updating emergency contact**' : '➕ **Adding emergency contact**' ?><? (name != null || relationship != null || daytime_phone != null || alternate_phone != null || street_address != null || city != null || state != null || zip_code != null || country != null) ? '\n\n📍 **Changes:**' + (name != null ? '\n• Name: ' + name : '') + (relationship != null ? '\n• Relationship: ' + relationship : '') + (daytime_phone != null ? '\n• Daytime Phone: ' + daytime_phone : '') + (alternate_phone != null ? '\n• Alternate Phone: ' + alternate_phone : '') + (street_address != null ? '\n• Street: ' + street_address : '') + (city != null ? '\n• City: ' + city : '') + (state != null ? '\n• State: ' + state : '') + (zip_code != null ? '\n• Zip: ' + zip_code : '') + (country != null ? '\n• Country: ' + country : '') : '' ?>"
+
+      # Build the complete GraphQL mutation body with proper JSON structure
+      # Always include both phone types and all address fields, using empty strings if not provided
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: mutation_body
+            value: >
+              {
+                "query": "mutation UpdateEmergencyContact($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id userName emergencyContact { name relationship telephones { phoneNumber type } address { street city stateProvince zipCode countryCode } } } }",
+                "variables": {
+                  "input": {
+                    "emergencyContact": {
+                      "name": "{{final_name}}",
+                      "relationship": "{{final_relationship}}",
+                      "telephones": [
+                        {
+                          "type": "DayTime",
+                          "countryCode": "{{#if final_daytime_phone}}1{{else}}{{/if}}",
+                          "phoneNumber": "{{#if final_daytime_phone}}{{final_daytime_phone}}{{else}}{{/if}}",
+                          "extension": ""
+                        },
+                        {
+                          "type": "Alternate", 
+                          "countryCode": "{{#if final_alternate_phone}}1{{else}}{{/if}}",
+                          "phoneNumber": "{{#if final_alternate_phone}}{{final_alternate_phone}}{{else}}{{/if}}",
+                          "extension": ""
+                        }
+                      ],
+                      "address": {
+                        "street": "{{#if final_street}}{{final_street}}{{else}}{{/if}}",
+                        "city": "{{#if final_city}}{{final_city}}{{else}}{{/if}}",
+                        "stateProvince": "{{#if final_state}}{{final_state}}{{else}}{{/if}}",
+                        "countryCode": "{{#if final_country}}{{final_country}}{{else}}US{{/if}}",
+                        "zipCode": "{{#if final_zip}}{{final_zip}}{{else}}{{/if}}"
+                      }
+                    }
+                  }
+                }
+              }
+
+      - type: message
+        message:
+          type: text
+          content: |
+            🔍 **DEBUG - GraphQL Mutation Query:**
+            ```
+            <? mutation_body ?>
+            ```
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? mutation_body ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: mutation_result
+        timeout: 30
+
+      - type: set-variables
+        variables:
+          - name: mutation_status
+            value: "<? mutation_result != null ? mutation_result.status_code : 0 ?>"
+
+  # Handle success
+  - condition: (((action_type == 'add') && has_complete_info == true) || (action_type == 'update' && (name != null || relationship != null || daytime_phone != null || alternate_phone != null || street_address != null || city != null || state != null || zip_code != null || country != null))) && mutation_status != null && mutation_status == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "<? action_type ?>_success"
+      
+      - type: message
+        message:
+          type: text
+          content: "✅ **Emergency Contact <? has_emergency_contact ? 'Updated' : 'Added' ?> Successfully**\n\n🆘 **Contact:** <? final_name ?> (<? final_relationship ?>)\n\n⚠️ **Note:** Changes may take a few seconds to appear due to API processing."
+
+  # Handle failure
+  - condition: (((action_type == 'add') && has_complete_info == true) || (action_type == 'update' && (name != null || relationship != null || daytime_phone != null || alternate_phone != null || street_address != null || city != null || state != null || zip_code != null || country != null))) && mutation_status != null && mutation_status != 200 && mutation_status != 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "<? action_type ?>_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ **Failed to <? has_emergency_contact ? 'Update' : 'Add' ?> Emergency Contact**\n\n🚨 **Error:** HTTP <? mutation_status ?>"
+
+  # Handle connection failure
+  - condition: (((action_type == 'add') && has_complete_info == true) || (action_type == 'update' && (name != null || relationship != null || daytime_phone != null || alternate_phone != null || street_address != null || city != null || state != null || zip_code != null || country != null))) && (mutation_status == null || mutation_status == 0)
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "<? action_type ?>_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ **Failed to <? has_emergency_contact ? 'Update' : 'Add' ?> Emergency Contact**\n\n🚨 **Error:** Connection failed"
+
+  # Case 3: DELETE action - no emergency contact exists
+  - condition: action_type == 'delete' && has_emergency_contact == false
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "📋 **No Emergency Contact Found**\n\nYou don't have an emergency contact to delete."
+
+  # Case 3a: DELETE specific phone or address - requires existing contact
+  - condition: action_type == 'delete' && has_emergency_contact == true && delete_type != null && delete_type != 'contact'
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "🔍 **DEBUG:** Selective Delete - action_type: <? action_type ?>, delete_type: <? delete_type ?>, delete_type_value: <? delete_type_value ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "🗑️ **Deleting <? delete_type == 'daytime_phone' ? 'daytime phone' : (delete_type == 'alternate_phone' ? 'alternate phone' : 'address') ?> from emergency contact: <? emergency_contact_data.name ?>**"
+
+      # Build update object with selective deletion - simplified approach
+      - type: set-variables
+        variables:
+          - name: delete_contact_object
+            value: |
+              {
+                "name": "",
+                "relationship": "",
+                "telephones": [
+                  {
+                    "type": "DayTime",
+                    "countryCode": "",
+                    "phoneNumber": "",
+                    "extension": ""
+                  },
+                  {
+                    "type": "Alternate",
+                    "countryCode": "",
+                    "phoneNumber": "",
+                    "extension": ""
+                  }
+                ],
+                "address": {
+                  "type": "",
+                  "street": "",
+                  "city": "",
+                  "stateProvince": "",
+                  "countryCode": "",
+                  "zipCode": ""
+                }
+              }
+
+      - type: set-variables
+        variables:
+          - name: delete_body
+            value: |
+              {
+                "query": "mutation UpdateEmergencyContact($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id userName emergencyContact { name relationship telephones address } } }",
+                "variables": {
+                  "input": {
+                    "emergencyContact": <? delete_contact_object ?>
+                  }
+                }
+              }
+
+      - type: message
+        message:
+          type: text
+          content: "🔍 **DEBUG GraphQL Query:** <? delete_body ?>"
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? delete_body ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: delete_result
+        timeout: 30
+
+      - type: set-variables
+        variables:
+          - name: delete_status
+            value: "<? delete_result != null ? delete_result.status_code : 0 ?>"
+
+  # Case 3b: DELETE entire emergency contact
+  - condition: action_type == 'delete' && has_emergency_contact == true && (delete_type == null || delete_type == 'contact')
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "🔍 **DEBUG:** Complete Delete - action_type: <? action_type ?>, delete_type: <? delete_type ?>, delete_type_value: <? delete_type_value ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "🗑️ **Deleting entire emergency contact: <? emergency_contact_data.name ?> (<? emergency_contact_data.relationship ?>)**"
+
+      - type: set-variables
+        variables:
+          - name: delete_body
+            value: |
+              {
+                "query": "mutation UpdateEmergencyContact($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id userName emergencyContact { name relationship telephones address } } }",
+                "variables": {
+                  "input": {
+                    "emergencyContact": {
+                      "name": "",
+                      "relationship": "",
+                      "telephones": [
+                        {
+                          "type": "DayTime",
+                          "countryCode": "",
+                          "phoneNumber": "",
+                          "extension": ""
+                        },
+                        {
+                          "type": "Alternate",
+                          "countryCode": "",
+                          "phoneNumber": "",
+                          "extension": ""
+                        }
+                      ],
+                      "address": {
+                        "type": "",
+                        "street": "",
+                        "city": "",
+                        "stateProvince": "",
+                        "countryCode": "",
+                        "zipCode": ""
+                      }
+                    }
+                  }
+                }
+              }
+
+      - type: message
+        message:
+          type: text
+          content: "🔍 **DEBUG GraphQL Query:** <? delete_body ?>"
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? delete_body ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: delete_result
+        timeout: 30
+
+      - type: set-variables
+        variables:
+          - name: delete_status
+            value: "<? delete_result != null ? delete_result.status_code : 0 ?>"
+
+  # Handle delete result - success
+  - condition: action_type == 'delete' && delete_status == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_success"
+      
+      - type: message
+        message:
+          type: text
+          content: "✅ **Emergency Contact Deleted Successfully**\n\n🗑️ **Removed:** <? emergency_contact_data.name ?> (<? emergency_contact_data.relationship ?>)\n\n⚠️ **Note:** Changes may take a few seconds to appear."
+
+  # Handle delete result - failure
+  - condition: action_type == 'delete' && delete_status != 200 && delete_status != 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ **Failed to Delete Emergency Contact**\n\n🚨 **Error:** HTTP <? delete_status ?>"
+
+  # Handle delete result - connection failure
+  - condition: action_type == 'delete' && delete_status == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ **Failed to Delete Emergency Contact**\n\n🚨 **Error:** Connection failed"
+
+  # Handle API errors
+  - condition: get_result != null && get_result.status_code != 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "retrieval_error"
+          - name: result_message
+            value: "<? 'API Error: ' + get_result.status_code ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "❌ **Failed to Retrieve Emergency Contact Information**\n\n🚨 **Error:** <? result_message ?>"
+
+  # Fallback: If we have emergency contact data but no message was shown yet, show it
+  - condition: has_emergency_contact == true && operation_status == 'initializing'
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "show_fallback"
+      
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: |
+            🆘 **Your Emergency Contact**
+            
+            • **Name:** {{emergency_contact_data.name}}
+            • **Relationship:** {{emergency_contact_data.relationship}}
+            {{#if has_phone}}
+            {{#each telephones_data}}
+            • **{{type}} Phone:** {{phoneNumber}}
+            {{/each}}
+            {{/if}}
+            {{#if has_address}}
+            • **Address:** {{address_data.street}}, {{address_data.city}}, {{address_data.stateProvince}} {{address_data.zipCode}}
+            {{/if}}
+
+result:
+  operation_status: "<? operation_status ?>"
+  result_message: "<? result_message ?>"
+  has_emergency_contact: "<? has_emergency_contact ?>"
+  emergency_contact_data: "<? emergency_contact_data ?>"
+
