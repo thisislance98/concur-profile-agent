@@ -1,0 +1,31 @@
+description: show, view, update, or delete emergency contact information. Call this function whenever the user want to see or change any infor about their emergency contact such as zip code or phone number
+
+slots:
+  - name: action
+    description: The action to perform (view, update, add, delete)
+  - name: delete_type
+    description: Type of deletion (daytime_phone, alternate_phone, address, contact)
+  - name: name
+    description: Emergency contact name
+  - name: relationship
+    description: Relationship to emergency contact (spouse, parent, sibling, etc.)
+  - name: daytime_phone
+    description: Emergency contact daytime phone number
+  - name: alternate_phone
+    description: Emergency contact alternate phone number
+  - name: street_address
+    description: The street address
+  - name: city
+    description: The city
+  - name: state
+    description: The state/province
+  - name: zip_code
+    description: The zip/postal code
+  - name: country
+    description: The country code (defaults to US)
+  - name: chat_id
+    description: The chat session ID to maintain conversation context
+
+target:
+  type: function
+  name: manage_emergency_contacts
