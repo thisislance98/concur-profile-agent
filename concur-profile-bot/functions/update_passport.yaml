@@ -1,0 +1,343 @@
+parameters:
+  - name: passport_number
+    optional: true
+  - name: new_passport_number
+    optional: true
+  - name: new_expiration_date
+    optional: true
+  - name: new_issue_date
+    optional: true
+  - name: new_issue_place
+    optional: true
+  - name: new_nationality
+    optional: true
+  - name: new_issuing_country
+    optional: true
+
+action_groups:
+  # Initialize variables
+  - actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "initializing"
+          - name: passport_data
+            value: null
+          - name: passport_count
+            value: 0
+          - name: selected_passport
+            value: null
+          - name: result_message
+            value: ""
+          - name: update_response
+            value: null
+          - name: get_result
+            value: null
+          - name: target_passport
+            value: null
+          - name: response_status
+            value: 0
+          - name: graphql_query
+            value: "{ JouleCompleteUserProfile { documents { passports { number expiration issueDate issuePlace nationality issuingCountry } } } }"
+          - name: jwt_token
+            value: "<? new i18n('JWT').toString() ?>"
+
+  # First, retrieve current passports
+  - actions:
+      - type: set-variables
+        variables:
+          - name: get_graphql_body
+            value: |
+              {
+                "query": "<? graphql_query ?>"
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? get_graphql_body ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: get_result
+        timeout: 30
+
+  # Process passport retrieval response
+  - condition: get_result != null && get_result.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: get_response_body
+            value: "<? get_result.body ?>"
+          - name: passport_data
+            value: "<? get_response_body.data.JouleCompleteUserProfile.documents.passports ?>"
+          - name: has_passports
+            value: "<? passport_data != null && passport_data.size() > 0 ?>"
+          - name: passport_count
+            value: "<? has_passports ? passport_data.size() : 0 ?>"
+
+  # Case 1: No passports found
+  - condition: passport_count == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "no_passports"
+          - name: result_message
+            value: "No passports found in profile"
+
+      - type: message
+        message:
+          type: text
+          content: "📋 **No Passports Found**\n\nYou don't have any passports in your profile yet. Please add a passport first before trying to update one.\n\n💡 **Example:**\n\"Add my passport number 123456789 expiring 2030-01-01 issued 2020-01-01 in New York nationality US country US\""
+
+  # Case 2: Single passport - auto-select if no update fields provided yet
+  - condition: passport_count == 1 && (new_passport_number == null && new_expiration_date == null && new_issue_date == null && new_issue_place == null && new_nationality == null && new_issuing_country == null)
+    actions:
+      - type: set-variables
+        variables:
+          - name: selected_passport
+            value: "<? passport_data[0] ?>"
+          - name: update_status
+            value: "single_passport_no_fields"
+
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: |
+            📋 **Your Passport**
+            
+            {{#with passport_data.[0]}}
+            • **Number:** {{number}}
+            • **Nationality:** {{nationality}}
+            • **Issuing Country:** {{issuingCountry}}
+            • **Issue Date:** {{issueDate}}
+            • **Issue Place:** {{issuePlace}}
+            • **Expiration:** {{expiration}}
+            {{/with}}
+            
+            **What would you like to update?**
+
+      - type: message
+        message:
+          type: text
+          content: "**What would you like to update?**\n\nYou can update any of these fields:\n• **Expiration Date**\n• **Issue Date**\n• **Issue Place**\n• **Nationality**\n• **Issuing Country**\n• **Passport Number**\n\n💡 **Examples:**\n\"Update passport expiration date to 2030-12-31\"\n\"Update passport issue place to London\"\n\"Update passport nationality to GB\""
+
+  # Case 3: Multiple passports, specific passport number provided, but no update fields
+  - condition: passport_count > 1 && passport_number != null && (new_passport_number == null && new_expiration_date == null && new_issue_date == null && new_issue_place == null && new_nationality == null && new_issuing_country == null)
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "passport_selected_no_fields"
+          - name: target_passport
+            value: "<? passport_number ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "📋 **Passport Selected: <? passport_number ?>**\n\n**What would you like to update?**\n\nYou can update any of these fields:\n• **Expiration Date**\n• **Issue Date**\n• **Issue Place**\n• **Nationality**\n• **Issuing Country**\n• **Passport Number**\n\n💡 **Examples:**\n\"Update passport <? passport_number ?> expiration date to 2030-12-31\"\n\"Update passport <? passport_number ?> issue place to London\"\n\"Update passport <? passport_number ?> nationality to GB\""
+
+  # Case 4: Multiple passports and no specific passport number provided
+  - condition: passport_count > 1 && passport_number == null && (new_passport_number == null && new_expiration_date == null && new_issue_date == null && new_issue_place == null && new_nationality == null && new_issuing_country == null)
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "multiple_passports_need_selection"
+
+      - type: message
+        scripting_type: handlebars
+        message: >
+          {
+            "type": "list",
+            "content": {
+              "title": "Select Passport to Update",
+              "subtitle": "You have {{passport_count}} passports in your profile",
+              "enableDetailView": false,
+              "total": "{{passport_count}}",
+              "initialPageSize": 5,
+              "elements": [
+                {{#eachJoin passport_data}}
+                {
+                  "title": "Passport {{number}}",
+                  "subtitle": "{{nationality}} - Issued in {{issuePlace}}",
+                  "description": "Issued: {{issueDate}}, Expires: {{expiration}}",
+                  "buttons": [
+                    {
+                      "type": "postback",
+                      "title": "Select",
+                      "text": "Update passport {{number}}",
+                      "value": "Update passport {{number}}"
+                    }
+                  ]
+                }
+                {{/eachJoin}}
+              ]
+            }
+          }
+
+  # Case 5: Have passports and update fields provided - perform update
+  - condition: passport_count > 0 && (new_passport_number != null || new_expiration_date != null || new_issue_date != null || new_issue_place != null || new_nationality != null || new_issuing_country != null)
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "attempting_update"
+          # If passport_number not specified, use first passport for single, or require selection for multiple
+          - name: target_passport
+            value: "<? passport_number != null ? passport_number : (passport_count == 1 ? passport_data[0].number : null) ?>"
+          - name: update_mutation
+            value: "mutation UpdateCompleteUserProfile($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id userName documents { passports { number expiration issueDate issuePlace nationality issuingCountry } } } }"
+
+  # Validate we have a target passport
+  - condition: update_status == 'attempting_update' && target_passport == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "no_target_passport"
+          - name: result_message
+            value: "Multiple passports found. Please specify which passport number to update."
+
+      - type: message
+        message:
+          type: text
+          content: "❌ **Please Specify Passport**\n\nYou have multiple passports. Please include the passport number you want to update.\n\n💡 **Example:**\n\"Update passport 123456789 expiration date to 2032-01-01\""
+
+  # Perform the actual update
+  - condition: update_status == 'attempting_update' && target_passport != null
+    actions:
+      - type: set-variables
+        variables:
+          # Find the passport to update
+          - name: passport_to_update
+            value: "<? passport_data[0].number == target_passport ? passport_data[0] : (passport_count > 1 && passport_data[1].number == target_passport ? passport_data[1] : passport_data[0]) ?>"
+          # Prepare update values
+          - name: passport_number_value
+            value: "<? new_passport_number != null ? new_passport_number : passport_to_update.number ?>"
+          - name: expiration_value
+            value: "<? new_expiration_date != null ? (new_expiration_date.contains('T') ? new_expiration_date : new_expiration_date + 'T00:00:00') : passport_to_update.expiration ?>"
+          - name: issue_date_value
+            value: "<? new_issue_date != null ? (new_issue_date.contains('T') ? new_issue_date : new_issue_date + 'T00:00:00') : passport_to_update.issueDate ?>"
+          - name: issue_place_value
+            value: "<? new_issue_place != null ? new_issue_place : passport_to_update.issuePlace ?>"
+          - name: nationality_value
+            value: "<? new_nationality != null ? new_nationality : passport_to_update.nationality ?>"
+          - name: issuing_country_value
+            value: "<? new_issuing_country != null ? new_issuing_country : passport_to_update.issuingCountry ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "🔄 **Updating Passport**\n\n📋 **Target:** <? passport_to_update.number ?>\n✏️ **Changes being applied...**"
+
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: passports_array_json
+            value: |
+              [
+                {{#eachJoin passport_data}}
+                  {{#if (eq this.number ../target_passport)}}
+                    {
+                      "number": "{{../passport_number_value}}",
+                      "expiration": "{{../expiration_value}}",
+                      "issueDate": "{{../issue_date_value}}",
+                      "issuePlace": "{{../issue_place_value}}",
+                      "nationality": "{{../nationality_value}}",
+                      "issuingCountry": "{{../issuing_country_value}}"
+                    }
+                  {{else}}
+                    {
+                      "number": "{{this.number}}",
+                      "expiration": "{{this.expiration}}",
+                      "issueDate": "{{this.issueDate}}",
+                      "issuePlace": "{{this.issuePlace}}",
+                      "nationality": "{{this.nationality}}",
+                      "issuingCountry": "{{this.issuingCountry}}"
+                    }
+                  {{/if}}
+                {{/eachJoin}}
+              ]
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: |
+          {
+            "query": "<? update_mutation ?>",
+            "variables": {
+              "input": {
+                "documents": {
+                  "passports": <? passports_array_json ?>
+                }
+              }
+            }
+          }
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: update_response
+        timeout: 30
+
+      - type: set-variables
+        variables:
+          - name: response_status
+            value: "<? update_response != null ? update_response.status_code : 0 ?>"
+
+  # Handle successful update
+  - condition: response_status == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "success"
+          - name: result_message
+            value: "Passport updated successfully"
+
+      - type: message
+        message:
+          type: text
+          content: "✅ **Passport Updated Successfully**\n\n📋 **Updated Passport:** <? passport_number_value ?>\n✨ **Changes Applied**\n\n⚠️ **Note:** Changes may take 2+ seconds to appear due to API processing delays."
+
+  # Handle update failure
+  - condition: update_status == "attempting_update" && response_status != 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "failed"
+          - name: result_message
+            value: "<? response_status > 0 ? 'HTTP error: ' + response_status : 'Connection failed' ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "❌ **Passport Update Failed**\n\n🚨 **Error:** <? result_message ?>\n\nPlease check your input and try again."
+
+  # Handle API errors
+  - condition: get_result != null && get_result.status_code != 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "retrieval_error"
+          - name: result_message
+            value: "<? 'API Error: ' + get_result.status_code ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "❌ **Failed to Retrieve Passport Information**\n\n🚨 **Error:** <? result_message ?>\n\nUnable to get your current passport information. Please try again later."
+
+result:
+  update_status: "<? update_status ?>"
+  result_message: "<? result_message ?>"
+  passport_count: "<? passport_count ?>"
+  passport_data: "<? passport_data ?>"

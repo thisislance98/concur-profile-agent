@@ -1,0 +1,45 @@
+parameters:
+  - name: chat_id
+    optional: true
+
+action_groups:
+  - actions:
+      - type: message
+        message:
+          type: text
+          content: "getting profile data..."
+      - type: set-variables
+        variables:
+          - name: graphql_query
+            value: "{ \"query\": \"{ JouleCompleteUserProfile { id userName active emails { value type primary verified } name { firstName lastName middleName preferredName honorificPrefix honorificSuffix } phoneNumbers { value type primary } addresses { type streetAddress locality region postalCode country formatted primary } meta { created lastModified version resourceType } travelPreferences { air hotel car rail } documents { passports { number expiration issueDate issuePlace nationality issuingCountry } visas { number type expiration nationality placeIssued dateIssued countryIssued } driversLicenses { number issuingCountry issuingState expiration } identifications { number type issuingCountry expiration } } paymentMethods { creditCards } emergencyContact { name relationship telephones { phoneNumber type } address { street city stateProvince zipCode countryCode } } companyInfo { companyId companyName companyUUID } tsaInfo { dateOfBirth gender noMiddleName preCheckNumber redressNumber } } }\" }"
+          - name: jwt_token
+            value: "<? new i18n('JWT').toString() ?>"
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? graphql_query ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: profile_result
+        timeout: 30
+
+  - condition: profile_result != null
+    actions:
+      - type: set-variables
+        scripting_type: spel
+        variables:
+          - name: profile_data
+            value: "<? profile_result.body.data.JouleCompleteUserProfile ?>"
+          - name: status_code
+            value: "<? profile_result.status_code ?>"
+          - name: has_profile_data
+            value: "<? profile_data != null ?>"
+
+result:
+  profile_data: <? profile_data ?>
+  status_code: <? status_code ?>
+  has_profile_data: <? has_profile_data ?> 

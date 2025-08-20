@@ -1,0 +1,23 @@
+description: This scenario allows users to update specific fields of an existing passport. It retrieves current passports and handles the update operation directly.
+
+slots:
+  - name: passport_number
+    description: The passport number to update (optional for single passport, required for multiple)
+  - name: new_passport_number
+    description: New passport number if changing the passport number itself
+  - name: new_expiration_date
+    description: New expiration date in YYYY-MM-DD format
+  - name: new_issue_date
+    description: New issue date in YYYY-MM-DD format
+  - name: new_issue_place
+    description: New issue place (city or location)
+  - name: new_nationality
+    description: New nationality code (e.g., US, GB, FR, DE)
+  - name: new_issuing_country
+    description: New issuing country code (e.g., US, GB, FR, DE)
+
+target:
+  type: function
+  name: update_passport
+
+

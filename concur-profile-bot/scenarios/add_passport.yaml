@@ -1,0 +1,34 @@
+description: This scenario allows users to add new passport information to their travel profile including passport number, expiration date, issue date, issue place, nationality, and issuing country
+
+
+slots:
+  - name: passport_number
+    description: The passport number (e.g., 123456789, A12345678)
+  - name: expiration_date
+    description: The passport expiration date in YYYY-MM-DD format
+  - name: issue_date
+    description: The passport issue date in YYYY-MM-DD format
+  - name: issue_place
+    description: The place where the passport was issued (city or location)
+  - name: nationality
+    description: The nationality code (e.g., US, GB, FR, DE)
+  - name: issuing_country
+    description: The country that issued the passport (e.g., US, GB, FR, DE)
+  - name: chat_id
+    description: The chat session ID to maintain conversation context
+
+target:
+  type: function
+  name: add_passport
+
+response_context:
+  - value: $target_result.add_status
+    description: Status of passport add operation
+  - value: $target_result.response_body
+    description: The API response body
+  - value: $target_result.passport_number
+    description: The passport number that was added
+  - value: $target_result.error_message
+    description: Error message if add failed
+  - value: $target_result.success_message
+    description: Success message if add succeeded 

@@ -1,0 +1,213 @@
+parameters:
+  - name: passport_number
+    optional: false
+  - name: expiration_date
+    optional: false
+  - name: issue_date
+    optional: false
+  - name: issue_place
+    optional: false
+  - name: nationality
+    optional: false
+  - name: issuing_country
+    optional: false
+  - name: chat_id
+    optional: true
+
+action_groups:
+  - actions:
+      - type: set-variables
+        variables:
+          - name: add_status
+            value: "not_started"
+          - name: response_body
+            value: ""
+          - name: error_message
+            value: ""
+          - name: success_message
+            value: ""
+          - name: mutation_query
+            value: "mutation UpdateCompleteUserProfile($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id userName documents { passports { number expiration issueDate issuePlace nationality issuingCountry } } } }"
+          - name: get_query
+            value: "{ JouleCompleteUserProfile { documents { passports { number expiration issueDate issuePlace nationality issuingCountry } } } }"
+          - name: jwt_token
+            value: "<? new i18n('JWT').toString() ?>"
+          - name: existing_passports
+            value: []
+          - name: passport_count
+            value: 0
+
+  # First, retrieve existing passports
+  - actions:
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: |
+          {
+            "query": "<? get_query ?>"
+          }
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: get_result
+        timeout: 30
+
+  # Process existing passport data
+  - condition: get_result != null && get_result.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: get_response_body
+            value: "<? get_result.body ?>"
+          - name: existing_passports
+            value: "<? get_response_body.data.JouleCompleteUserProfile.documents.passports ?>"
+          - name: has_passports
+            value: "<? existing_passports != null && existing_passports.size() > 0 ?>"
+          - name: passport_count
+            value: "<? has_passports ? existing_passports.size() : 0 ?>"
+
+  # Check if user already has 2 passports (maximum allowed)
+  - condition: passport_count >= 2
+    actions:
+      - type: set-variables
+        variables:
+          - name: add_status
+            value: "limit_reached"
+          - name: error_message
+            value: "Maximum passport limit (2) reached"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ **Cannot Add Passport**\n\n🚫 You already have 2 passports in your profile, which is the maximum allowed.\n\n💡 **What you can do:**\n• View your passports using 'Show my passports'\n• Update an existing passport using 'Update passport'\n• Remove one passport before adding a new one"
+
+  # Build GraphQL request with new passport information
+  - condition: passport_number != null && expiration_date != null && issue_date != null && issue_place != null && nationality != null && issuing_country != null && passport_count < 2
+    actions:
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: passports_array_json
+            value: |
+              [
+                {{#if has_passports}}
+                  {{#eachJoin existing_passports}}
+                    {
+                      "number": "{{this.number}}",
+                      "expiration": "{{this.expiration}}",
+                      "issueDate": "{{this.issueDate}}",
+                      "issuePlace": "{{this.issuePlace}}",
+                      "nationality": "{{this.nationality}}",
+                      "issuingCountry": "{{this.issuingCountry}}"
+                    },
+                  {{/eachJoin}}
+                {{/if}}
+                {
+                  "number": "<? passport_number ?>",
+                  "expiration": "<? expiration_date ?>",
+                  "issueDate": "<? issue_date ?>",
+                  "issuePlace": "<? issue_place ?>",
+                  "nationality": "<? nationality ?>",
+                  "issuingCountry": "<? issuing_country ?>"
+                }
+              ]
+          - name: graphql_body
+            value: |
+              {
+                "query": "<? mutation_query ?>",
+                "variables": {
+                  "input": {
+                    "documents": {
+                      "passports": <? passports_array_json ?>
+                    }
+                  }
+                }
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? graphql_body ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: add_result
+        timeout: 30
+
+  - condition: add_result != null && add_result.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: add_status
+            value: "success"
+          - name: response_body
+            value: "<? add_result.body ?>"
+          - name: success_message
+            value: "New passport added successfully"
+          - name: error_message
+            value: ""
+
+      - type: message
+        message:
+          type: text
+          content: "✅ **New Passport Added Successfully**\n\n📋 **Added Details:**\n• Passport Number: <? passport_number ?>\n• Expiration Date: <? expiration_date ?>\n• Issue Date: <? issue_date ?>\n• Issue Place: <? issue_place ?>\n• Nationality: <? nationality ?>\n• Issuing Country: <? issuing_country ?>\n\nYour new passport information has been added to your travel profile.\n\n💡 **Note:** You can have up to 2 passports in your profile. Use 'Show my passports' to view all your passport information."
+
+  - condition: add_result != null && add_result.status_code != 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: add_status
+            value: "error"
+          - name: error_message
+            value: "<? 'API Error: ' + add_result.status_code ?>"
+          - name: success_message
+            value: ""
+
+      - type: message
+        message:
+          type: text
+          content: "❌ **Failed to Add Passport**\n\n🚨 **Error:** <? error_message ?>\n\nUnable to add your passport information. This could be because:\n• You already have the maximum number of passports (2)\n• The passport number already exists\n• Invalid data format\n\nPlease verify your information and try again."
+
+  - condition: add_result == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: add_status
+            value: "connection_error"
+          - name: error_message
+            value: "Connection failed - null response"
+          - name: success_message
+            value: ""
+
+      - type: message
+        message:
+          type: text
+          content: "🔗 **Connection Issue**\n\nUnable to connect to the profile service. Please check your connection and try again."
+
+  # Handle missing required fields
+  - condition: passport_number == null || expiration_date == null || issue_date == null || issue_place == null || nationality == null || issuing_country == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: add_status
+            value: "missing_required_fields"
+          - name: error_message
+            value: "Missing required passport information"
+          - name: success_message
+            value: ""
+
+      - type: message
+        message:
+          type: text
+          content: "ℹ️ **Missing Required Information**\n\nAll passport fields are required to add a new passport:\n• Passport Number\n• Expiration Date (YYYY-MM-DD)\n• Issue Date (YYYY-MM-DD)\n• Issue Place\n• Nationality (e.g., US, GB, FR, DE)\n• Issuing Country (e.g., US, GB, FR, DE)\n\n💡 **Example:**\n\"Add my passport number 123456789 expiring 2030-01-01 issued 2020-01-01 in New York nationality US country US\""
+
+result:
+  add_status: <? add_status ?>
+  response_body: <? response_body ?>
+  error_message: <? error_message ?>
+  success_message: <? success_message ?>
+  passport_number: <? passport_number ?> 

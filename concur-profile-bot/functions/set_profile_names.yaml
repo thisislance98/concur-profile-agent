@@ -1,0 +1,244 @@
+parameters:
+  - name: first_name
+    optional: true
+  - name: last_name
+    optional: true
+  - name: preferred_name
+    optional: true
+  - name: chat_id
+    optional: true
+
+action_groups:
+  - actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "not_started"
+          - name: response_body
+            value: ""
+          - name: error_message
+            value: ""
+          - name: success_message
+            value: ""
+          - name: mutation_query
+            value: "mutation UpdateCompleteUserProfile($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id userName name { firstName lastName preferredName } } }"
+          - name: jwt_token
+            value: "<? new i18n('JWT').toString() ?>"
+
+  # Only preferred name
+  - condition: first_name == null && last_name == null && preferred_name != null
+    actions:
+      - type: set-variables
+        variables:
+          - name: graphql_body
+            value: |
+              {
+                "query": "<? mutation_query ?>",
+                "variables": {
+                  "input": {
+                    "general": {
+                      "preferredName": "<? preferred_name ?>"
+                    }
+                  }
+                }
+              }
+
+  # Only first name
+  - condition: first_name != null && last_name == null && preferred_name == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: graphql_body
+            value: |
+              {
+                "query": "<? mutation_query ?>",
+                "variables": {
+                  "input": {
+                    "general": {
+                      "firstName": "<? first_name ?>"
+                    }
+                  }
+                }
+              }
+
+  # Only last name
+  - condition: first_name == null && last_name != null && preferred_name == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: graphql_body
+            value: |
+              {
+                "query": "<? mutation_query ?>",
+                "variables": {
+                  "input": {
+                    "general": {
+                      "lastName": "<? last_name ?>"
+                    }
+                  }
+                }
+              }
+
+  # First name and preferred name
+  - condition: first_name != null && last_name == null && preferred_name != null
+    actions:
+      - type: set-variables
+        variables:
+          - name: graphql_body
+            value: |
+              {
+                "query": "<? mutation_query ?>",
+                "variables": {
+                  "input": {
+                    "general": {
+                      "firstName": "<? first_name ?>",
+                      "preferredName": "<? preferred_name ?>"
+                    }
+                  }
+                }
+              }
+
+  # Last name and preferred name
+  - condition: first_name == null && last_name != null && preferred_name != null
+    actions:
+      - type: set-variables
+        variables:
+          - name: graphql_body
+            value: |
+              {
+                "query": "<? mutation_query ?>",
+                "variables": {
+                  "input": {
+                    "general": {
+                      "lastName": "<? last_name ?>",
+                      "preferredName": "<? preferred_name ?>"
+                    }
+                  }
+                }
+              }
+
+  # First name and last name
+  - condition: first_name != null && last_name != null && preferred_name == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: graphql_body
+            value: |
+              {
+                "query": "<? mutation_query ?>",
+                "variables": {
+                  "input": {
+                    "general": {
+                      "firstName": "<? first_name ?>",
+                      "lastName": "<? last_name ?>"
+                    }
+                  }
+                }
+              }
+
+  # All three names
+  - condition: first_name != null && last_name != null && preferred_name != null
+    actions:
+      - type: set-variables
+        variables:
+          - name: graphql_body
+            value: |
+              {
+                "query": "<? mutation_query ?>",
+                "variables": {
+                  "input": {
+                    "general": {
+                      "firstName": "<? first_name ?>",
+                      "lastName": "<? last_name ?>",
+                      "preferredName": "<? preferred_name ?>"
+                    }
+                  }
+                }
+              }
+
+  # Make API call if any name field is provided
+  - condition: first_name != null || last_name != null || preferred_name != null
+    actions:
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? graphql_body ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: update_result
+        timeout: 30
+
+  - condition: update_result != null && update_result.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "success"
+          - name: response_body
+            value: "<? update_result.body ?>"
+          - name: success_message
+            value: "Profile names updated successfully"
+          - name: error_message
+            value: ""
+
+      - type: message
+        message:
+          type: text
+          content: "✅ Profile names updated successfully"
+
+  - condition: update_result != null && update_result.status_code != 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "error"
+          - name: error_message
+            value: "<? 'API Error: ' + update_result.status_code ?>"
+          - name: success_message
+            value: ""
+
+      - type: message
+        message:
+          type: text
+          content: "❌ Profile update failed - Status: <? update_result.status_code ?>"
+
+  - condition: update_result == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "connection_error"
+          - name: error_message
+            value: "Connection failed - null response"
+          - name: success_message
+            value: ""
+
+      - type: message
+        message:
+          type: text
+          content: "🔗 Connection issue - API returned null response"
+
+  - condition: first_name == null && last_name == null && preferred_name == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "no_input"
+          - name: error_message
+            value: "No name fields provided"
+          - name: success_message
+            value: ""
+
+      - type: message
+        message:
+          type: text
+          content: "ℹ️ Please specify which name you'd like to update"
+
+result:
+  update_status: <? update_status ?>
+  response_body: <? response_body ?>
+  error_message: <? error_message ?>
+  success_message: <? success_message ?> 

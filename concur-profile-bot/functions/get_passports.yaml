@@ -1,0 +1,119 @@
+parameters:
+  - name: chat_id
+    optional: true
+
+action_groups:
+  - actions:
+      - type: set-variables
+        variables:
+          - name: retrieval_status
+            value: "not_started"
+          - name: response_body
+            value: ""
+          - name: error_message
+            value: ""
+          - name: success_message
+            value: ""
+          - name: passport_count
+            value: 0
+          - name: passport_data
+            value: null
+          - name: passport_list
+            value: ""
+          - name: graphql_query
+            value: "{ JouleCompleteUserProfile { documents { passports { number expiration issueDate issuePlace nationality issuingCountry } } } }"
+          - name: jwt_token
+            value: "<? new i18n('JWT').toString() ?>"
+  # Execute GraphQL query to get passports
+  - actions:
+      - type: set-variables
+        variables:
+          - name: graphql_body
+            value: |
+              {
+                "query": "<? graphql_query ?>"
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? graphql_body ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: get_result
+        timeout: 30
+
+  # Handle successful response
+  - condition: get_result != null && get_result.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: retrieval_status
+            value: "success"
+          - name: response_body
+            value: "<? get_result.body ?>"
+          - name: passport_data
+            value: "<? response_body.data.JouleCompleteUserProfile.documents.passports ?>"
+          - name: has_passports
+            value: "<? passport_data != null && passport_data.size() > 0 ?>"
+          - name: passport_count
+            value: "<? has_passports ? passport_data.size() : 0 ?>"
+
+  # Display passport information
+  - condition: passport_count == 0
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "📋 **No Passports Found**\n\nYou don't have any passports in your profile yet."
+
+ 
+  # Handle API error response
+  - condition: get_result != null && get_result.status_code != 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: retrieval_status
+            value: "error"
+          - name: error_message
+            value: "<? 'API Error: ' + get_result.status_code ?>"
+          - name: success_message
+            value: ""
+          - name: passport_data
+            value: null
+
+      - type: message
+        message:
+          type: text
+          content: "❌ **Passport Retrieval Failed**\n\n🚨 **Error:** <? error_message ?>\n\nUnable to retrieve your passport information. Please try again later."
+
+  # Handle connection error
+  - condition: get_result == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: retrieval_status
+            value: "connection_error"
+          - name: error_message
+            value: "Connection failed - null response"
+          - name: success_message
+            value: ""
+          - name: passport_data
+            value: null
+
+      - type: message
+        message:
+          type: text
+          content: "🔗 **Connection Issue**\n\nUnable to connect to the profile service. Please check your connection and try again."
+
+result:
+  retrieval_status: <? retrieval_status ?>
+  response_body: <? response_body ?>
+  error_message: <? error_message ?>
+  success_message: <? success_message ?>
+  passport_count: <? passport_count ?>
+  passport_data: <? passport_data ?>
+  has_passports: <? has_passports ?> 

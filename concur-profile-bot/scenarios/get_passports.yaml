@@ -1,0 +1,23 @@
+description: This scenario allows users to retrieve and view their current passport information from their travel profile
+
+slots:
+  - name: chat_id
+    description: The chat session ID to maintain conversation context
+
+target:
+  type: function
+  name: get_passports
+
+response_context:
+  - value: $target_result.retrieval_status
+    description: Status of passport retrieval operation
+  - value: $target_result.response_body
+    description: The raw passport data from the API
+  - value: $target_result.passport_count
+    description: Number of passports found
+  - value: $target_result.has_passports
+    description: Whether any passports were found
+  - value: $target_result.error_message
+    description: Error message if retrieval failed
+  - value: $target_result.success_message
+    description: Success message if retrieval succeeded 

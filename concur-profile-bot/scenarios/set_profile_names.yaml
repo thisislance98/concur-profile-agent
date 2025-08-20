@@ -1,0 +1,28 @@
+description: This scenario allows users to update their profile name information including first name, last name, or preferred name through natural language requests
+
+
+slots:
+  - name: first_name
+    description: The user's first name to be updated in their profile
+  - name: last_name
+    description: The user's last name to be updated in their profile
+  - name: preferred_name
+    description: The user's preferred name to be updated in their profile
+  - name: chat_id
+    description: The chat session ID to maintain conversation context
+
+target:
+  type: function
+  name: set_profile_names
+
+
+
+response_context:
+  - value: $target_result.update_status
+    description: Status of the profile name update operation
+  - value: $target_result.response_body
+    description: The API response body
+  - value: $target_result.error_message
+    description: Error message if update failed
+  - value: $target_result.success_message
+    description: Success message if update succeeded 

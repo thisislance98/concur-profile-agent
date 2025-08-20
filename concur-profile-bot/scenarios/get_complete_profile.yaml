@@ -1,0 +1,17 @@
+description: This scenario retrieves the complete user profile information including personal details, contact information, travel preferences, documents, payment methods, and company information using GraphQL. Do NOT call this for getting emergency contact information.
+
+slots:
+  - name: chat_id
+    description: The chat session ID to maintain conversation context
+
+target:
+  type: function
+  name: get_complete_profile
+
+response_context:
+  - value: $target_result.profile_data
+    description: The complete user profile data
+  - value: $target_result.status_code
+    description: The API response status code
+  - value: $target_result.has_profile_data
+    description: Flag indicating if profile data was retrieved 
