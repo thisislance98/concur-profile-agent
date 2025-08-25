@@ -1,0 +1,226 @@
+parameters:
+  - name: date_of_birth
+    optional: true  # YYYY-MM-DD format
+  - name: gender
+    optional: true  # M, F, X, U
+  - name: no_middle_name
+    optional: true  # true/false
+  - name: precheck_number
+    optional: true  # TSA PreCheck number
+  - name: redress_number
+    optional: true  # TSA Redress number
+  - name: chat_id
+    optional: true
+
+action_groups:
+  # Initialize variables
+  - actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "initializing"
+          - name: tsa_data
+            value: null
+          - name: result_message
+            value: ""
+          - name: graphql_query
+            value: "{ JouleCompleteUserProfile { tsaInfo { dateOfBirth gender noMiddleName preCheckNumber redressNumber } } }"
+          - name: jwt_token
+            value: "<? new i18n('JWT').toString() ?>"
+
+          - name: gender_normalized
+            value: "<? gender != null ? (gender.toLowerCase() == 'm' || gender.toLowerCase() == 'male' ? 'male' : (gender.toLowerCase() == 'f' || gender.toLowerCase() == 'female' ? 'female' : (gender.toLowerCase() == 'x' || gender.toLowerCase() == 'unspecified' || gender.toLowerCase() == 'non binary' || gender.toLowerCase() == 'nonbinary' || gender.toLowerCase() == 'non-binary' ? 'unspecified' : (gender.toLowerCase() == 'u' || gender.toLowerCase() == 'unknown' ? 'unknown' : gender.toLowerCase())))) : null ?>"
+          - name: mutation_result
+            value: null
+          - name: mutation_status
+            value: 0
+          - name: has_tsa_info
+            value: false
+          - name: formatted_dob
+            value: "<? date_of_birth != null ? (date_of_birth.contains('T') ? date_of_birth : date_of_birth + 'T00:00:00') : null ?>"
+          
+  # First, retrieve current TSA info
+  - actions:
+      - type: set-variables
+        variables:
+          - name: get_graphql_body
+            value: |
+              {
+                "query": "<? graphql_query ?>"
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? get_graphql_body ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: get_result
+        timeout: 30
+
+  # Process TSA info retrieval response
+  - condition: get_result != null && get_result.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: get_response_body
+            value: "<? get_result.body ?>"
+          - name: tsa_data
+            value: "<? get_response_body.data.JouleCompleteUserProfile.tsaInfo ?>"
+          - name: has_tsa_info
+            value: "<? tsa_data != null && (tsa_data.dateOfBirth != null || tsa_data.preCheckNumber != null || tsa_data.redressNumber != null) ?>"
+
+  # Case 1: No parameters specified - show current TSA info and options
+  - condition: formatted_dob == null && gender_normalized == null && no_middle_name == null && precheck_number == null && redress_number == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "show_options"
+
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: |
+            ✈️ Your TSA Information
+            
+            {{#if has_tsa_info}}
+            {{#with tsa_data}}
+            📋 Current Information:
+            {{#if dateOfBirth}}• 📅 Date of Birth: {{dateOfBirth}}{{/if}}
+            {{#if gender}}• 👤 Gender: {{gender}}{{/if}}
+            {{#if noMiddleName}}• 📝 No Middle Name: {{noMiddleName}}{{/if}}
+            {{#if preCheckNumber}}• ✅ PreCheck Number: {{preCheckNumber}}{{/if}}
+            {{#if redressNumber}}• 🔄 Redress Number: {{redressNumber}}{{/if}}
+            {{/with}}
+            {{else}}
+            📋 No TSA information on file.
+            {{/if}}
+            
+            🔧 What would you like to update?
+            
+            💡 Examples:
+            "Update my TSA info with date of birth 1990-01-15 and PreCheck number 1234567891"
+            "Set my gender to female"
+            "Update my PreCheck number to 9876543210"
+
+  # Case 2: Update TSA info when values are provided
+  - condition: formatted_dob != null || gender_normalized != null || no_middle_name != null || precheck_number != null || redress_number != null
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "🔄 **Updating TSA information**<? formatted_dob != null ? '\n• Date of Birth: ' + formatted_dob : '' ?><? gender_normalized != null ? '\n• Gender: ' + gender_normalized : '' ?><? no_middle_name != null ? '\n• No Middle Name: ' + no_middle_name : '' ?><? precheck_number != null ? '\n• PreCheck Number: ' + precheck_number : '' ?><? redress_number != null ? '\n• Redress Number: ' + redress_number : '' ?>"
+
+      - type: set-variables
+        variables:
+          - name: final_dob
+            value: "<? formatted_dob != null ? formatted_dob : (has_tsa_info ? tsa_data.dateOfBirth : null) ?>"
+          - name: final_gender
+            value: "<? gender_normalized != null ? gender_normalized : (has_tsa_info ? tsa_data.gender : null) ?>"
+          - name: final_no_middle_name
+            value: "<? no_middle_name != null ? no_middle_name : (has_tsa_info ? tsa_data.noMiddleName : null) ?>"
+          - name: final_precheck
+            value: "<? precheck_number != null ? precheck_number : (has_tsa_info ? tsa_data.preCheckNumber : null) ?>"
+          - name: final_redress
+            value: "<? redress_number != null ? redress_number : (has_tsa_info ? tsa_data.redressNumber : null) ?>"
+
+      - type: set-variables
+        variables:
+          - name: mutation_body
+            value: |
+              {
+                "query": "mutation UpdateCompleteUserProfile($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id tsaInfo { dateOfBirth gender noMiddleName preCheckNumber redressNumber } } }",
+                "variables": {
+                  "input": {
+                    "tsaInfo": {
+                      <? final_dob != null ? '"dateOfBirth": "' + final_dob + '"' : '' ?>
+                      <? final_gender != null ? (final_dob != null ? ',' : '') + '"gender": "' + final_gender + '"' : '' ?>
+                      <? final_no_middle_name != null ? ((final_dob != null || final_gender != null) ? ',' : '') + '"noMiddleName": ' + final_no_middle_name : '' ?>
+                      <? final_precheck != null ? ((final_dob != null || final_gender != null || final_no_middle_name != null) ? ',' : '') + '"preCheckNumber": "' + final_precheck + '"' : '' ?>
+                      <? final_redress != null ? ((final_dob != null || final_gender != null || final_no_middle_name != null || final_precheck != null) ? ',' : '') + '"redressNumber": "' + final_redress + '"' : '' ?>
+                    }
+                  }
+                }
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? mutation_body ?>"
+        headers:
+          Content-Type: "application/json"
+          Accept: "application/json"
+          Authorization: "Bearer <? jwt_token ?>"
+        result_variable: mutation_result
+        timeout: 30
+
+      - type: set-variables
+        variables:
+          - name: mutation_status
+            value: "<? mutation_result != null ? mutation_result.status_code : 0 ?>"
+
+  # Handle success for TSA info update
+  - condition: (formatted_dob != null || gender_normalized != null || no_middle_name != null || precheck_number != null || redress_number != null) && mutation_status == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "update_success"
+      
+      - type: message
+        message:
+          type: text
+          content: "✅ TSA Information Updated Successfully\n\n⚠️ Note: Changes may take a few seconds to appear due to API processing."
+
+  # Handle failure for TSA info update
+  - condition: (formatted_dob != null || gender_normalized != null || no_middle_name != null || precheck_number != null || redress_number != null) && mutation_status != 200 && mutation_status != 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "update_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Update TSA Information\n\n🚨 Error: HTTP <? mutation_status ?>"
+
+  # Handle connection failure for TSA info update
+  - condition: (formatted_dob != null || gender_normalized != null || no_middle_name != null || precheck_number != null || redress_number != null) && mutation_status == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "update_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Update TSA Information\n\n🚨 Error: Connection failed"
+
+  # Handle API errors for retrieval
+  - condition: get_result != null && get_result.status_code != 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "retrieval_error"
+          - name: result_message
+            value: "<? 'API Error: ' + get_result.status_code ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Retrieve TSA Information\n\n🚨 Error: <? result_message ?>"
+
+result:
+  operation_status: "<? operation_status ?>"
+  result_message: "<? result_message ?>"
+  tsa_data: "<? tsa_data ?>"
+  has_tsa_info: "<? has_tsa_info ?>"
