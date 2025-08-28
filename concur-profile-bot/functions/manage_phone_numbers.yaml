@@ -5,8 +5,6 @@ parameters:
     optional: true  # home, work, cell
   - name: phone_number
     optional: true  # for add/update actions
-  - name: current_phone_number
-    optional: true  # for identifying which number to update/delete
   - name: chat_id
     optional: true
 
@@ -61,10 +59,6 @@ action_groups:
         system_alias: ConcurProfileBotAPI
         path: "/graphql"
         body: "<? get_graphql_body ?>"
-        headers:
-          Content-Type: "application/json"
-          Accept: "application/json"
-          Authorization: "Bearer <? jwt_token ?>"
         result_variable: get_result
         timeout: 30
 
@@ -95,22 +89,22 @@ action_groups:
         message:
           type: text
           content: |
-            📱 **Your Phone Numbers**
+            📱 Your Phone Numbers
             
             {{#if has_phones}}
             {{#each phone_data}}
-            • **{{type}}:** {{value}} {{#if primary}}(Primary){{/if}}
+            • {{type}}: {{value}} {{#if primary}}(Primary){{/if}}
             {{/each}}
             {{else}}
-            No phone numbers on file.
+            📋 No phone numbers on file.
             {{/if}}
             
-            **What would you like to do?**
-            • **Add** a new phone number
-            • **Update** an existing phone number
-            • **Delete** a phone number
+            🔧 What would you like to do?
+            • ➕ Add a new phone number
+            • 🔄 Update an existing phone number
+            • 🗑️ Delete a phone number
             
-            💡 **Examples:**
+            💡 Examples:
             "Add my work phone 555-123-4567"
             "Update my cell phone to 555-987-6543"
             "Delete my home phone"
@@ -123,25 +117,35 @@ action_groups:
           - name: has_required_add_fields
             value: "<? phone_type_normalized != null && phone_number != null ?>"
 
-  # Case 2a: ADD with missing fields
+  # Case 2a: ADD with missing fields - STOP HERE
   - condition: action_type == 'add' && (phone_type_normalized == null || phone_number == null)
     actions:
       - type: set-variables
         variables:
           - name: operation_status
             value: "add_missing_fields"
+          - name: add_status
+            value: 999  # Set to non-zero to prevent error handling
 
       - type: message
+        scripting_type: handlebars
         message:
           type: text
           content: |
-            ❓ **Missing Information**
+            ❓ Missing Information
             
+            {{#if has_phones}}
+            Your current phone numbers:
+            {{#each phone_data}}
+            • 📱 {{type}}: {{value}}
+            {{/each}}
+            
+            {{/if}}
             To add a phone number, please provide:
-            • **Phone type** (Home, Work, or Cell)
-            • **Phone number**
+            • 📱 Phone type (Home, Work, or Cell)
+            • 🔢 Phone number
             
-            💡 **Example:**
+            💡 Example:
             "Add my work phone 555-123-4567"
 
   # Case 2b: ADD with all required fields
@@ -178,7 +182,7 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "➕ **Adding <? phone_type_normalized ?> phone: <? phone_number ?>**"
+          content: "➕ Adding <? phone_type_normalized ?> phone: <? phone_number ?>"
 
       - type: set-variables
         variables:
@@ -198,10 +202,6 @@ action_groups:
         system_alias: ConcurProfileBotAPI
         path: "/graphql"
         body: "<? add_body ?>"
-        headers:
-          Content-Type: "application/json"
-          Accept: "application/json"
-          Authorization: "Bearer <? jwt_token ?>"
         result_variable: add_result
         timeout: 30
 
@@ -221,10 +221,10 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "✅ **Phone Number Added Successfully**\n\n📱 **Added:** <? phone_type_normalized ?> - <? phone_number ?>\n\n⚠️ **Note:** Changes may take a few seconds to appear due to API processing."
+          content: "✅ Phone Number Added Successfully\n\n📱 Added: <? phone_type_normalized ?> - <? phone_number ?>\n\n⚠️ Note: Changes may take a few seconds to appear due to API processing."
 
-  # Handle add result - failure
-  - condition: action_type == 'add' && add_status != 200 && add_status != 0
+  # Handle add result - failure (only for actual API attempts)
+  - condition: action_type == 'add' && phone_type_normalized != null && phone_number != null && add_status != 200 && add_status != 0
     actions:
       - type: set-variables
         variables:
@@ -236,10 +236,10 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "❌ **Failed to Add Phone Number**\n\n🚨 **Error:** <? error_msg ?>"
+          content: "❌ Failed to Add Phone Number\n\n🚨 Error: <? error_msg ?>"
 
-  # Handle add result - connection failure
-  - condition: action_type == 'add' && add_status == 0
+  # Handle add result - connection failure (only for actual API attempts)
+  - condition: action_type == 'add' && phone_type_normalized != null && phone_number != null && add_status == 0
     actions:
       - type: set-variables
         variables:
@@ -249,7 +249,7 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "❌ **Failed to Add Phone Number**\n\n🚨 **Error:** Connection failed"
+          content: "❌ Failed to Add Phone Number\n\n🚨 Error: Connection failed"
 
   # Case 3: UPDATE action - no phones exist
   - condition: action_type == 'update' && phone_count == 0
@@ -262,33 +262,35 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "📋 **No Phone Numbers Found**\n\nYou don't have any phone numbers to update. Please add a phone number first."
+          content: "📋 No Phone Numbers Found\n\nYou don't have any phone numbers to update. Please add a phone number first."
 
-  # Case 3a: UPDATE with missing fields
+  # Case 3a: UPDATE with missing fields - STOP HERE
   - condition: action_type == 'update' && phone_count > 0 && (phone_type_normalized == null || phone_number == null)
     actions:
       - type: set-variables
         variables:
           - name: operation_status
             value: "update_missing_fields"
+          - name: update_status
+            value: 999  # Set to non-zero to prevent error handling
 
       - type: message
         scripting_type: handlebars
         message:
           type: text
           content: |
-            ❓ **What would you like to update?**
+            ❓ What would you like to update?
             
             Your current phone numbers:
             {{#each phone_data}}
-            • **{{type}}:** {{value}}
+            • 📱 {{type}}: {{value}}
             {{/each}}
             
             Please specify:
-            • **Phone type** to update (home, work, or cell)
-            • **New phone number**
+            • 📱 Phone type to update (home, work, or cell)
+            • 🔢 New phone number
             
-            💡 **Example:**
+            💡 Example:
             "Update my cell phone to 555-987-6543"
 
   # Case 3b: UPDATE with all fields
@@ -335,7 +337,7 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "🔄 **Updating <? phone_type_normalized ?> phone to: <? phone_number ?>**"
+          content: "🔄 Updating <? phone_type_normalized ?> phone to: <? phone_number ?>"
 
       - type: set-variables
         variables:
@@ -355,10 +357,6 @@ action_groups:
         system_alias: ConcurProfileBotAPI
         path: "/graphql"
         body: "<? update_body ?>"
-        headers:
-          Content-Type: "application/json"
-          Accept: "application/json"
-          Authorization: "Bearer <? jwt_token ?>"
         result_variable: update_result
         timeout: 30
 
@@ -378,10 +376,10 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "✅ **Phone Number Updated Successfully**\n\n📱 **Updated:** <? phone_type_normalized ?> - <? phone_number ?>\n\n⚠️ **Note:** Changes may take a few seconds to appear."
+          content: "✅ Phone Number Updated Successfully\n\n📱 Updated: <? phone_type_normalized ?> - <? phone_number ?>\n\n⚠️ Note: Changes may take a few seconds to appear."
 
-  # Handle update result - failure
-  - condition: action_type == 'update' && update_status != 200 && update_status != 0
+  # Handle update result - failure (only for actual API attempts)
+  - condition: action_type == 'update' && phone_type_normalized != null && phone_number != null && update_status != 200 && update_status != 0
     actions:
       - type: set-variables
         variables:
@@ -391,10 +389,10 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "❌ **Failed to Update Phone Number**"
+          content: "❌ Failed to Update Phone Number"
 
-  # Handle update result - connection failure
-  - condition: action_type == 'update' && update_status == 0
+  # Handle update result - connection failure (only for actual API attempts)
+  - condition: action_type == 'update' && phone_type_normalized != null && phone_number != null && update_status == 0
     actions:
       - type: set-variables
         variables:
@@ -404,7 +402,7 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "❌ **Failed to Update Phone Number**\n\n🚨 **Error:** Connection failed"
+          content: "❌ Failed to Update Phone Number\n\n🚨 Error: Connection failed"
 
   # Case 4: DELETE action - no phones exist
   - condition: action_type == 'delete' && phone_count == 0
@@ -417,15 +415,17 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "📋 **No Phone Numbers Found**\n\nYou don't have any phone numbers to delete."
+          content: "📋 No Phone Numbers Found\n\nYou don't have any phone numbers to delete."
 
-  # Case 4a: DELETE - need selection
+  # Case 4a: DELETE - need selection - STOP HERE
   - condition: action_type == 'delete' && phone_count > 0 && phone_type_normalized == null
     actions:
       - type: set-variables
         variables:
           - name: operation_status
             value: "delete_need_selection"
+          - name: delete_status
+            value: 999  # Set to non-zero to prevent error handling
 
       - type: message
         scripting_type: handlebars
@@ -483,7 +483,7 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "🗑️ **Deleting <? phone_type_normalized ?> phone number**"
+          content: "🗑️ Deleting <? phone_type_normalized ?> phone number"
 
       - type: set-variables
         variables:
@@ -503,10 +503,6 @@ action_groups:
         system_alias: ConcurProfileBotAPI
         path: "/graphql"
         body: "<? delete_body ?>"
-        headers:
-          Content-Type: "application/json"
-          Accept: "application/json"
-          Authorization: "Bearer <? jwt_token ?>"
         result_variable: delete_result
         timeout: 30
 
@@ -526,10 +522,10 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "✅ **Phone Number Deleted Successfully**\n\n🗑️ **Removed:** <? phone_type_normalized ?> phone\n\n⚠️ **Note:** Changes may take a few seconds to appear."
+          content: "✅ Phone Number Deleted Successfully\n\n🗑️ Removed: <? phone_type_normalized ?> phone\n\n⚠️ Note: Changes may take a few seconds to appear."
 
-  # Handle delete result - failure
-  - condition: action_type == 'delete' && delete_status != 200 && delete_status != 0
+  # Handle delete result - failure (only for actual API attempts)
+  - condition: action_type == 'delete' && phone_type_normalized != null && delete_status != 200 && delete_status != 0
     actions:
       - type: set-variables
         variables:
@@ -539,10 +535,10 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "❌ **Failed to Delete Phone Number**"
+          content: "❌ Failed to Delete Phone Number"
 
-  # Handle delete result - connection failure
-  - condition: action_type == 'delete' && delete_status == 0
+  # Handle delete result - connection failure (only for actual API attempts)
+  - condition: action_type == 'delete' && phone_type_normalized != null && delete_status == 0
     actions:
       - type: set-variables
         variables:
@@ -552,10 +548,10 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "❌ **Failed to Delete Phone Number**\n\n🚨 **Error:** Connection failed"
+          content: "❌ Failed to Delete Phone Number\n\n🚨 Error: Connection failed"
 
-  # Handle API errors
-  - condition: get_result != null && get_result.status_code != 200
+  # Handle API errors - only if no other operation was attempted
+  - condition: get_result != null && get_result.status_code != 200 && operation_status == "initializing"
     actions:
       - type: set-variables
         variables:
@@ -567,10 +563,5 @@ action_groups:
       - type: message
         message:
           type: text
-          content: "❌ **Failed to Retrieve Phone Information**\n\n🚨 **Error:** <? result_message ?>"
+          content: "❌ Failed to Retrieve Phone Information\n\n🚨 Error: <? result_message ?>"
 
-result:
-  operation_status: "<? operation_status ?>"
-  result_message: "<? result_message ?>"
-  phone_count: "<? phone_count ?>"
-  phone_data: "<? phone_data ?>"

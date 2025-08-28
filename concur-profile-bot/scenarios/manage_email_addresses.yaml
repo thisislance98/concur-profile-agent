@@ -1,0 +1,15 @@
+description: This scenario allows users to manage their email addresses - view current emails, add new email addresses, update existing ones, or delete email addresses through natural language requests. Call this when they ask to see, show, add, edit, or update their email addresses.
+
+slots:
+  - name: action
+    description: The action to perform - add (new email), update (modify existing), delete (remove email)
+  - name: email_type
+    description: The type of email address (Business, Personal, Supervisor, TravelArranger, Business2, Other1, Other2)
+  - name: email_address
+    description: The email address to be added or updated
+  - name: chat_id
+    description: The chat session ID to maintain conversation context
+
+target:
+  type: function
+  name: manage_email_addresses

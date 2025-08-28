@@ -1,27 +1,15 @@
-description: Manage phone numbers - add, update, or delete Home, Work, and Cell phone numbers
+description: Manage phone numbers - add, update, or delete Home, Work, and Cell phone numbers. Use this when users want to add new phone numbers, update existing ones, delete phone numbers, or view their current phone numbers.
 
 slots:
   - name: action
-    description: The action to perform (add, update, delete)
+    description: The action to perform - add (to add new phone), update (to modify existing phone), delete/remove (to delete phone)
   - name: phone_type
-    description: Type of phone (Home, Work, Cell)
+    description: Type of phone - Home, Work, Cell, Mobile, Office (Cell and Mobile are the same, Office and Work are the same)
   - name: phone_number
-    description: The phone number
-  - name: current_phone_number
-    description: Current phone number to update or delete
+    description: The phone number in any format (xxx-xxx-xxxx, (xxx) xxx-xxxx, xxxxxxxxxx, +1-xxx-xxx-xxxx)
   - name: chat_id
     description: The chat session ID to maintain conversation context
 
 target:
   type: function
   name: manage_phone_numbers
-
-response_context:
-  - value: $target_result.operation_status
-    description: Status of the phone operation
-  - value: $target_result.result_message
-    description: Result message
-  - value: $target_result.phone_count
-    description: Number of phones in profile
-  - value: $target_result.phone_data
-    description: Current phone data

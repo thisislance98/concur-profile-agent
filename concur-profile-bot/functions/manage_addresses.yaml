@@ -1,0 +1,529 @@
+parameters:
+  - name: action
+    optional: true  # add, update, delete
+  - name: address_type
+    optional: true  # home, work
+  - name: street_address
+    optional: true
+  - name: city
+    optional: true
+  - name: state
+    optional: true
+  - name: zip_code
+    optional: true
+  - name: country
+    optional: true
+  - name: chat_id
+    optional: true
+
+action_groups:
+  # Initialize variables
+  - actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "initializing"
+          - name: address_data
+            value: null
+          - name: address_count
+            value: 0
+          - name: result_message
+            value: ""
+          - name: graphql_query
+            value: "{ JouleCompleteUserProfile { addresses { type streetAddress locality region postalCode country formatted primary } } }"
+          - name: jwt_token
+            value: "<? new i18n('JWT').toString() ?>"
+          - name: selected_address
+            value: null
+          - name: action_type
+            value: "<? action != null ? action.toLowerCase() : null ?>"
+          - name: address_type_normalized
+            value: "<? address_type != null ? address_type.toLowerCase() : null ?>"
+          - name: country_code
+            value: "<? country != null ? country : 'US' ?>"
+          - name: add_result
+            value: null
+          - name: update_result
+            value: null
+          - name: delete_result
+            value: null
+          - name: add_status
+            value: 0
+          - name: update_status
+            value: 0
+          - name: delete_status
+            value: 0
+          - name: mutation_result
+            value: null
+          - name: mutation_status
+            value: 0
+          - name: target_address_exists
+            value: false
+          
+  # First, retrieve current addresses
+  - actions:
+      - type: set-variables
+        variables:
+          - name: get_graphql_body
+            value: |
+              {
+                "query": "<? graphql_query ?>"
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? get_graphql_body ?>"
+        result_variable: get_result
+        timeout: 30
+
+  # Process address retrieval response
+  - condition: get_result != null && get_result.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: get_response_body
+            value: "<? get_result.body ?>"
+          - name: address_data
+            value: "<? get_response_body.data.JouleCompleteUserProfile.addresses ?>"
+          - name: has_addresses
+            value: "<? address_data != null && address_data.size() > 0 ?>"
+          - name: address_count
+            value: "<? has_addresses ? address_data.size() : 0 ?>"
+
+  # Case 1: No action specified - show current addresses and options
+  - condition: action_type == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "show_options"
+
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: |
+            🏠 Your Addresses
+            
+            {{#if has_addresses}}
+            {{#each address_data}}
+            📍 {{type}} Address:
+            • {{streetAddress}}
+            • {{locality}}, {{region}} {{postalCode}}
+            • {{country}}
+            
+            {{/each}}
+            {{else}}
+            📋 No addresses on file.
+            {{/if}}
+            
+            🔧 What would you like to do?
+            • ➕ Add a new address
+            • 🔄 Update an existing address
+            • 🗑️ Delete an address
+            
+            💡 Examples:
+            "Add my home address 123 Main St, San Francisco, CA 94105"
+            "Update my work address to 456 Business Ave, New York, NY 10001"
+            "Delete my home address"
+
+  # Case 2: ADD action - need at least address type and one field to add
+  - condition: action_type == 'add' && address_type_normalized == null
+    actions:
+      - type: message
+        message:
+          type: text
+          content: |
+            ❓ Missing Address Type
+            
+            Please specify the address type (home or work) and address details to add.
+            
+            💡 Examples:
+            "Add my work address 456 Business Ave, New York, NY 10001"
+            "Add my home address street 123 Main St"
+
+  # Case 2b: ADD with address type but missing required core fields
+  - condition: action_type == 'add' && address_type_normalized != null && (street_address == null || city == null || state == null || zip_code == null)
+    actions:
+      - type: message
+        message:
+          type: text
+          content: |
+            ❓ Missing Required Fields
+            
+            To add a complete address, please provide:
+            • 🏠 Street address
+            • 🏙️ City  
+            • 📍 State/Province
+            • 📮 Zip/Postal code
+            • 🌍 Country (optional, defaults to US)
+            
+            💡 Example:
+            "Add my <? address_type_normalized ?> address 456 Business Ave, New York, NY 10001"
+
+  # Case 3: UPDATE action - no addresses exist
+  - condition: action_type == 'update' && address_count == 0
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "📋 No Addresses Found\n\nYou don't have any addresses to update. Please add an address first."
+
+  # Case 3a: UPDATE with missing address type and multiple addresses  
+  - condition: action_type == 'update' && address_count > 1 && address_type_normalized == null
+    actions:
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: |
+            ❓ Which address would you like to update?
+            
+            Your current addresses:
+            {{#each address_data}}
+            📍 {{type}}: {{streetAddress}}, {{locality}}, {{region}} {{postalCode}}
+            {{/each}}
+            
+            Please specify which address type to update:
+            • 🏠 home or 🏢 work
+            
+            💡 Example:
+            "Update my home address street to 789 Oak St"
+            "Update my work address city to Boston"
+
+  # Case 3b: UPDATE with single address and no address type - auto-select
+  - condition: action_type == 'update' && address_count == 1 && address_type_normalized == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: address_type_normalized
+            value: "<? address_data[0].type.toLowerCase() ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "📍 Auto-selected your <? address_type_normalized ?> address for update"
+
+  # For UPDATE: Find existing address to update
+  - condition: action_type == 'update' && address_count > 0 && address_type_normalized != null
+    actions:
+      - type: set-variables
+        variables:
+          - name: address_to_update
+            value: "<? address_data[0].type.toLowerCase() == address_type_normalized ? address_data[0] : (address_count > 1 && address_data[1].type.toLowerCase() == address_type_normalized ? address_data[1] : null) ?>"
+          - name: target_address_exists
+            value: "<? address_to_update != null ?>"
+
+  # For UPDATE: Check if target address exists
+  - condition: action_type == 'update' && address_count > 0 && address_type_normalized != null && target_address_exists == false
+    actions:
+      - type: message
+        message:
+          type: text
+          content: "❌ Address Not Found\n\nNo <? address_type_normalized ?> address found in your profile.\n\n💡 Tip: You can add a new address instead."
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "update_address_not_found"
+
+  # Process the address operation (both ADD and UPDATE)
+  - condition: (action_type == 'add' && address_type_normalized != null && street_address != null && city != null && state != null && zip_code != null) || (action_type == 'update' && address_count > 0 && address_type_normalized != null && target_address_exists == true)
+    actions:
+      # Set up values for the operation
+      - type: set-variables
+        variables:
+          # For ADD: use provided values or defaults
+          # For UPDATE: use provided values or fall back to existing values
+          - name: final_street
+            value: "<? action_type == 'add' ? street_address : (street_address != null ? street_address : address_to_update.streetAddress) ?>"
+          - name: final_city
+            value: "<? action_type == 'add' ? city : (city != null ? city : address_to_update.locality) ?>"
+          - name: final_state
+            value: "<? action_type == 'add' ? state : (state != null ? state : address_to_update.region) ?>"
+          - name: final_zip
+            value: "<? action_type == 'add' ? zip_code : (zip_code != null ? zip_code : address_to_update.postalCode) ?>"
+          - name: final_country
+            value: "<? action_type == 'add' ? country_code : (country != null ? country : address_to_update.country) ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "<? action_type == 'add' ? '➕ **Adding ' + address_type_normalized + ' address**' : '🔄 **Updating ' + address_type_normalized + ' address**' ?><? action_type == 'update' && (street_address != null || city != null || state != null || zip_code != null || country != null) ? '\n\n📍 **Changes:**' + (street_address != null ? '\n• Street: ' + street_address : '') + (city != null ? '\n• City: ' + city : '') + (state != null ? '\n• State: ' + state : '') + (zip_code != null ? '\n• Zip: ' + zip_code : '') + (country != null ? '\n• Country: ' + country : '') : '' ?>"
+
+      # Build the complete addresses array
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: addresses_array
+            value: |
+              [
+                {{#if has_addresses}}
+                {{#eachJoin address_data}}
+                {{#if (eq this.type ../address_type_normalized)}}
+                {{#if (eq ../action_type "update")}}
+                {
+                  "type": "{{this.type}}",
+                  "street": "{{../final_street}}",
+                  "city": "{{../final_city}}",
+                  "stateProvince": "{{../final_state}}",
+                  "countryCode": "{{../final_country}}",
+                  "zipCode": "{{../final_zip}}"
+                }
+                {{/if}}
+                {{else}}
+                {
+                  "type": "{{this.type}}",
+                  "street": "{{this.streetAddress}}",
+                  "city": "{{this.locality}}",
+                  "stateProvince": "{{this.region}}",
+                  "countryCode": "{{this.country}}",
+                  "zipCode": "{{this.postalCode}}"
+                }
+                {{/if}}
+                {{/eachJoin}}
+                {{#if (eq action_type "add")}},{{/if}}
+                {{/if}}
+                {{#if (eq action_type "add")}}
+                {
+                  "type": "{{address_type_normalized}}",
+                  "street": "{{final_street}}",
+                  "city": "{{final_city}}",
+                  "stateProvince": "{{final_state}}",
+                  "countryCode": "{{final_country}}",
+                  "zipCode": "{{final_zip}}"
+                }
+                {{/if}}
+              ]
+
+      - type: set-variables
+        variables:
+          - name: mutation_body
+            value: |
+              {
+                "query": "mutation UpdateCompleteUserProfile($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id addresses { type streetAddress locality region postalCode country } } }",
+                "variables": {
+                  "input": {
+                    "addresses": <? addresses_array ?>
+                  }
+                }
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? mutation_body ?>"
+        result_variable: mutation_result
+        timeout: 30
+
+      - type: set-variables
+        variables:
+          - name: mutation_status
+            value: "<? mutation_result != null ? mutation_result.status_code : 0 ?>"
+
+  # Handle success for both ADD and UPDATE (only if operation was actually attempted)
+  - condition: ((action_type == 'add' && address_type_normalized != null && street_address != null && city != null && state != null && zip_code != null) || (action_type == 'update' && address_count > 0 && address_type_normalized != null && target_address_exists == true)) && mutation_status != null && mutation_status == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "<? action_type ?>_success"
+      
+      - type: message
+        message:
+          type: text
+          content: "✅ <? action_type == 'add' ? 'Address Added' : 'Address Updated' ?> Successfully\n\n📍 <? action_type == 'add' ? 'Added' : 'Updated' ?>: <? address_type_normalized ?> address\n\n⚠️ Note: Changes may take a few seconds to appear due to API processing."
+
+  # Handle failure for both ADD and UPDATE (only if operation was actually attempted)
+  - condition: ((action_type == 'add' && address_type_normalized != null && street_address != null && city != null && state != null && zip_code != null) || (action_type == 'update' && address_count > 0 && address_type_normalized != null && target_address_exists == true)) && mutation_status != null && mutation_status != 200 && mutation_status != 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "<? action_type ?>_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to <? action_type == 'add' ? 'Add' : 'Update' ?> Address\n\n🚨 Error: HTTP <? mutation_status ?>"
+
+  # Handle connection failure for both ADD and UPDATE (only if operation was actually attempted)
+  - condition: ((action_type == 'add' && address_type_normalized != null && street_address != null && city != null && state != null && zip_code != null) || (action_type == 'update' && address_count > 0 && address_type_normalized != null && target_address_exists == true)) && (mutation_status == null || mutation_status == 0)
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "<? action_type ?>_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to <? action_type == 'add' ? 'Add' : 'Update' ?> Address\n\n🚨 Error: Connection failed"
+
+  # Case 4: DELETE action - no addresses exist
+  - condition: action_type == 'delete' && address_count == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_no_addresses"
+      
+      - type: message
+        message:
+          type: text
+          content: "📋 No Addresses Found\n\nYou don't have any addresses to delete."
+
+  # Case 4a: DELETE - need selection
+  - condition: action_type == 'delete' && address_count > 0 && address_type_normalized == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_need_selection"
+
+      - type: message
+        scripting_type: handlebars
+        message: >
+          {
+            "type": "list",
+            "content": {
+              "title": "Select Address to Delete",
+              "subtitle": "Choose which address to remove",
+              "enableDetailView": false,
+              "total": "{{address_count}}",
+              "initialPageSize": 5,
+              "elements": [
+                {{#eachJoin address_data}}
+                {
+                  "title": "{{type}} Address",
+                  "subtitle": "{{streetAddress}}",
+                  "description": "{{locality}}, {{region}} {{postalCode}}",
+                  "buttons": [
+                    {
+                      "type": "postback",
+                      "title": "Delete",
+                      "text": "Delete my {{type}} address",
+                      "value": "Delete my {{type}} address"
+                    }
+                  ]
+                }
+                {{/eachJoin}}
+              ]
+            }
+          }
+
+  # Case 4b: DELETE with address type specified
+  - condition: action_type == 'delete' && address_count > 0 && address_type_normalized != null
+    actions:
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: remaining_addresses_array
+            value: |
+              [
+                {{#eachJoin address_data}}
+                {{#unless (eq this.type ../address_type_normalized)}}
+                {
+                  "type": "{{this.type}}",
+                  "street": "{{this.streetAddress}}",
+                  "city": "{{this.locality}}",
+                  "stateProvince": "{{this.region}}",
+                  "countryCode": "{{this.country}}",
+                  "zipCode": "{{this.postalCode}}"
+                }
+                {{/unless}}
+                {{/eachJoin}}
+              ]
+
+      - type: message
+        message:
+          type: text
+          content: "🗑️ **Deleting <? address_type_normalized ?> address**"
+
+      - type: set-variables
+        variables:
+          - name: delete_body
+            value: |
+              {
+                "query": "mutation UpdateCompleteUserProfile($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id addresses { type streetAddress locality region postalCode country } } }",
+                "variables": {
+                  "input": {
+                    "addresses": <? remaining_addresses_array ?>
+                  }
+                }
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? delete_body ?>"
+        result_variable: delete_result
+        timeout: 30
+
+      - type: set-variables
+        variables:
+          - name: delete_status
+            value: "<? delete_result != null ? delete_result.status_code : 0 ?>"
+
+  # Handle delete result - success
+  - condition: action_type == 'delete' && delete_status == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_success"
+      
+      - type: message
+        message:
+          type: text
+          content: "✅ Address Deleted Successfully\n\n🗑️ Removed: <? address_type_normalized ?> address\n\n⚠️ Note: Changes may take a few seconds to appear."
+
+  # Handle delete result - failure (only if delete was actually attempted)
+  - condition: action_type == 'delete' && address_type_normalized != null && delete_status != 200 && delete_status != 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Delete Address"
+
+  # Handle delete result - connection failure (only if delete was actually attempted)
+  - condition: action_type == 'delete' && address_type_normalized != null && delete_status == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Delete Address\n\n🚨 Error: Connection failed"
+
+  # Handle API errors
+  - condition: get_result != null && get_result.status_code != 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "retrieval_error"
+          - name: result_message
+            value: "<? 'API Error: ' + get_result.status_code ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Retrieve Address Information\n\n🚨 Error: <? result_message ?>"
+
+result:
+  operation_status: "<? operation_status ?>"
+  result_message: "<? result_message ?>"
+  address_count: "<? address_count ?>"
+  address_data: "<? address_data ?>"

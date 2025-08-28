@@ -1,0 +1,25 @@
+description: Manage addresses - add, update, or delete home and work addresses. Use this when users want to add new addresses, update existing ones, delete addresses, or view their current addresses.
+
+slots:
+  - name: action
+    description: The action to perform - add (to add new address), update (to modify existing address), delete/remove (to delete address)
+  - name: address_type
+    description: Type of address - home, work
+  - name: street_address
+    description: The street address/street number and name
+  - name: city
+    description: The city/locality/town name
+  - name: state
+    description: The state/province/region code or name
+  - name: zip_code
+    description: The zip/postal code number
+  - name: country
+    description: The country code or name (defaults to US if not specified)
+  - name: chat_id
+    description: The chat session ID to maintain conversation context
+
+target:
+  type: function
+  name: manage_addresses
+
+

@@ -1,0 +1,17 @@
+description: This scenario allows users to manage their profile names - view current names, update first name, last name, or preferred name through natural language requests
+
+slots:
+  - name: action
+    description: The action to perform - get (view names), set/update (modify names)
+  - name: first_name
+    description: The user's first name to be updated in their profile
+  - name: last_name
+    description: The user's last name to be updated in their profile
+  - name: preferred_name
+    description: The user's preferred name to be updated in their profile
+  - name: chat_id
+    description: The chat session ID to maintain conversation context
+
+target:
+  type: function
+  name: manage_profile_names

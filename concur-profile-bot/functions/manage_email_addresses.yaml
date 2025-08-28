@@ -1,0 +1,561 @@
+parameters:
+  - name: action
+    optional: true  # add, update, delete
+  - name: email_type
+    optional: true  # business, personal, supervisor, travelarranger, business2, other1, other2
+  - name: email_address
+    optional: true  # for add/update actions
+  - name: chat_id
+    optional: true
+
+action_groups:
+  # Initialize variables
+  - actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "initializing"
+          - name: email_data
+            value: null
+          - name: email_count
+            value: 0
+          - name: result_message
+            value: ""
+          - name: graphql_query
+            value: "{ JouleCompleteUserProfile { emails { value type primary verified } } }"
+          - name: jwt_token
+            value: "<? new i18n('JWT').toString() ?>"
+          - name: selected_email
+            value: null
+          - name: action_type
+            value: "<? action != null ? action.toLowerCase() : null ?>"
+          - name: email_type_normalized
+            value: "<? email_type != null ? (email_type.toLowerCase() == 'business' ? 'Business' : (email_type.toLowerCase() == 'personal' ? 'Personal' : (email_type.toLowerCase() == 'supervisor' ? 'Supervisor' : (email_type.toLowerCase() == 'travelarranger' or email_type.toLowerCase() == 'travel arranger' ? 'TravelArranger' : (email_type.toLowerCase() == 'business2' or email_type.toLowerCase() == 'business 2' ? 'Business2' : (email_type.toLowerCase() == 'other1' or email_type.toLowerCase() == 'other 1' ? 'Other1' : (email_type.toLowerCase() == 'other2' or email_type.toLowerCase() == 'other 2' ? 'Other2' : null))))))) : null ?>"
+          - name: add_result
+            value: null
+          - name: update_result
+            value: null
+          - name: delete_result
+            value: null
+          - name: add_status
+            value: 0
+          - name: update_status
+            value: 0
+          - name: delete_status
+            value: 0
+          
+  # First, retrieve current email addresses
+  - actions:
+      - type: set-variables
+        variables:
+          - name: get_graphql_body
+            value: |
+              {
+                "query": "<? graphql_query ?>"
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? get_graphql_body ?>"
+        result_variable: get_result
+        timeout: 30
+
+  # Process email retrieval response
+  - condition: get_result != null && get_result.status_code == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: get_response_body
+            value: "<? get_result.body ?>"
+          - name: email_data
+            value: "<? get_response_body.data.JouleCompleteUserProfile.emails ?>"
+          - name: has_emails
+            value: "<? email_data != null && email_data.size() > 0 ?>"
+          - name: email_count
+            value: "<? has_emails ? email_data.size() : 0 ?>"
+
+  # Case 1: No action specified - show current emails and options
+  - condition: action_type == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "show_options"
+
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: |
+            📧 Your Email Addresses
+            
+            {{#if has_emails}}
+            {{#each email_data}}
+            • {{type}}: {{value}} {{#if primary}}(Primary){{/if}} {{#if verified}}✅{{else}}⚠️ Unverified{{/if}}
+            {{/each}}
+            {{else}}
+            📋 No email addresses on file.
+            {{/if}}
+            
+            🔧 What would you like to do?
+            • ➕ Add a new email address
+            • 🔄 Update an existing email address
+            • 🗑️ Delete an email address
+            
+            💡 Examples:
+            "Add my personal email john@gmail.com"
+            "Update my business email to john.smith@company.com"
+            "Delete my supervisor email"
+
+  # Case 2: ADD action - validate fields
+  - condition: action_type == 'add'
+    actions:
+      - type: set-variables
+        variables:
+          - name: has_required_add_fields
+            value: "<? email_type_normalized != null && email_address != null ?>"
+
+  # Case 2a: ADD with missing fields - STOP HERE
+  - condition: action_type == 'add' && (email_type_normalized == null || email_address == null)
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "add_missing_fields"
+          - name: add_status
+            value: 999  # Set to non-zero to prevent error handling
+
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: |
+            ❓ Missing Information
+            
+            {{#if has_emails}}
+            Your current email addresses:
+            {{#each email_data}}
+            • 📧 {{type}}: {{value}} {{#if verified}}✅{{else}}⚠️{{/if}}
+            {{/each}}
+            
+            {{/if}}
+            To add an email address, please provide:
+            • 📧 Email type (Business, Personal, Supervisor, TravelArranger, Business2, Other1, Other2)
+            • 📨 Email address
+            
+            💡 Example:
+            "Add my personal email john@gmail.com"
+
+  # Case 2b: ADD with all required fields
+  - condition: action_type == 'add' && email_type_normalized != null && email_address != null
+    actions:
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: new_emails_array
+            value: |
+              [
+                {{#if has_emails}}
+                {{#eachJoin email_data}}
+                {
+                  "value": "{{this.value}}",
+                  "type": "{{#if (eq this.type 'business')}}Business{{else}}{{#if (eq this.type 'personal')}}Personal{{else}}{{#if (eq this.type 'supervisor')}}Supervisor{{else}}{{#if (eq this.type 'travelarranger')}}TravelArranger{{else}}{{#if (eq this.type 'business2')}}Business2{{else}}{{#if (eq this.type 'other1')}}Other1{{else}}{{#if (eq this.type 'other2')}}Other2{{else}}{{this.type}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}",
+                  "contact": {{this.primary}},
+                  "verified": {{this.verified}}
+                }
+                {{/eachJoin}},
+                {{/if}}
+                {
+                  "value": "{{email_address}}",
+                  "type": "{{email_type_normalized}}",
+                  "contact": false,
+                  "verified": false
+                }
+              ]
+
+      - type: message
+        message:
+          type: text
+          content: "➕ Adding <? email_type_normalized ?> email: <? email_address ?>"
+
+      - type: set-variables
+        variables:
+          - name: add_body
+            value: |
+              {
+                "query": "mutation UpdateCompleteUserProfile($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id emails { value type primary verified } } }",
+                "variables": {
+                  "input": {
+                    "emailAddresses": <? new_emails_array ?>
+                  }
+                }
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? add_body ?>"
+        result_variable: add_result
+        timeout: 30
+
+      - type: set-variables
+        variables:
+          - name: add_status
+            value: "<? add_result != null ? add_result.status_code : 0 ?>"
+
+  # Handle add result - success
+  - condition: action_type == 'add' && add_status == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "add_success"
+      
+      - type: message
+        message:
+          type: text
+          content: "✅ Email Address Added Successfully\n\n📧 Added: <? email_type_normalized ?> - <? email_address ?>\n\n⚠️ Note: New emails are unverified and may need verification through your email client."
+
+  # Handle add result - failure (only for actual API attempts)
+  - condition: action_type == 'add' && email_type_normalized != null && email_address != null && add_status != 200 && add_status != 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "add_failed"
+          - name: error_msg
+            value: "<? 'HTTP ' + add_status ?>"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Add Email Address\n\n🚨 Error: <? error_msg ?>"
+
+  # Handle add result - connection failure (only for actual API attempts)
+  - condition: action_type == 'add' && email_type_normalized != null && email_address != null && add_status == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "add_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Add Email Address\n\n🚨 Error: Connection failed"
+
+  # Case 3: UPDATE action - no emails exist
+  - condition: action_type == 'update' && email_count == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "update_no_emails"
+      
+      - type: message
+        message:
+          type: text
+          content: "📋 No Email Addresses Found\n\nYou don't have any email addresses to update. Please add an email address first."
+
+  # Case 3a: UPDATE with missing fields - STOP HERE
+  - condition: action_type == 'update' && email_count > 0 && (email_type_normalized == null || email_address == null)
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "update_missing_fields"
+          - name: update_status
+            value: 999  # Set to non-zero to prevent error handling
+
+      - type: message
+        scripting_type: handlebars
+        message:
+          type: text
+          content: |
+            ❓ What would you like to update?
+            
+            Your current email addresses:
+            {{#each email_data}}
+            • 📧 {{type}}: {{value}} {{#if verified}}✅{{else}}⚠️{{/if}}
+            {{/each}}
+            
+            Please specify:
+            • 📧 Email type to update (business, personal, supervisor, etc.)
+            • 📨 New email address
+            
+            💡 Example:
+            "Update my business email to john.smith@company.com"
+
+  # Case 3b: UPDATE with all fields
+  - condition: action_type == 'update' && email_count > 0 && email_type_normalized != null && email_address != null
+    actions:
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: updated_emails_array
+            value: |
+              [
+                {{#eachJoin email_data}}
+                {{#if ../email_count}}{{#if (eq ../email_count 1)}}
+                {
+                  "value": "{{../email_address}}",
+                  "type": "{{#if (eq this.type 'business')}}Business{{else}}{{#if (eq this.type 'personal')}}Personal{{else}}{{#if (eq this.type 'supervisor')}}Supervisor{{else}}{{#if (eq this.type 'travelarranger')}}TravelArranger{{else}}{{#if (eq this.type 'business2')}}Business2{{else}}{{#if (eq this.type 'other1')}}Other1{{else}}{{#if (eq this.type 'other2')}}Other2{{else}}{{this.type}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}",
+                  "contact": {{this.primary}},
+                  "verified": false
+                }
+                {{else}}{{#if (or (and (eq this.type 'business') (eq ../email_type_normalized 'Business')) (and (eq this.type 'personal') (eq ../email_type_normalized 'Personal')) (and (eq this.type 'supervisor') (eq ../email_type_normalized 'Supervisor')) (and (eq this.type 'travelarranger') (eq ../email_type_normalized 'TravelArranger')) (and (eq this.type 'business2') (eq ../email_type_normalized 'Business2')) (and (eq this.type 'other1') (eq ../email_type_normalized 'Other1')) (and (eq this.type 'other2') (eq ../email_type_normalized 'Other2')))}}
+                {
+                  "value": "{{../email_address}}",
+                  "type": "{{#if (eq this.type 'business')}}Business{{else}}{{#if (eq this.type 'personal')}}Personal{{else}}{{#if (eq this.type 'supervisor')}}Supervisor{{else}}{{#if (eq this.type 'travelarranger')}}TravelArranger{{else}}{{#if (eq this.type 'business2')}}Business2{{else}}{{#if (eq this.type 'other1')}}Other1{{else}}{{#if (eq this.type 'other2')}}Other2{{else}}{{this.type}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}",
+                  "contact": {{this.primary}},
+                  "verified": false
+                }
+                {{else}}
+                {
+                  "value": "{{this.value}}",
+                  "type": "{{#if (eq this.type 'business')}}Business{{else}}{{#if (eq this.type 'personal')}}Personal{{else}}{{#if (eq this.type 'supervisor')}}Supervisor{{else}}{{#if (eq this.type 'travelarranger')}}TravelArranger{{else}}{{#if (eq this.type 'business2')}}Business2{{else}}{{#if (eq this.type 'other1')}}Other1{{else}}{{#if (eq this.type 'other2')}}Other2{{else}}{{this.type}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}",
+                  "contact": {{this.primary}},
+                  "verified": {{this.verified}}
+                }
+                {{/if}}{{/if}}{{/if}}
+                {{/eachJoin}}
+              ]
+
+      - type: message
+        message:
+          type: text
+          content: "🔄 Updating <? email_type_normalized ?> email to: <? email_address ?>"
+
+      - type: set-variables
+        variables:
+          - name: update_body
+            value: |
+              {
+                "query": "mutation UpdateCompleteUserProfile($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id emails { value type primary verified } } }",
+                "variables": {
+                  "input": {
+                    "emailAddresses": <? updated_emails_array ?>
+                  }
+                }
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? update_body ?>"
+        result_variable: update_result
+        timeout: 30
+
+      - type: set-variables
+        variables:
+          - name: update_status
+            value: "<? update_result != null ? update_result.status_code : 0 ?>"
+
+  # Handle update result - success
+  - condition: action_type == 'update' && update_status == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "update_success"
+      
+      - type: message
+        message:
+          type: text
+          content: "✅ Email Address Updated Successfully\n\n📧 Updated: <? email_type_normalized ?> - <? email_address ?>\n\n⚠️ Note: Updated emails will need re-verification."
+
+  # Handle update result - failure (only for actual API attempts)
+  - condition: action_type == 'update' && email_type_normalized != null && email_address != null && update_status != 200 && update_status != 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "update_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Update Email Address"
+
+  # Handle update result - connection failure (only for actual API attempts)
+  - condition: action_type == 'update' && email_type_normalized != null && email_address != null && update_status == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "update_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Update Email Address\n\n🚨 Error: Connection failed"
+
+  # Case 4: DELETE action - no emails exist
+  - condition: action_type == 'delete' && email_count == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_no_emails"
+      
+      - type: message
+        message:
+          type: text
+          content: "📋 No Email Addresses Found\n\nYou don't have any email addresses to delete."
+
+  # Case 4a: DELETE - need selection - STOP HERE
+  - condition: action_type == 'delete' && email_count > 0 && email_type_normalized == null
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_need_selection"
+          - name: delete_status
+            value: 999  # Set to non-zero to prevent error handling
+
+      - type: message
+        scripting_type: handlebars
+        message: >
+          {
+            "type": "list",
+            "content": {
+              "title": "Select Email to Delete",
+              "subtitle": "Choose which email address to remove",
+              "enableDetailView": false,
+              "total": "{{email_count}}",
+              "initialPageSize": 5,
+              "elements": [
+                {{#eachJoin email_data}}
+                {
+                  "title": "{{type}}: {{value}}",
+                  "subtitle": "{{#if primary}}Primary Email{{else}}{{#if verified}}Verified{{else}}Unverified{{/if}}{{/if}}",
+                  "buttons": [
+                    {
+                      "type": "postback",
+                      "title": "Delete",
+                      "text": "Delete my {{type}} email",
+                      "value": "Delete my {{type}} email"
+                    }
+                  ]
+                }
+                {{/eachJoin}}
+              ]
+            }
+          }
+
+  # Case 4b: DELETE with email type specified
+  - condition: action_type == 'delete' && email_count > 0 && email_type_normalized != null
+    actions:
+      - type: set-variables
+        scripting_type: handlebars
+        variables:
+          - name: remaining_emails_array
+            value: |
+              [
+                {{#eachJoin email_data}}
+                {{#if (or (and (eq this.type 'business') (eq ../email_type_normalized 'Business')) (and (eq this.type 'personal') (eq ../email_type_normalized 'Personal')) (and (eq this.type 'supervisor') (eq ../email_type_normalized 'Supervisor')) (and (eq this.type 'travelarranger') (eq ../email_type_normalized 'TravelArranger')) (and (eq this.type 'business2') (eq ../email_type_normalized 'Business2')) (and (eq this.type 'other1') (eq ../email_type_normalized 'Other1')) (and (eq this.type 'other2') (eq ../email_type_normalized 'Other2')))}}
+                {
+                  "value": "",
+                  "type": "{{#if (eq this.type 'business')}}Business{{else}}{{#if (eq this.type 'personal')}}Personal{{else}}{{#if (eq this.type 'supervisor')}}Supervisor{{else}}{{#if (eq this.type 'travelarranger')}}TravelArranger{{else}}{{#if (eq this.type 'business2')}}Business2{{else}}{{#if (eq this.type 'other1')}}Other1{{else}}{{#if (eq this.type 'other2')}}Other2{{else}}{{this.type}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}",
+                  "contact": false,
+                  "verified": false
+                }
+                {{else}}
+                {
+                  "value": "{{this.value}}",
+                  "type": "{{#if (eq this.type 'business')}}Business{{else}}{{#if (eq this.type 'personal')}}Personal{{else}}{{#if (eq this.type 'supervisor')}}Supervisor{{else}}{{#if (eq this.type 'travelarranger')}}TravelArranger{{else}}{{#if (eq this.type 'business2')}}Business2{{else}}{{#if (eq this.type 'other1')}}Other1{{else}}{{#if (eq this.type 'other2')}}Other2{{else}}{{this.type}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}{{/if}}",
+                  "contact": {{this.primary}},
+                  "verified": {{this.verified}}
+                }
+                {{/if}}
+                {{/eachJoin}}
+              ]
+
+      - type: message
+        message:
+          type: text
+          content: "🗑️ Deleting <? email_type_normalized ?> email address"
+
+      - type: set-variables
+        variables:
+          - name: delete_body
+            value: |
+              {
+                "query": "mutation UpdateCompleteUserProfile($input: CompleteUserProfileInput!) { updateCompleteUserProfile(input: $input) { id emails { value type primary verified } } }",
+                "variables": {
+                  "input": {
+                    "emailAddresses": <? remaining_emails_array ?>
+                  }
+                }
+              }
+
+      - type: api-request
+        method: POST
+        system_alias: ConcurProfileBotAPI
+        path: "/graphql"
+        body: "<? delete_body ?>"
+        result_variable: delete_result
+        timeout: 30
+
+      - type: set-variables
+        variables:
+          - name: delete_status
+            value: "<? delete_result != null ? delete_result.status_code : 0 ?>"
+
+  # Handle delete result - success
+  - condition: action_type == 'delete' && delete_status == 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_success"
+      
+      - type: message
+        message:
+          type: text
+          content: "✅ Email Address Deleted Successfully\n\n🗑️ Removed: <? email_type_normalized ?> email\n\n⚠️ Note: Changes may take a few seconds to appear."
+
+  # Handle delete result - failure (only for actual API attempts)
+  - condition: action_type == 'delete' && email_type_normalized != null && delete_status != 200 && delete_status != 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Delete Email Address"
+
+  # Handle delete result - connection failure (only for actual API attempts)
+  - condition: action_type == 'delete' && email_type_normalized != null && delete_status == 0
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "delete_failed"
+      
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Delete Email Address\n\n🚨 Error: Connection failed"
+
+  # Handle API errors
+  - condition: get_result != null && get_result.status_code != 200
+    actions:
+      - type: set-variables
+        variables:
+          - name: operation_status
+            value: "retrieval_error"
+          - name: result_message
+            value: "<? 'API Error: ' + get_result.status_code ?>"
+
+      - type: message
+        message:
+          type: text
+          content: "❌ Failed to Retrieve Email Information\n\n🚨 Error: <? result_message ?>"
